@@ -11,6 +11,11 @@ import co.unbosque.model.PartnerConsumption;
 import co.unbosque.model.PersonPartner;
 import co.unbosque.service.PersonPartnerService;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @RestController
 @RequestMapping("/personpartner")
 public class PersonPartnerController {
@@ -20,110 +25,136 @@ public class PersonPartnerController {
 
     public PersonPartnerController() {
     }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getbyidentification/{identification}")
+    public ResponseEntity<PersonPartner> getByIdentification(@PathVariable String identification){
+        PersonPartner partner = partnerServ.getByIdentification(identification);
+        if(partner == null){
+            return new ResponseEntity<>(partner, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(partner, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getbyfirstname/{firstname}")
+    public ResponseEntity<List<PersonPartner>> getByFirstName(@PathVariable String firstname){
+        List<PersonPartner> partners = partnerServ.getByFirstName(firstname);
+        if(partners == null || partners.isEmpty()){
+            return new ResponseEntity<>(partners, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(partners, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getbysecondname/{secondname}")
+    public ResponseEntity<List<PersonPartner>> getBySecondName(@PathVariable String secondname){
+        List<PersonPartner> partners = partnerServ.getBySecondName(secondname);
+        if(partners == null || partners.isEmpty()){
+            return new ResponseEntity<>(partners, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(partners, HttpStatus.OK);
+    }
+    
+    @GetMapping(path = "/getdependents/me")
+    public ResponseEntity<List<PersonPartner>> getMyDependents() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+        PersonPartner partner = partnerServ.getTitularByEmail(email);
+        if(partner==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
+        List<PersonPartner> dependents = partnerServ.getByOwnerPersonId(partner.getPersonId());
+        
+        if(dependents == null || dependents.isEmpty()){
+            return new ResponseEntity<>(dependents, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(dependents, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getdependents/identification/{identification}")
+    public ResponseEntity<List<PersonPartner>> getDependentsByIdentification(@PathVariable String identification){
+        PersonPartner titular = partnerServ.getByIdentification(identification);
+        
+        List<PersonPartner> dependents = partnerServ.getByOwnerPersonId(titular.getPersonId());
+        if(dependents == null || dependents.isEmpty()){
+            return new ResponseEntity<>(dependents, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(dependents, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getbysharenumber/{sharenumber}")
+    public ResponseEntity<List<PersonPartner>> getByShareNumber(@PathVariable Long sharenumber){
+        List<PersonPartner> partners = partnerServ.getByShareNumber(sharenumber);
+        if(partners == null || partners.isEmpty()){
+            return new ResponseEntity<>(partners, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(partners, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @GetMapping(path = "/getall")
     public ResponseEntity<List<PersonPartner>> getAll(){
         List<PersonPartner> partners = partnerServ.getAll();
         if (partners.isEmpty()) {
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(partners, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.OK);
+        return new ResponseEntity<>(partners, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getbyid/{id}")
-    public ResponseEntity<PersonPartner> getById(@PathVariable Long id){
-        PersonPartner partner = partnerServ.getById(id);
+    @GetMapping(path = "/me")
+    public ResponseEntity<PersonPartner> getMe() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+        PersonPartner partner = partnerServ.getTitularByEmail(email);
+        
         if(partner == null){
-            return new ResponseEntity<PersonPartner>(partner, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<PersonPartner>(partner, HttpStatus.OK);
+        return new ResponseEntity<>(partner, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getbyidentification/{identification}")
-    public ResponseEntity<PersonPartner> getByIdentification(@PathVariable String identification){
-        PersonPartner partner = partnerServ.getByIdentification(identification);
-
-        if(partner == null){
-            return new ResponseEntity<PersonPartner>(partner, HttpStatus.NOT_FOUND);
+    @GetMapping(path = "/getconsumptions/me")
+    public ResponseEntity<List<PartnerConsumption>> getMyConsumptions() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+        PersonPartner partner = partnerServ.getTitularByEmail(email);
+        if(partner==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        List<PartnerConsumption> consumptions = partnerServ.getByComsuption(partner.getPersonId());
+        
+        if(consumptions == null || consumptions.isEmpty()){
+            return new ResponseEntity<>(consumptions, HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<PersonPartner>(partner, HttpStatus.OK);
+        return new ResponseEntity<>(consumptions, HttpStatus.OK);
     }
-
-    @GetMapping(path = "/getbyfirstname/{firstname}")
-    public ResponseEntity<List<PersonPartner>> getByFirstName(@PathVariable String firstname){
-        List<PersonPartner> partners = partnerServ.getByFirstName(firstname);
-
-        if(partners == null){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NOT_FOUND);
+    
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+    @GetMapping(path = "/getconsumptionsidentification/{identification}")
+    public ResponseEntity<List<PartnerConsumption>> getConsumptionsByIdentification(@PathVariable String identification){
+        PersonPartner titular = partnerServ.getByIdentification(identification);
+        List<PartnerConsumption> consumptions = titular.getConsumptions();
+        if(consumptions == null || consumptions.isEmpty()){
+            return new ResponseEntity<>(consumptions, HttpStatus.NO_CONTENT);
         }
-
-        if(partners.isEmpty()){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.OK);
+        return new ResponseEntity<>(consumptions, HttpStatus.OK);
     }
-
-    @GetMapping(path = "/getbysecondname/{secondname}")
-    public ResponseEntity<List<PersonPartner>> getBySecondName(@PathVariable String secondname){
-        List<PersonPartner> partners = partnerServ.getBySecondName(secondname);
-
-        if(partners == null){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NOT_FOUND);
-        }
-
-        if(partners.isEmpty()){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getbysharenumber/{sharenumber}")
-    public ResponseEntity<List<PersonPartner>> getByShareNumber(@PathVariable Long sharenumber){
-        List<PersonPartner> partners = partnerServ.getByShareNumber(sharenumber);
-
-        if(partners == null){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NOT_FOUND);
-        }
-
-        if(partners.isEmpty()){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getbyownerid/{ownerid}")
-    public ResponseEntity<List<PersonPartner>> getByOwnerPersonId(@PathVariable Long ownerid){
-        List<PersonPartner> partners = partnerServ.getByOwnerPersonId(ownerid);
-
-        if(partners == null){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NOT_FOUND);
-        }
-
-        if(partners.isEmpty()){
-            return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<List<PersonPartner>>(partners, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getconsumptions/{id}")
-    public ResponseEntity<List<PartnerConsumption>> getConsumptions(@PathVariable Long id){
-        List<PartnerConsumption> consumptions = partnerServ.getByConsuption(id);
-
-        if(consumptions == null){
-            return new ResponseEntity<List<PartnerConsumption>>(consumptions, HttpStatus.NOT_FOUND);
-        }
-
-        if(consumptions.isEmpty()){
-            return new ResponseEntity<List<PartnerConsumption>>(consumptions, HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<List<PartnerConsumption>>(consumptions, HttpStatus.OK);
-    }
-
+    
 }

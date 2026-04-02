@@ -95,7 +95,6 @@ public class PartnerConsumptionService {
 		return valRepo.save(validation);
 	}
 
-	@Transactional(readOnly = true)
 	public List<PartnerConsumption> getByEnviroment(String enviroment) {
 		List<PartnerConsumption> list = consumptionRepo.findByEnviroment(enviroment);
 		if (!list.isEmpty())
@@ -103,7 +102,6 @@ public class PartnerConsumptionService {
 		return null;
 	}
 
-	@Transactional(readOnly = true)
 	public List<PartnerConsumption> getByPartnerId(Long partnerPersonId) {
 		List<PartnerConsumption> list = consumptionRepo.findByPartnerPersonId(partnerPersonId);
 		if (!list.isEmpty())
@@ -111,7 +109,6 @@ public class PartnerConsumptionService {
 		return null;
 	}
 
-	@Transactional(readOnly = true)
 	public List<Notification> getNotificationsByConsumptionId(Long consumptionId) {
 		Optional<PartnerConsumption> opt = consumptionRepo.findByConsumptionId(consumptionId);
 		if (!opt.isPresent())
@@ -122,7 +119,6 @@ public class PartnerConsumptionService {
 		return list;
 	}
 
-	@Transactional(readOnly = true)
 	public Boolean isConsumptionValidated(Long consumptionId) {
 		Optional<PartnerConsumption> opt = consumptionRepo.findByConsumptionId(consumptionId);
 		if (!opt.isPresent())
@@ -130,7 +126,6 @@ public class PartnerConsumptionService {
 		return opt.get().getValidation() != null;
 	}
 
-	@Transactional(readOnly = true)
 	public List<PartnerConsumption> getConsumptionsWithPendingValidation() {
 		List<Notification> pending = notRepo.findByStateAndNotificationType('P', "CONSUMPTION_VALIDATION");
 		if (pending == null || pending.isEmpty())
@@ -142,7 +137,6 @@ public class PartnerConsumptionService {
 		return consumptions;
 	}
 
-	@Transactional(readOnly = true)
 	public ConsumptionValidation getValidationDetails(Long consumptionId) {
 		Optional<PartnerConsumption> opt = consumptionRepo.findByConsumptionId(consumptionId);
 		if (!opt.isPresent())

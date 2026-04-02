@@ -64,6 +64,12 @@ public class PersonPartner {
 	@Convert(converter = StringArrayConverter.class)
 	private String[] email;
 
+	@Column(name = "force_password_change")
+	private Boolean forcePasswordChange = true;
+	
+	@Column(name = "role")
+    private String role;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Access> accesses = new ArrayList<>();
@@ -237,6 +243,14 @@ public class PersonPartner {
 		this.email = email;
 	}
 
+	public Boolean getForcePasswordChange() {
+		return forcePasswordChange;
+	}
+
+	public void setForcePasswordChange(Boolean forcePasswordChange) {
+		this.forcePasswordChange = forcePasswordChange;
+	}
+
 	public List<Access> getAccesses() {
 		return accesses;
 	}
@@ -252,4 +266,13 @@ public class PersonPartner {
 	public void setConsumptions(List<PartnerConsumption> consumptions) {
 		this.consumptions = consumptions;
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
 }
