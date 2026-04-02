@@ -19,20 +19,19 @@ public class PersonPartnerService {
 
     @Autowired
     private PersonPartnerRepository partnerRepo;
-
-    @Autowired
-    private PartnerConsumptionRepository consumptionRepo;
     
     public PersonPartnerService() {
 		// TODO Auto-generated constructor stub
 	}
     
-    @Transactional(readOnly = true)
+    public void savePartner(PersonPartner save) {
+    	partnerRepo.save(save);
+    }
+    
     public List<PersonPartner> getAll() {
         return partnerRepo.findAll();
     }
 
-    @Transactional(readOnly = true)
     public PersonPartner getById(Long id) {
         Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
         if(found.isPresent()) {
@@ -41,7 +40,6 @@ public class PersonPartnerService {
         return null;
     }
     
-    @Transactional(readOnly = true)
     public PersonPartner getByIdentification(String identification) {
         Optional<PersonPartner> found = partnerRepo.findByIdentification(identification);
         if(found.isPresent()) {
@@ -50,7 +48,6 @@ public class PersonPartnerService {
         return null;
     }
 
-    @Transactional(readOnly = true)
     public List<PersonPartner> getByFirstName(String firstName) {
     	List<PersonPartner> list=partnerRepo.findByFirstName(firstName);
     	if(!list.isEmpty()) {
@@ -59,7 +56,6 @@ public class PersonPartnerService {
         return null;
     }
 
-    @Transactional(readOnly = true)
     public List<PersonPartner> getBySecondName(String secondName) {
     	List<PersonPartner> list=partnerRepo.findBySecondName(secondName);
     	if(!list.isEmpty()) {
@@ -68,7 +64,6 @@ public class PersonPartnerService {
         return null;
     }
 
-    @Transactional(readOnly = true)
     public List<PersonPartner> getByShareNumber(Long shareNumber) {
     	List<PersonPartner> list=partnerRepo.findByShareNumber(shareNumber);
     	if(!list.isEmpty()) {
@@ -77,7 +72,6 @@ public class PersonPartnerService {
         return null;
     }
 
-    @Transactional(readOnly = true)
     public List<PersonPartner> getByOwnerPersonId(Long ownerId) {
     	List<PersonPartner> list=partnerRepo.findByOwnerPersonId(ownerId);
     	if(!list.isEmpty()) {
@@ -86,13 +80,20 @@ public class PersonPartnerService {
         return null;
     }
     
-    @Transactional(readOnly = true)
-    public List<PartnerConsumption> getByConsuption(Long id) {
+    public List<PartnerConsumption> getByComsuption(Long id) {
         Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
         if(found.isPresent()) {
         	return found.get().getConsumptions();
         }
         return null;
+    }
+    
+    public PersonPartner getTitularByEmail(String email) {
+    	 Optional<PersonPartner> titular = partnerRepo.findTitularByEmail(email);
+         if (!titular.isPresent()) {
+        	 return null;
+         }
+         return titular.get();
     }
     
 }

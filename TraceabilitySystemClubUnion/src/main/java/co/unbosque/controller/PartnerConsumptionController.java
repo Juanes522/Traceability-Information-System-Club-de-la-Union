@@ -121,8 +121,6 @@ public class PartnerConsumptionController {
         ConsumptionValidation detail = consumptionServ.getValidationDetails(consumptionId);
         if (detail == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(detail, HttpStatus.OK);
-    }
-    
-    
+    } 
 
 }
