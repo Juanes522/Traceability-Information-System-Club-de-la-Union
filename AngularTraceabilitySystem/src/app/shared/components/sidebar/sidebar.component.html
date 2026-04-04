@@ -1,0 +1,38 @@
+<nav class="sidebar d-flex flex-column bg-dark text-white p-3" [class.open]="isOpen">
+
+  <!-- Mobile close button -->
+  <button class="close-btn d-lg-none" (click)="closed.emit()" aria-label="Cerrar menú">
+    <i class="bi bi-x-lg"></i>
+  </button>
+
+  <div class="sidebar-brand mb-4 px-2">
+    <img src="assets/ClubIcon.png" class="sidebar-logo" alt="Club de la Unión" />
+  </div>
+
+  <ul class="nav flex-column flex-grow-1">
+    <li class="nav-item" *ngFor="let item of navItems">
+      <a
+        class="nav-link text-white d-flex align-items-center gap-2 py-2 px-2 rounded"
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+        (click)="closed.emit()"
+      >
+        <i [class]="'bi ' + item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="mt-auto pt-3 border-top border-secondary">
+    <ng-container *ngIf="currentUser$ | async as user">
+      <div class="small text-muted mb-2 px-2">{{ user.role | titlecase }}</div>
+    </ng-container>
+    <button 
+      class="color btn btn-outline-light btn-sm w-100 d-flex align-items-center justify-content-center gap-2"
+      (click)="logout()"
+    >
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </button>
+  </div>
+</nav>

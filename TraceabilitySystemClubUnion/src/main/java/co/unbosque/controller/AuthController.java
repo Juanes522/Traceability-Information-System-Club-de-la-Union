@@ -59,7 +59,7 @@ public class AuthController {
 
         Boolean needsChange = titular.getForcePasswordChange();
 
-        return ResponseEntity.ok(new AuthResponse(jwt, needsChange != null ? needsChange : true));
+        return ResponseEntity.ok(new AuthResponse(jwt, titular.getRole(), needsChange != null ? needsChange : true));
     }
 
     @PostMapping("/change-password")

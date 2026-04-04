@@ -1,0 +1,179 @@
+/* ===== PAGE SHELL ===== */
+.dependents-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  background: #212529;
+  padding: 1.5rem 2rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.page-title {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.count-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 99px;
+  background: rgba(199, 165, 103, 0.15);
+  color: #c7a567;
+  border: 1px solid rgba(199, 165, 103, 0.3);
+  white-space: nowrap;
+}
+
+/* ===== CONTENT AREA ===== */
+.page-content {
+  flex: 1;
+  padding: 1.75rem 2rem;
+  background: #f8f9fa;
+}
+
+/* ===== DEPENDENT LIST ===== */
+.dep-list {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.dependent-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background 0.15s ease;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: #f8f9fa; }
+}
+
+/* ===== AVATAR ===== */
+.dep-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e9ecef;
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+
+  &.active-avatar {
+    background: linear-gradient(135deg, #d4a843 0%, var(--color-accent) 100%);
+    color: #212529;
+  }
+}
+
+/* ===== DEPENDENT INFO ===== */
+.dep-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dep-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #212529;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dep-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.dep-kinship {
+  font-weight: 500;
+  color: #495057;
+}
+
+.sep {
+  color: #ced4da;
+}
+
+.dep-date {
+  color: #868e96;
+}
+
+/* ===== STATUS BADGE ===== */
+.dep-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &.badge-active {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+  }
+
+  &.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+  }
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #adb5bd;
+
+  i { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+  p { font-size: 0.9rem; margin: 0; }
+}
+
+/* ===== LOADING ===== */
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  flex: 1;
+}
+
+.spinner-gold { color: #c7a567; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 575px) {
+  .page-header  { padding: 1rem; }
+  .page-title   { font-size: 1rem; }
+  .page-content { padding: 1rem; }
+
+  .dep-name { font-size: 0.875rem; }
+}

@@ -1,0 +1,66 @@
+<div class="login-page">
+
+  <!-- Subtle background pattern -->
+  <div class="login-bg-pattern" aria-hidden="true"></div>
+
+  <div class="login-card">
+
+    <!-- Brand -->
+    <div class="login-brand">
+      <img src="assets/ClubIcon.png" class="brand-logo" alt="Club de la Unión" />
+      <h2 class="welcome-title">Bienvenido</h2>
+    </div>
+
+    <div class="login-divider"></div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="field-group mb-3">
+        <label for="email" class="field-label">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          class="field-input"
+          [class.field-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="usuario@club.co"
+        />
+        <span *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="field-error">
+          Ingresa un correo válido.
+        </span>
+      </div>
+
+      <div class="field-group mb-4">
+        <label for="password" class="field-label">Contraseña</label>
+        <div class="pw-field-wrap">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="field-input"
+            [class.field-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+          />
+          <button type="button" class="pw-toggle" (click)="togglePassword()" tabindex="-1"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+        <span *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="field-error">
+          La contraseña es requerida.
+        </span>
+      </div>
+
+      <button type="submit" class="login-btn" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <span>{{ loading ? 'Verificando...' : 'Ingresar' }}</span>
+        <i *ngIf="!loading"></i>
+      </button>
+
+    </form>
+
+  </div>
+</div>

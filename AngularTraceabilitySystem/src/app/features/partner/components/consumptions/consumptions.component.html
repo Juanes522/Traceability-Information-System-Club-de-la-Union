@@ -1,0 +1,162 @@
+<div class="consumptions-page">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-wrap">
+    <div class="spinner-border spinner-gold"></div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="alert alert-danger m-4">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+
+    <!-- ── Page header ── -->
+    <header class="page-header">
+      <h1 class="page-title">
+        <i class="bi bi-receipt me-2 icon-accent"></i>Mis Consumos
+      </h1>
+      <div class="header-stats">
+        <span class="stat-chip open-chip">
+          <span class="dot dot-open"></span>
+          {{ openCount }} abierto{{ openCount !== 1 ? 's' : '' }}
+        </span>
+        <span class="stat-chip closed-chip">
+          <span class="dot dot-closed"></span>
+          {{ closedCount }} cerrado{{ closedCount !== 1 ? 's' : '' }}
+        </span>
+      </div>
+    </header>
+
+    <!-- ── Toolbar ── -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar por ambiente, mesa o mesero..."
+          [(ngModel)]="searchText"
+          (input)="applyFilters()"
+        />
+      </div>
+
+      <div class="filter-group">
+        <button class="filter-btn" [class.active]="stateFilter === 'ALL'" (click)="setStateFilter('ALL')">Todos</button>
+        <button class="filter-btn state-open" [class.active]="stateFilter === 'A'" (click)="setStateFilter('A')">Abiertos</button>
+        <button class="filter-btn state-closed" [class.active]="stateFilter === 'C'" (click)="setStateFilter('C')">Cerrados</button>
+      </div>
+
+      <span class="result-count">{{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <!-- ── Table ── -->
+    <div class="table-wrap">
+
+      <div *ngIf="filtered.length === 0" class="empty-state">
+        <i class="bi bi-receipt"></i>
+        <p>No se encontraron consumos con los filtros aplicados.</p>
+      </div>
+
+      <table *ngIf="filtered.length > 0" class="data-table">
+        <thead>
+          <tr>
+            <th>Ambiente</th>
+            <th>Mesa</th>
+            <th>Mesero</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th class="col-amount">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let c of filtered">
+            <tr class="data-row" [class.expanded-row]="isExpanded(c.consumptionId)" (click)="toggleExpand(c.consumptionId)">
+              <td>{{ c.enviroment }}</td>
+              <td>{{ c.table }}</td>
+              <td>{{ c.waiterName }}</td>
+              <td>{{ formatDate(c.consumptionOpening) }}</td>
+              <td>
+                <span class="state-badge" [ngClass]="c.stateAccount === 'A' ? 'open' : 'closed'">
+                  <i class="bi" [ngClass]="c.stateAccount === 'A' ? 'bi-circle-fill' : 'bi-check-circle-fill'"></i>
+                  {{ c.stateAccount === 'A' ? 'Abierto' : 'Cerrado' }}
+                </span>
+              </td>
+              <td class="col-amount">{{ formatCurrency(totalFor(c)) }}</td>
+              <td>
+                <i class="bi bi-chevron-down expand-icon" [class.open]="isExpanded(c.consumptionId)"></i>
+              </td>
+            </tr>
+
+            <tr *ngIf="isExpanded(c.consumptionId)" class="expand-row">
+              <td colspan="7">
+                <div class="detail-panel">
+
+                  <div class="detail-group">
+                    <div class="detail-title">Desglose</div>
+                    <div class="detail-item">
+                      <span>Consumo</span>
+                      <span>{{ formatCurrency(c.consumptionValue) }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span>IVA</span>
+                      <span>{{ formatCurrency(c.iva) }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span>Servicio</span>
+                      <span>{{ formatCurrency(c.service) }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span>Propina</span>
+                      <span>{{ formatCurrency(c.tip) }}</span>
+                    </div>
+                    <div class="detail-item total">
+                      <span>Total</span>
+                      <span class="amount-accent">{{ formatCurrency(totalFor(c)) }}</span>
+                    </div>
+                  </div>
+
+                  <div class="detail-group">
+                    <div class="detail-title">Fechas</div>
+                    <div class="detail-meta">
+                      <div class="meta-row">
+                        <i class="bi bi-door-open"></i>
+                        <span class="meta-label">Apertura</span>
+                        <span class="meta-value">{{ formatDate(c.consumptionOpening) }}</span>
+                      </div>
+                      <div class="meta-row">
+                        <i class="bi bi-door-closed"></i>
+                        <span class="meta-label">Cierre</span>
+                        <span class="meta-value">{{ c.consumptionClosing ? formatDate(c.consumptionClosing) : '—' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-group">
+                    <div class="detail-title">Detalle</div>
+                    <div class="detail-meta">
+                      <div class="meta-row">
+                        <i class="bi bi-person"></i>
+                        <span class="meta-label">Mesero</span>
+                        <span class="meta-value">{{ c.waiterName }}</span>
+                      </div>
+                      <div class="meta-row">
+                        <i class="bi bi-hash"></i>
+                        <span class="meta-label">Cuenta</span>
+                        <span class="meta-value">{{ c.account }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+    </div>
+
+  </ng-container>
+
+</div>

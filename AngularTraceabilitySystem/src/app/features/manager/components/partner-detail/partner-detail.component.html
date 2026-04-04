@@ -1,0 +1,213 @@
+<div class="detail-page" *ngIf="partner">
+
+  <!-- ── Header ── -->
+  <div class="detail-header">
+    <button class="btn-back" (click)="back.emit()">
+      <i class="bi bi-arrow-left"></i> Resultados
+    </button>
+    <div class="header-avatar">{{ getInitials(partner) }}</div>
+    <div class="header-info">
+      <div class="hname">{{ fullName(partner) }}</div>
+      <div class="hshare">{{ partner.shareNumber }}</div>
+    </div>
+    <span class="status-badge" [ngClass]="partner.partnerState ? 'active' : 'inactive'">
+      <i class="bi" [ngClass]="partner.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+      {{ partner.partnerState ? 'Activo' : 'Inactivo' }}
+    </span>
+  </div>
+
+  <!-- ── Tabs ── -->
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab === 'profile'" (click)="setTab('profile')">
+      <i class="bi bi-person"></i> Perfil
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'dependents'" (click)="setTab('dependents')">
+      <i class="bi bi-people"></i> Dependientes
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'consumptions'" (click)="setTab('consumptions')">
+      <i class="bi bi-receipt"></i> Consumos
+    </button>
+  </div>
+
+  <!-- ── Tab content ── -->
+  <div class="tab-content">
+
+    <!-- PROFILE TAB -->
+    <ng-container *ngIf="activeTab === 'profile'">
+      <div class="profile-grid">
+
+        <div class="info-section">
+          <div class="section-heading">
+            <i class="bi bi-person-lines-fill"></i>
+            <span>Contacto</span>
+          </div>
+          <div class="info-row" *ngFor="let mail of partner.email">
+            <i class="bi bi-envelope row-icon"></i>
+            <div>
+              <div class="row-label">Email</div>
+              <div class="row-value">{{ mail }}</div>
+            </div>
+          </div>
+          <div class="info-row" *ngIf="partner.phone">
+            <i class="bi bi-telephone row-icon"></i>
+            <div>
+              <div class="row-label">Teléfono</div>
+              <div class="row-value">{{ partner.phone }}</div>
+            </div>
+          </div>
+
+          <div class="info-row" *ngIf="partner.cellPhone">
+            <i class="bi bi-phone row-icon"></i>
+            <div class="row-content">
+              <div class="row-label">Celular</div>
+              <div class="row-value">{{ partner.cellPhone }}</div>
+            </div>
+          </div>
+
+          <div class="info-row" *ngIf="!partner.phone && !partner.email.length">
+            <i class="bi bi-dash row-icon"></i>
+            <div>
+              <div class="row-value text-no-contact">Sin información de contacto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <div class="section-heading">
+            <i class="bi bi-award-fill"></i>
+            <span>Membresía</span>
+          </div>
+          <div class="info-row">
+            <i class="bi bi-card-text row-icon"></i>
+            <div>
+              <div class="row-label">Número de acción</div>
+              <div class="row-value row-value-accent">{{ partner.shareNumber }}</div>
+            </div>
+          </div>
+          <div class="info-row" *ngIf="partner.ingressDate">
+            <i class="bi bi-calendar-check row-icon"></i>
+            <div>
+              <div class="row-label">Fecha de ingreso</div>
+              <div class="row-value">{{ formatDate(partner.ingressDate) }}</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <i class="bi bi-cake2 row-icon"></i>
+            <div>
+              <div class="row-label">Fecha de nacimiento</div>
+              <div class="row-value">{{ formatDate(partner.birthDate) }}</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+    <!-- DEPENDENTS TAB -->
+    <ng-container *ngIf="activeTab === 'dependents'">
+      <div *ngIf="loadingDeps" class="empty-tab">
+        <div class="spinner-border spinner-gold"></div>
+      </div>
+      <div *ngIf="!loadingDeps && dependents.length === 0" class="empty-tab">
+        <i class="bi bi-person-x"></i>
+        <p>Este socio no tiene dependientes registrados.</p>
+      </div>
+      <div *ngIf="!loadingDeps && dependents.length > 0">
+        <table class="dep-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Parentesco</th>
+              <th>Nacimiento</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of dependents">
+              <td>
+                <div class="dep-cell">
+                  <div class="dep-av" [class.inactive]="!d.partnerState">{{ getInitials(d) }}</div>
+                  <span class="dep-name">{{ fullName(d) }}</span>
+                </div>
+              </td>
+              <td>{{ d.kinship || '—' }}</td>
+              <td>{{ formatDate(d.birthDate) }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="d.partnerState ? 'active' : 'inactive'">
+                  {{ d.partnerState ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <!-- CONSUMPTIONS TAB -->
+    <ng-container *ngIf="activeTab === 'consumptions'">
+      <div *ngIf="loadingCons" class="empty-tab">
+        <div class="spinner-border spinner-gold"></div>
+      </div>
+      <div *ngIf="!loadingCons && consumptions.length === 0" class="empty-tab">
+        <i class="bi bi-receipt"></i>
+        <p>Este socio no tiene consumos registrados.</p>
+      </div>
+      <div *ngIf="!loadingCons && consumptions.length > 0" class="scroll-x">
+        <table class="cons-table">
+          <thead>
+            <tr>
+              <th>Ambiente</th>
+              <th>Mesa</th>
+              <th>Estado</th>
+              <th class="r">Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let c of consumptions">
+              <tr class="main-row" (click)="toggleCon(c.consumptionId)">
+                <td>{{ c.enviroment }}</td>
+                <td>{{ c.table }}</td>
+                <td>
+                  <span class="state-badge" [ngClass]="c.stateAccount === 'A' ? 'open' : 'closed'">
+                    {{ c.stateAccount === 'A' ? 'Abierto' : 'Cerrado' }}
+                  </span>
+                </td>
+                <td class="r">{{ formatCurrency(totalFor(c)) }}</td>
+                <td><i class="bi bi-chevron-down expand-icon" [class.open]="expandedConsId === c.consumptionId"></i>
+                </td>
+              </tr>
+              <tr *ngIf="expandedConsId === c.consumptionId" class="exp-row">
+                <td colspan="5">
+                  <div class="exp-panel">
+                    <div>
+                      <div class="dt">Desglose</div>
+                      <div class="amtrow"><span>Consumo</span><span>{{ formatCurrency(c.consumptionValue) }}</span>
+                      </div>
+                      <div class="amtrow"><span>IVA</span><span>{{ formatCurrency(c.iva) }}</span></div>
+                      <div class="amtrow"><span>Servicio</span><span>{{ formatCurrency(c.service) }}</span></div>
+                      <div class="amtrow"><span>Propina</span><span>{{ formatCurrency(c.tip) }}</span></div>
+                      <div class="amtrow total"><span>Total</span><span class="accent">{{ formatCurrency(totalFor(c))
+                          }}</span></div>
+                    </div>
+                    <div>
+                      <div class="dt">Detalle</div>
+                      <div class="meta-row"><i class="bi bi-person"></i><span class="ml">Mesero</span><span
+                          class="mv">{{ c.waiterName }}</span></div>
+                      <div class="meta-row"><i class="bi bi-door-open"></i><span class="ml">Apertura</span><span
+                          class="mv">{{ formatDate(c.consumptionOpening) }}</span></div>
+                      <div class="meta-row"><i class="bi bi-door-closed"></i><span class="ml">Cierre</span><span
+                          class="mv">{{ c.consumptionClosing ? formatDate(c.consumptionClosing) : '—' }}</span></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+  </div><!-- /tab-content -->
+
+</div>
