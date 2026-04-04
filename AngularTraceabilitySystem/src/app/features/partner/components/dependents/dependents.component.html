@@ -1,0 +1,61 @@
+<div class="dependents-page">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-wrap">
+    <div class="spinner-border spinner-gold"></div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="alert alert-danger m-4">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+
+    <!-- ── Page header ── -->
+    <header class="page-header">
+      <h1 class="page-title">
+        <i class="bi bi-people-fill me-2 icon-accent"></i>Mis Dependientes
+      </h1>
+      <span class="count-chip">
+        {{ dependents.length }} dependiente{{ dependents.length !== 1 ? 's' : '' }}
+      </span>
+    </header>
+
+    <!-- ── Content ── -->
+    <div class="page-content">
+
+      <!-- Empty state -->
+      <div *ngIf="dependents.length === 0" class="empty-state">
+        <i class="bi bi-person-x"></i>
+        <p>No tienes dependientes registrados.</p>
+      </div>
+
+      <!-- Dependent list -->
+      <div *ngIf="dependents.length > 0" class="dep-list">
+        <div class="dependent-row" *ngFor="let dep of dependents">
+
+          <div class="dep-avatar" [ngClass]="dep.partnerState ? 'active-avatar' : ''">
+            {{ getInitials(dep) }}
+          </div>
+
+          <div class="dep-info">
+            <div class="dep-name">{{ fullName(dep) }}</div>
+            <div class="dep-meta">
+              <span *ngIf="dep.kinship" class="dep-kinship">{{ dep.kinship }}</span>
+              <span *ngIf="dep.kinship" class="sep">·</span>
+              <span class="dep-date">{{ formatDate(dep.birthDate) }}</span>
+            </div>
+          </div>
+
+          <span class="dep-badge" [ngClass]="dep.partnerState ? 'badge-active' : 'badge-inactive'">
+            <i class="bi" [ngClass]="dep.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+            {{ dep.partnerState ? 'Activo' : 'Inactivo' }}
+          </span>
+
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

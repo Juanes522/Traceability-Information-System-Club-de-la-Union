@@ -1,0 +1,35 @@
+// Bootstrap SCSS variable overrides (antes del import)
+$primary:      #212529;
+$secondary:    #C7A567;
+$font-family-sans-serif: 'Segoe UI', system-ui, sans-serif;
+
+// Bootstrap 5
+@import 'bootstrap/scss/bootstrap';
+
+// Bootstrap Icons
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+// Variables CSS custom
+:root {
+  --color-primary:  #212529;
+  --color-accent:   #C7A567;
+  --color-bg:       #ffffff;
+  --sidebar-width:  260px;
+}
+
+// Reset body
+body {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+// ── Change password card ─────────────────────────────────────────────────────
+.change-password-card { width: 100%; max-width: 420px; }
+
+// ── Utility classes ──────────────────────────────────────────────────────────
+.icon-accent    { color: var(--color-accent); }
+.text-no-contact { color: #9ca3af; }
+.dot-open       { background: #f59e0b; }
+.dot-closed     { background: #10b981; }
+.spinner-lg     { width: 2rem; height: 2rem; }
+.scroll-x       { overflow-x: auto; }

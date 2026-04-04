@@ -1,0 +1,130 @@
+<div class="profile-page">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-wrap">
+    <div class="spinner-border spinner-gold"></div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="alert alert-danger m-4">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && profile">
+
+    <!-- ── Page header ── -->
+    <header class="page-header">
+      <div class="avatar">{{ initials }}</div>
+      <div class="page-header-text">
+        <h1 class="name">{{ fullName(profile) }}</h1>
+        <div class="share">Acción {{ profile.shareNumber }}</div>
+      </div>
+      <span class="status-badge d-none d-sm-inline-flex" [ngClass]="profile.partnerState ? 'active' : 'inactive'">
+        <i class="bi" [ngClass]="profile.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+        {{ profile.partnerState ? 'Activo' : 'Inactivo' }}
+      </span>
+    </header>
+
+    <!-- ── Content ── -->
+    <div class="profile-content">
+
+      <!-- Mobile status badge -->
+      <div class="d-sm-none mb-3">
+        <span class="status-badge d-inline-flex"
+          [ngClass]="profile.partnerState ? 'active' : 'inactive'">
+          <i class="bi" [ngClass]="profile.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+          {{ profile.partnerState ? 'Socio activo' : 'Inactivo' }}
+        </span>
+      </div>
+
+      
+        <div class="info-grid">
+
+          <!-- ── Col 1: Contact ── -->
+          <div class="info-section">
+            <div class="section-heading">
+              <i class="bi bi-person-lines-fill"></i>
+              <span>Información de contacto</span>
+            </div>
+
+            <div class="info-row" *ngIf="profile.email.length">
+              <i class="bi bi-envelope row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Correo electrónico</div>
+                <div class="email-list">
+                  <span class="row-value" *ngFor="let mail of profile.email">{{ mail }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-row" *ngIf="profile.phone">
+              <i class="bi bi-telephone row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Teléfono</div>
+                <div class="row-value">{{ profile.phone }}</div>
+              </div>
+            </div>
+
+            <div class="info-row" *ngIf="profile.cellPhone">
+              <i class="bi bi-phone row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Celular</div>
+                <div class="row-value">{{ profile.cellPhone }}</div>
+              </div>
+            </div>
+
+            <div class="info-row" *ngIf="!profile.phone && !profile.cellPhone && !profile.email.length">
+              <i class="bi bi-dash row-icon"></i>
+              <div class="row-content">
+                <div class="row-value text-no-contact">Sin información de contacto</div>
+              </div>
+            </div>
+          </div>
+        
+
+        
+          <!-- ── Col 2: Membership ── -->
+          <div class="info-section">
+            <div class="section-heading">
+              <i class="bi bi-award-fill"></i>
+              <span>Membresía</span>
+            </div>
+
+            <div class="info-row">
+              <i class="bi bi-card-text row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Número de acción</div>
+                <div class="row-value row-value-accent">{{ profile.shareNumber }}</div>
+              </div>
+            </div>
+
+            <div class="info-row" *ngIf="profile.ingressDate">
+              <i class="bi bi-calendar-check row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Fecha de ingreso</div>
+                <div class="row-value">{{ formatDate(profile.ingressDate) }}</div>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <i class="bi bi-cake2 row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Fecha de nacimiento</div>
+                <div class="row-value">{{ formatDate(profile.birthDate) }}</div>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <i class="bi bi-person-badge row-icon"></i>
+              <div class="row-content">
+                <div class="row-label">Tipo de socio</div>
+                <div class="row-value">{{ profile.partnerKind }}</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /info-grid -->
+      
+    </div><!-- /profile-content -->
+
+  </ng-container>
+
+</div><!-- /profile-page -->

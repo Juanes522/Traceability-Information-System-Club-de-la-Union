@@ -1,0 +1,138 @@
+<div class="cons-list-page">
+
+  <!-- ── Page header ── -->
+  <header class="page-header">
+    <h1 class="page-title">
+      <i class="bi bi-receipt me-2 icon-accent"></i>Consumos por Ambiente
+    </h1>
+    <div class="header-stats" *ngIf="searched && results.length > 0">
+      <span class="stat-chip open-chip">
+        <span class="dot dot-open"></span>
+        {{ openCount }} abierto{{ openCount !== 1 ? 's' : '' }}
+      </span>
+      <span class="stat-chip closed-chip">
+        <span class="dot dot-closed"></span>
+        {{ closedCount }} cerrado{{ closedCount !== 1 ? 's' : '' }}
+      </span>
+    </div>
+  </header>
+
+  <!-- ── Search toolbar ── -->
+  <div class="search-toolbar">
+    <div class="search-wrap">
+      <i class="bi bi-building search-icon"></i>
+      <input
+        type="text"
+        [(ngModel)]="environment"
+        placeholder="Ej: Rooftop, Restaurante..."
+        (keyup.enter)="search()"
+      />
+    </div>
+    <button class="btn-search" (click)="search()" [disabled]="searching || !environment.trim()">
+      <span *ngIf="searching" class="spinner-border spinner-border-sm spinner-gold"></span>
+      <span *ngIf="!searching"><i class="bi bi-search"></i> Buscar</span>
+    </button>
+    <span class="result-count" *ngIf="searched">
+      {{ results.length }} resultado{{ results.length !== 1 ? 's' : '' }}
+    </span>
+  </div>
+
+  <!-- ── Content ── -->
+  <div class="table-wrap">
+
+    <div *ngIf="!searched && !searching" class="idle-state">
+      <div class="idle-icon"><i class="bi bi-building"></i></div>
+      <p>Ingresa el nombre de un ambiente para consultar sus consumos</p>
+      <span class="hint">Ej: Rooftop, Restaurante Principal, Bar</span>
+    </div>
+
+    <div *ngIf="searching" class="loading-wrap">
+      <div class="spinner-border spinner-gold"></div>
+    </div>
+
+    <div *ngIf="error && !searching" class="alert alert-danger m-4">{{ error }}</div>
+
+    <div *ngIf="searched && !searching && results.length === 0" class="empty-state">
+      <i class="bi bi-receipt"></i>
+      <p>No se encontraron consumos para ese ambiente.</p>
+    </div>
+
+    <table *ngIf="searched && !searching && results.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>Ambiente</th>
+          <th>Mesa</th>
+          <th>Mesero</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th class="r">Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let c of results">
+          <tr class="data-row" [class.expanded-row]="isExpanded(c.consumptionId)" (click)="toggleExpand(c.consumptionId)">
+            <td>{{ c.enviroment }}</td>
+            <td>{{ c.table }}</td>
+            <td>{{ c.waiterName }}</td>
+            <td>{{ formatDate(c.consumptionOpening) }}</td>
+            <td>
+              <span class="state-badge" [ngClass]="c.stateAccount === 'A' ? 'open' : 'closed'">
+                <i class="bi" [ngClass]="c.stateAccount === 'A' ? 'bi-circle-fill' : 'bi-check-circle-fill'"></i>
+                {{ c.stateAccount === 'A' ? 'Abierto' : 'Cerrado' }}
+              </span>
+            </td>
+            <td class="r">{{ formatCurrency(totalFor(c)) }}</td>
+            <td><i class="bi bi-chevron-down expand-icon" [class.open]="isExpanded(c.consumptionId)"></i></td>
+          </tr>
+          <tr *ngIf="isExpanded(c.consumptionId)" class="expand-row">
+            <td colspan="7">
+              <div class="detail-panel">
+                <div class="detail-group">
+                  <div class="detail-title">Desglose</div>
+                  <div class="detail-item"><span>Consumo</span><span>{{ formatCurrency(c.consumptionValue) }}</span></div>
+                  <div class="detail-item"><span>IVA</span><span>{{ formatCurrency(c.iva) }}</span></div>
+                  <div class="detail-item"><span>Servicio</span><span>{{ formatCurrency(c.service) }}</span></div>
+                  <div class="detail-item"><span>Propina</span><span>{{ formatCurrency(c.tip) }}</span></div>
+                  <div class="detail-item total"><span>Total</span><span class="accent">{{ formatCurrency(totalFor(c)) }}</span></div>
+                </div>
+                <div class="detail-group">
+                  <div class="detail-title">Fechas</div>
+                  <div class="detail-meta">
+                    <div class="meta-row">
+                      <i class="bi bi-door-open"></i>
+                      <span class="meta-label">Apertura</span>
+                      <span class="meta-value">{{ formatDate(c.consumptionOpening) }}</span>
+                    </div>
+                    <div class="meta-row">
+                      <i class="bi bi-door-closed"></i>
+                      <span class="meta-label">Cierre</span>
+                      <span class="meta-value">{{ c.consumptionClosing ? formatDate(c.consumptionClosing) : '—' }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-group">
+                  <div class="detail-title">Detalle</div>
+                  <div class="detail-meta">
+                    <div class="meta-row">
+                      <i class="bi bi-person"></i>
+                      <span class="meta-label">Mesero</span>
+                      <span class="meta-value">{{ c.waiterName }}</span>
+                    </div>
+                    <div class="meta-row">
+                      <i class="bi bi-hash"></i>
+                      <span class="meta-label">Cuenta</span>
+                      <span class="meta-value">{{ c.account }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

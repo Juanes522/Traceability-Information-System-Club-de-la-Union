@@ -1,0 +1,75 @@
+<!-- Mobile topbar -->
+<header class="mobile-topbar">
+  <button class="hamburger" (click)="toggleSidebar()" aria-label="Abrir menú">
+    <i class="bi bi-list"></i>
+  </button>
+  <span class="topbar-brand">Club de la Unión</span>
+</header>
+
+<!-- Sidebar backdrop -->
+<div class="sidebar-backdrop" [class.visible]="sidebarOpen" (click)="closeSidebar()"></div>
+
+<!-- App layout -->
+<div class="shell-layout">
+  <app-sidebar [isOpen]="sidebarOpen" (closed)="closeSidebar()"></app-sidebar>
+  <main class="shell-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Password-change modal (first login)
+══════════════════════════════════════════ -->
+<div class="pw-modal-backdrop" *ngIf="showPasswordModal">
+  <div class="pw-modal" role="dialog" aria-modal="true" aria-labelledby="pwModalTitle">
+
+    <div class="pw-modal-header">
+      <div class="pw-icon-wrap">
+        <i class="bi bi-shield-lock-fill"></i>
+      </div>
+      <h2 id="pwModalTitle">Cambio de contraseña requerido</h2>
+      <p>Por seguridad, debes establecer una contraseña personal antes de continuar.</p>
+    </div>
+
+    <form [formGroup]="pwForm" (ngSubmit)="submitPassword()" class="pw-modal-body" novalidate>
+
+      <div class="pw-field">
+        <label for="newPw">Nueva contraseña</label>
+        <input
+          id="newPw"
+          type="password"
+          formControlName="newPassword"
+          placeholder="Mínimo 6 caracteres"
+          autocomplete="new-password"
+          [class.invalid]="pwForm.get('newPassword')?.invalid && pwForm.get('newPassword')?.touched"
+        />
+        <span class="field-hint" *ngIf="pwForm.get('newPassword')?.invalid && pwForm.get('newPassword')?.touched">
+          Mínimo 6 caracteres.
+        </span>
+      </div>
+
+      <div class="pw-field">
+        <label for="confirmPw">Confirmar contraseña</label>
+        <input
+          id="confirmPw"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Repite la contraseña"
+          autocomplete="new-password"
+          [class.invalid]="passwordMismatch"
+        />
+        <span class="field-hint" *ngIf="passwordMismatch">
+          Las contraseñas no coinciden.
+        </span>
+      </div>
+
+      <button type="submit" class="pw-submit" [disabled]="pwLoading || pwForm.invalid || passwordMismatch">
+        <span *ngIf="pwLoading" class="spinner-border spinner-border-sm me-2"></span>
+        <span *ngIf="!pwLoading"></span>
+        {{ pwLoading ? 'Guardando...' : 'Establecer contraseña' }}
+      </button>
+
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="toast-stack">
+  <div
+    *ngFor="let t of toasts$ | async; trackBy: trackById"
+    class="toast-item"
+    [class.toast-success]="t.type === 'success'"
+    [class.toast-error]="t.type === 'error'"
+  >
+    <i
+      class="bi toast-icon"
+      [ngClass]="t.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'"
+    ></i>
+    <span class="toast-msg">{{ t.message }}</span>
+    <button class="toast-close" (click)="dismiss(t.id)" aria-label="Cerrar">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+</div>

@@ -268,7 +268,13 @@ public class PersonPartner {
 	}
 
 	public String getRole() {
-		return role;
+		if (role == null || role.trim().isEmpty()) {
+			return "ROLE_PARTNER";
+		}
+		if (!role.toUpperCase().startsWith("ROLE_")) {
+			return "ROLE_" + role.toUpperCase();
+		}
+		return role.toUpperCase();
 	}
 
 	public void setRole(String role) {

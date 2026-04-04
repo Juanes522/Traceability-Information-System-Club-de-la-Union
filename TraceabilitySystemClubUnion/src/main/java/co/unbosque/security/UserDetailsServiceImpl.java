@@ -28,17 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             userPassword = ""; // Prevent IllegalArgumentException if password is null in DB
         }
 
-        String assignedRole = titular.getRole();
-        if (assignedRole == null || assignedRole.trim().isEmpty()) {
-            assignedRole = "ROLEPARTNER"; // Default fallback
-        } else if (!assignedRole.startsWith("ROLE")) {
-            assignedRole = "ROLE_" + assignedRole.toUpperCase(); // Standardize adding the prefix if missing
-        }
-
         return new User(
                 email, // We use the email to identify the principal
                 userPassword, 
-                Collections.singletonList(new SimpleGrantedAuthority(assignedRole))
+                Collections.singletonList(new SimpleGrantedAuthority(titular.getRole()))
         );
     }
 }
