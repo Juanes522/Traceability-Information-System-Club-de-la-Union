@@ -15,16 +15,6 @@
       <h1 class="page-title">
         <i class="bi bi-receipt me-2 icon-accent"></i>Mis Consumos
       </h1>
-      <div class="header-stats">
-        <span class="stat-chip open-chip">
-          <span class="dot dot-open"></span>
-          {{ openCount }} abierto{{ openCount !== 1 ? 's' : '' }}
-        </span>
-        <span class="stat-chip closed-chip">
-          <span class="dot dot-closed"></span>
-          {{ closedCount }} cerrado{{ closedCount !== 1 ? 's' : '' }}
-        </span>
-      </div>
     </header>
 
     <!-- ── Toolbar ── -->
@@ -39,13 +29,6 @@
           (input)="applyFilters()"
         />
       </div>
-
-      <div class="filter-group">
-        <button class="filter-btn" [class.active]="stateFilter === 'ALL'" (click)="setStateFilter('ALL')">Todos</button>
-        <button class="filter-btn state-open" [class.active]="stateFilter === 'A'" (click)="setStateFilter('A')">Abiertos</button>
-        <button class="filter-btn state-closed" [class.active]="stateFilter === 'C'" (click)="setStateFilter('C')">Cerrados</button>
-      </div>
-
       <span class="result-count">{{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }}</span>
     </div>
 
@@ -63,8 +46,8 @@
             <th>Ambiente</th>
             <th>Mesa</th>
             <th>Mesero</th>
-            <th>Fecha</th>
-            <th>Estado</th>
+            <th>Apertura</th>
+            <th>Cierre</th>
             <th class="col-amount">Total</th>
             <th></th>
           </tr>
@@ -75,13 +58,8 @@
               <td>{{ c.enviroment }}</td>
               <td>{{ c.table }}</td>
               <td>{{ c.waiterName }}</td>
-              <td>{{ formatDate(c.consumptionOpening) }}</td>
-              <td>
-                <span class="state-badge" [ngClass]="c.stateAccount === 'A' ? 'open' : 'closed'">
-                  <i class="bi" [ngClass]="c.stateAccount === 'A' ? 'bi-circle-fill' : 'bi-check-circle-fill'"></i>
-                  {{ c.stateAccount === 'A' ? 'Abierto' : 'Cerrado' }}
-                </span>
-              </td>
+              <td>{{ formatDateTime(c.consumptionOpening) }}</td>
+              <td>{{ c.consumptionClosing ? formatDateTime(c.consumptionClosing) : '—' }}</td>
               <td class="col-amount">{{ formatCurrency(totalFor(c)) }}</td>
               <td>
                 <i class="bi bi-chevron-down expand-icon" [class.open]="isExpanded(c.consumptionId)"></i>
@@ -113,22 +91,6 @@
                     <div class="detail-item total">
                       <span>Total</span>
                       <span class="amount-accent">{{ formatCurrency(totalFor(c)) }}</span>
-                    </div>
-                  </div>
-
-                  <div class="detail-group">
-                    <div class="detail-title">Fechas</div>
-                    <div class="detail-meta">
-                      <div class="meta-row">
-                        <i class="bi bi-door-open"></i>
-                        <span class="meta-label">Apertura</span>
-                        <span class="meta-value">{{ formatDate(c.consumptionOpening) }}</span>
-                      </div>
-                      <div class="meta-row">
-                        <i class="bi bi-door-closed"></i>
-                        <span class="meta-label">Cierre</span>
-                        <span class="meta-value">{{ c.consumptionClosing ? formatDate(c.consumptionClosing) : '—' }}</span>
-                      </div>
                     </div>
                   </div>
 

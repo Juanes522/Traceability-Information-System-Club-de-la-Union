@@ -5,16 +5,6 @@
     <h1 class="page-title">
       <i class="bi bi-receipt me-2 icon-accent"></i>Consumos por Ambiente
     </h1>
-    <div class="header-stats" *ngIf="searched && results.length > 0">
-      <span class="stat-chip open-chip">
-        <span class="dot dot-open"></span>
-        {{ openCount }} abierto{{ openCount !== 1 ? 's' : '' }}
-      </span>
-      <span class="stat-chip closed-chip">
-        <span class="dot dot-closed"></span>
-        {{ closedCount }} cerrado{{ closedCount !== 1 ? 's' : '' }}
-      </span>
-    </div>
   </header>
 
   <!-- ── Search toolbar ── -->
@@ -63,8 +53,8 @@
           <th>Ambiente</th>
           <th>Mesa</th>
           <th>Mesero</th>
-          <th>Fecha</th>
-          <th>Estado</th>
+          <th>Apertura</th>
+          <th>Cierre</th>
           <th class="r">Total</th>
           <th></th>
         </tr>
@@ -75,13 +65,8 @@
             <td>{{ c.enviroment }}</td>
             <td>{{ c.table }}</td>
             <td>{{ c.waiterName }}</td>
-            <td>{{ formatDate(c.consumptionOpening) }}</td>
-            <td>
-              <span class="state-badge" [ngClass]="c.stateAccount === 'A' ? 'open' : 'closed'">
-                <i class="bi" [ngClass]="c.stateAccount === 'A' ? 'bi-circle-fill' : 'bi-check-circle-fill'"></i>
-                {{ c.stateAccount === 'A' ? 'Abierto' : 'Cerrado' }}
-              </span>
-            </td>
+            <td>{{ formatDateTime(c.consumptionOpening) }}</td>
+            <td>{{ c.consumptionClosing ? formatDateTime(c.consumptionClosing) : '—' }}</td>
             <td class="r">{{ formatCurrency(totalFor(c)) }}</td>
             <td><i class="bi bi-chevron-down expand-icon" [class.open]="isExpanded(c.consumptionId)"></i></td>
           </tr>
@@ -95,21 +80,6 @@
                   <div class="detail-item"><span>Servicio</span><span>{{ formatCurrency(c.service) }}</span></div>
                   <div class="detail-item"><span>Propina</span><span>{{ formatCurrency(c.tip) }}</span></div>
                   <div class="detail-item total"><span>Total</span><span class="accent">{{ formatCurrency(totalFor(c)) }}</span></div>
-                </div>
-                <div class="detail-group">
-                  <div class="detail-title">Fechas</div>
-                  <div class="detail-meta">
-                    <div class="meta-row">
-                      <i class="bi bi-door-open"></i>
-                      <span class="meta-label">Apertura</span>
-                      <span class="meta-value">{{ formatDate(c.consumptionOpening) }}</span>
-                    </div>
-                    <div class="meta-row">
-                      <i class="bi bi-door-closed"></i>
-                      <span class="meta-label">Cierre</span>
-                      <span class="meta-value">{{ c.consumptionClosing ? formatDate(c.consumptionClosing) : '—' }}</span>
-                    </div>
-                  </div>
                 </div>
                 <div class="detail-group">
                   <div class="detail-title">Detalle</div>

@@ -7,7 +7,6 @@ export const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Dashboard',         icon: 'bi-grid-1x2',          route: '/app/partner/dashboard' },
     { label: 'Mi Perfil',         icon: 'bi-person',            route: '/app/partner/profile' },
     { label: 'Consumos',          icon: 'bi-receipt',           route: '/app/partner/consumptions' },
-    { label: 'Dependientes',      icon: 'bi-people',            route: '/app/partner/dependents' },
     { label: 'Notificaciones',    icon: 'bi-bell',              route: '/app/partner/notifications' },
     { label: 'Historial Accesos', icon: 'bi-shield-check',      route: '/app/partner/access-log' },
   ],
@@ -16,9 +15,6 @@ export const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Buscar Socio',       icon: 'bi-person-lines-fill', route: '/app/manager/partner-search' },
     { label: 'Registrar Consumo',  icon: 'bi-plus-circle',       route: '/app/manager/register' },
     { label: 'Consumos Ambiente',  icon: 'bi-receipt',           route: '/app/manager/consumptions' },
-    { label: 'Mi Perfil',          icon: 'bi-person',            route: '/app/manager/my/profile' },
-    { label: 'Consumos',           icon: 'bi-receipt',               route: '/app/manager/my/consumptions' },
-    { label: 'Dependientes',       icon: 'bi-people',            route: '/app/manager/my/dependents' },
     { label: 'Notificaciones',     icon: 'bi-bell',              route: '/app/manager/my/notifications' },
   ],
   ROLE_ADMIN: [

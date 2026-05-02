@@ -8,7 +8,7 @@ import { UserSession, ChangePasswordRequest } from '../../shared/models';
 export class AuthApiService {
   constructor(private http: HttpClient) {}
 
-  login(credentials: { email: string; password: string }): Observable<UserSession> {
+  login(credentials: { identification: string; password: string }): Observable<UserSession> {
     return this.http.post<UserSession>(`${API_BASE}/auth/login`, credentials);
   }
 

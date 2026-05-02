@@ -14,12 +14,10 @@ export class AdminService {
     return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getall`);
   }
 
-  /** Returns a SINGLE object, not an array */
   searchByIdentification(identification: string): Observable<PartnerProfile> {
     return this.http.get<PartnerProfile>(`${API_BASE}/personpartner/getbyidentification/${identification}`);
   }
 
-  /** Returns array: titular + dependents sharing that share number */
   searchByShareNumber(shareNumber: string): Observable<PartnerProfile[]> {
     return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getbysharenumber/${shareNumber}`);
   }
@@ -30,10 +28,6 @@ export class AdminService {
 
   searchBySecondName(name: string): Observable<PartnerProfile[]> {
     return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getbysecondname/${name}`);
-  }
-
-  getDependentsByIdentification(identification: string): Observable<PartnerProfile[]> {
-    return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getdependents/identification/${identification}`);
   }
 
   getConsumptionsByIdentification(identification: string): Observable<Consumption[]> {

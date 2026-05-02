@@ -32,7 +32,6 @@ export interface Consumption {
   table: string;
   waiterName: string;
   isPartner: string;
-  stateAccount: string;
   consumptionValue: number;
   iva: number;
   service: number;

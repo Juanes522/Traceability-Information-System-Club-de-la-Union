@@ -17,18 +17,18 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
 
       <div class="field-group mb-3">
-        <label for="email" class="field-label">Correo electrónico</label>
+        <label for="identification" class="field-label">Identificación</label>
         <input
-          id="email"
-          type="email"
+          id="identification"
+          type="text"
           class="field-input"
-          [class.field-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
-          formControlName="email"
-          autocomplete="email"
-          placeholder="usuario@club.co"
+          [class.field-invalid]="form.get('identification')?.invalid && form.get('identification')?.touched"
+          formControlName="identification"
+          autocomplete="username"
+          placeholder="Número de identificación"
         />
-        <span *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="field-error">
-          Ingresa un correo válido.
+        <span *ngIf="form.get('identification')?.invalid && form.get('identification')?.touched" class="field-error">
+          La identificación es requerida.
         </span>
       </div>
 

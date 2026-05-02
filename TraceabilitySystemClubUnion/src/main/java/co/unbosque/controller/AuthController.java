@@ -43,23 +43,22 @@ public class AuthController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(authRequest.getIdentification(), authRequest.getPassword())
             );
         } catch (Exception e) {
         	 System.out.println(e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getEmail());
-        System.out.println("Pase 2");
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getIdentification());
         final String jwt = jwtUtil.generateToken(userDetails);
-        PersonPartner titular = personPartnerService.getTitularByEmail(authRequest.getEmail());
-        if (titular==null) {
+        PersonPartner partner = personPartnerService.getByIdentification(authRequest.getIdentification());
+        if (partner==null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        Boolean needsChange = titular.getForcePasswordChange();
+        Boolean needsChange = partner.getForcePasswordChange();
 
-        return ResponseEntity.ok(new AuthResponse(jwt, titular.getRole(), needsChange != null ? needsChange : true));
+        return ResponseEntity.ok(new AuthResponse(jwt, partner.getRole(), needsChange != null ? needsChange : true));
     }
 
     @PostMapping("/change-password")
@@ -69,9 +68,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+        String identification = ((UserDetails) auth.getPrincipal()).getUsername();
 
-        PersonPartner titular = personPartnerService.getTitularByEmail(email);
+        PersonPartner titular = personPartnerService.getByIdentification(identification);
         if (titular==null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -85,7 +84,7 @@ public class AuthController {
 
     @PostMapping("/recover-password")
     public ResponseEntity<?> recoverPassword(@RequestParam String email) {
-    	PersonPartner titular = personPartnerService.getTitularByEmail(email);
+    	PersonPartner titular = personPartnerService.getByEmail(email);
         if (titular!=null) {
             System.out.println("Mock recovery email sent to: " + email);
             return ResponseEntity.ok("Si el correo existe, se han enviado instrucciones de recuperación.");

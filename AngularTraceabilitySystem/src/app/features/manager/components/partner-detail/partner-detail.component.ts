@@ -4,7 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { ManagerService } from '../../manager.service';
 import { PartnerProfile, Consumption } from '../../../../shared/models';
 
-type ActiveTab = 'profile' | 'dependents' | 'consumptions';
+type ActiveTab = 'profile' | 'consumptions';
 
 @Component({
   selector: 'app-manager-partner-detail',
@@ -16,31 +16,18 @@ export class PartnerDetailComponent implements OnInit {
   @Output() back = new EventEmitter<void>();
 
   activeTab: ActiveTab = 'profile';
-  dependents: PartnerProfile[] = [];
   consumptions: Consumption[] = [];
-  loadingDeps = false;
   loadingCons = false;
   expandedConsId: number | null = null;
 
   constructor(private managerService: ManagerService) {}
 
   ngOnInit(): void {
-    this.loadDependents();
     this.loadConsumptions();
   }
 
   setTab(tab: ActiveTab): void {
     this.activeTab = tab;
-  }
-
-  loadDependents(): void {
-    this.loadingDeps = true;
-    this.managerService.getDependentsByIdentification(this.partner.identification).pipe(
-      catchError(err => {
-        if (err.status === 204 || err.status === 404) return of([]);
-        return of([]);
-      })
-    ).subscribe(d => { this.dependents = d; this.loadingDeps = false; });
   }
 
   loadConsumptions(): void {
@@ -65,9 +52,12 @@ export class PartnerDetailComponent implements OnInit {
     return [p.firstName, p.lastName].filter(Boolean).map(w => w[0]).join('').toUpperCase();
   }
 
-  formatDate(d: string): string {
+  formatDateTime(d: string): string {
     if (!d) return '—';
-    return new Date(d + 'T00:00:00').toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' });
+    return new Date(d).toLocaleString('es-CO', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
   }
 
   formatCurrency(v: number): string {

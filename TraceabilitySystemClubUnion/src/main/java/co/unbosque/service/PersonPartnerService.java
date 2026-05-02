@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.unbosque.model.PartnerConsumption;
 import co.unbosque.model.PersonPartner;
-import co.unbosque.repository.PartnerConsumptionRepository;
 import co.unbosque.repository.PersonPartnerRepository;
 
 @Service
@@ -19,15 +18,14 @@ public class PersonPartnerService {
 
     @Autowired
     private PersonPartnerRepository partnerRepo;
-    
+
     public PersonPartnerService() {
-		// TODO Auto-generated constructor stub
 	}
-    
+
     public void savePartner(PersonPartner save) {
     	partnerRepo.save(save);
     }
-    
+
     public List<PersonPartner> getAll() {
         return partnerRepo.findAll();
     }
@@ -39,9 +37,17 @@ public class PersonPartnerService {
         }
         return null;
     }
-    
+
     public PersonPartner getByIdentification(String identification) {
         Optional<PersonPartner> found = partnerRepo.findByIdentification(identification);
+        if(found.isPresent()) {
+            return found.get();
+        }
+        return null;
+    }
+
+    public PersonPartner getByEmail(String email) {
+        Optional<PersonPartner> found = partnerRepo.findByEmail(email);
         if(found.isPresent()) {
             return found.get();
         }
@@ -72,14 +78,6 @@ public class PersonPartnerService {
         return null;
     }
 
-    public List<PersonPartner> getByOwnerPersonId(Long ownerId) {
-    	List<PersonPartner> list=partnerRepo.findByOwnerPersonId(ownerId);
-    	if(!list.isEmpty()) {
-    		return list;
-    	}
-        return null;
-    }
-    
     public List<PartnerConsumption> getByComsuption(Long id) {
         Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
         if(found.isPresent()) {
@@ -87,13 +85,5 @@ public class PersonPartnerService {
         }
         return null;
     }
-    
-    public PersonPartner getTitularByEmail(String email) {
-    	 Optional<PersonPartner> titular = partnerRepo.findTitularByEmail(email);
-         if (!titular.isPresent()) {
-        	 return null;
-         }
-         return titular.get();
-    }
-    
+
 }

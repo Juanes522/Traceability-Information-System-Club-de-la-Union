@@ -19,32 +19,12 @@ describe('PartnerService', () => {
   afterEach(() => http.verify());
 
   it('getProfile hace GET a la URL correcta', () => {
-    service.getProfile(1).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/getpartner/1`).flush({});
+    service.getProfile().subscribe();
+    http.expectOne(`${API_BASE}/personpartner/me`).flush({});
   });
 
   it('getConsumptions hace GET a la URL correcta', () => {
-    service.getConsumptions(1).subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/getpartner/1`).flush([]);
-  });
-
-  it('getNotifications hace GET a la URL correcta', () => {
-    service.getNotifications(1).subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/getnotifications/1`).flush([]);
-  });
-
-  it('respondValidation hace POST a la URL correcta', () => {
-    service.respondValidation(5, true).subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/respondvalidation/5/true`).flush(null);
-  });
-
-  it('getAccessLog hace GET a la URL correcta', () => {
-    service.getAccessLog(1).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/getaccesslog/1`).flush([]);
-  });
-
-  it('getDependents hace GET a la URL correcta', () => {
-    service.getDependents(1).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/getdependents/1`).flush([]);
+    service.getConsumptions().subscribe();
+    http.expectOne(`${API_BASE}/personpartner/getconsumptions/me`).flush([]);
   });
 });

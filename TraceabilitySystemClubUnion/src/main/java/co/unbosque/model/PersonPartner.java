@@ -15,8 +15,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -38,23 +36,10 @@ public class PersonPartner {
 
 	private String password;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
-	private PersonPartner owner;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<PersonPartner> dependents = new ArrayList<>();
-
 	private LocalDate birthDate;
 	private LocalDate ingressDate;
 
 	private Long shareNumber;
-	private Integer sequence;
-
-	private String kinship;
-	private String partnerKind;
 	private Boolean partnerState;
 
 	private String phone;
@@ -66,7 +51,7 @@ public class PersonPartner {
 
 	@Column(name = "force_password_change")
 	private Boolean forcePasswordChange = true;
-	
+
 	@Column(name = "role")
     private String role;
 
@@ -79,16 +64,6 @@ public class PersonPartner {
 	private List<PartnerConsumption> consumptions = new ArrayList<>();
 
 	public PersonPartner() {
-	}
-
-	public void addDependent(PersonPartner dependent) {
-		dependents.add(dependent);
-		dependent.setOwner(this);
-	}
-
-	public void removeDependent(PersonPartner dependent) {
-		dependents.remove(dependent);
-		dependent.setOwner(null);
 	}
 
 	public Long getPersonId() {
@@ -139,22 +114,6 @@ public class PersonPartner {
 		this.password = password;
 	}
 
-	public PersonPartner getOwner() {
-		return owner;
-	}
-
-	public void setOwner(PersonPartner owner) {
-		this.owner = owner;
-	}
-
-	public List<PersonPartner> getDependents() {
-		return dependents;
-	}
-
-	public void setDependents(List<PersonPartner> dependents) {
-		this.dependents = dependents;
-	}
-
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}
@@ -177,30 +136,6 @@ public class PersonPartner {
 
 	public void setShareNumber(Long shareNumber) {
 		this.shareNumber = shareNumber;
-	}
-
-	public Integer getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(Integer sequence) {
-		this.sequence = sequence;
-	}
-
-	public String getKinship() {
-		return kinship;
-	}
-
-	public void setKinship(String kinship) {
-		this.kinship = kinship;
-	}
-
-	public String getPartnerKind() {
-		return partnerKind;
-	}
-
-	public void setPartnerKind(String partnerKind) {
-		this.partnerKind = partnerKind;
 	}
 
 	public Boolean getPartnerState() {
@@ -280,5 +215,5 @@ public class PersonPartner {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 }

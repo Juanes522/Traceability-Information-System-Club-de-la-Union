@@ -12,10 +12,6 @@ export class PartnerService {
     return this.http.get<PartnerProfile>(`${API_BASE}/personpartner/me`);
   }
 
-  getDependents(): Observable<PartnerProfile[]> {
-    return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getdependents/me`);
-  }
-
   getConsumptions(): Observable<Consumption[]> {
     return this.http.get<Consumption[]>(`${API_BASE}/personpartner/getconsumptions/me`);
   }

@@ -18,7 +18,6 @@ const routes: Routes = [
   { path: 'consumptions',   component: ConsumptionListComponent },
   { path: 'send-notification', component: SendNotificationComponent },
   { path: 'consumption/:id', component: ConsumptionDetailComponent },
-  // Personal profile — reuses PartnerModule routes (/profile, /consumptions, /dependents, /notifications)
   {
     path: 'my',
     loadChildren: () => import('../partner/partner.module').then(m => m.PartnerModule),
