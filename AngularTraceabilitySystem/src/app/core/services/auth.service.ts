@@ -35,7 +35,7 @@ export class AuthService {
     }
   }
 
-  login(credentials: { email: string; password: string }): Observable<void> {
+  login(credentials: { identification: string; password: string }): Observable<void> {
     return this.authApi.login(credentials).pipe(
       tap((session) => {
         this.tokenService.guardarSesion(session);

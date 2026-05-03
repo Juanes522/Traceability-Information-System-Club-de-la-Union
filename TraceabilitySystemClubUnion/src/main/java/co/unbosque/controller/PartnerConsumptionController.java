@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import co.unbosque.dto.ConsumptionCreateRequest;
-import co.unbosque.model.ConsumptionValidation;
 import co.unbosque.model.Notification;
 import co.unbosque.model.PartnerConsumption;
 import co.unbosque.service.PartnerConsumptionService;
@@ -55,27 +54,6 @@ public class PartnerConsumptionController {
             return new ResponseEntity<Notification>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @PostMapping(path = "/respondvalidation/{consumptionid}/{partneraccepts}")
-    public ResponseEntity<ConsumptionValidation> respondValidation(
-            @PathVariable Long consumptionid,
-            @PathVariable boolean partneraccepts){
-
-        try {
-
-            ConsumptionValidation validation =
-                    consumptionServ.respondValidation(consumptionid, partneraccepts);
-
-            if(validation == null){
-                return new ResponseEntity<ConsumptionValidation>(validation, HttpStatus.NOT_FOUND);
-            }
-
-            return new ResponseEntity<ConsumptionValidation>(validation, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<ConsumptionValidation> (HttpStatus.NOT_FOUND);
-        }
-    }
     
     @GetMapping("/by-environment/{env}")
     public ResponseEntity<List<PartnerConsumption>> getByEnvironment(@PathVariable String env) {
@@ -101,13 +79,6 @@ public class PartnerConsumptionController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/{consumptionId}/is-validated")
-    public ResponseEntity<Boolean> isValidated(@PathVariable Long consumptionId) {
-        Boolean validated = consumptionServ.isConsumptionValidated(consumptionId);
-        if (validated == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(validated, HttpStatus.OK);
-    }
-
     @GetMapping("/pending-validations")
     public ResponseEntity<List<PartnerConsumption>> getPendingValidations() {
         List<PartnerConsumption> list = consumptionServ.getConsumptionsWithPendingValidation();
@@ -115,12 +86,5 @@ public class PartnerConsumptionController {
         if (list.isEmpty()) return new ResponseEntity<>(list, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
-    @GetMapping("/{consumptionId}/validation-detail")
-    public ResponseEntity<ConsumptionValidation> getValidationDetail(@PathVariable Long consumptionId) {
-        ConsumptionValidation detail = consumptionServ.getValidationDetails(consumptionId);
-        if (detail == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(detail, HttpStatus.OK);
-    } 
 
 }

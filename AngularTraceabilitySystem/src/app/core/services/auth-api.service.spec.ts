@@ -22,14 +22,14 @@ describe('AuthApiService', () => {
   it('login hace POST a /auth/login y retorna UserSession', (done) => {
     const mockSession: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false };
 
-    service.login({ email: 'a@b.com', password: '123' }).subscribe((session) => {
+    service.login({ identification: '000000000', password: '123' }).subscribe((session) => {
       expect(session).toEqual(mockSession);
       done();
     });
 
     const req = httpMock.expectOne(`${API_BASE}/auth/login`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ email: 'a@b.com', password: '123' });
+    expect(req.request.body).toEqual({ identification: '000000000', password: '123' });
     req.flush(mockSession);
   });
 

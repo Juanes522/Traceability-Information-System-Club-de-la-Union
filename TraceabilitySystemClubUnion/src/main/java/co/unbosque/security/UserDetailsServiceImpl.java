@@ -19,18 +19,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private PersonPartnerRepository personPartnerRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        PersonPartner titular = personPartnerRepository.findTitularByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Socio Titular no encontrado con el correo: " + email));
+    public UserDetails loadUserByUsername(String identification) throws UsernameNotFoundException {
+        PersonPartner titular = personPartnerRepository.findByIdentification(identification)
+                .orElseThrow(() -> new UsernameNotFoundException("Socio Titular no encontrado con la identificación: " + identification));
 
         String userPassword = titular.getPassword();
         if (userPassword == null) {
-            userPassword = ""; // Prevent IllegalArgumentException if password is null in DB
+            userPassword = "";
         }
 
         return new User(
-                email, // We use the email to identify the principal
-                userPassword, 
+                identification,
+                userPassword,
                 Collections.singletonList(new SimpleGrantedAuthority(titular.getRole()))
         );
     }

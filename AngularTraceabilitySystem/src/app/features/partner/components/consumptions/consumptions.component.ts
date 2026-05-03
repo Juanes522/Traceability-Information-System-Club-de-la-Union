@@ -15,7 +15,6 @@ export class ConsumptionsComponent implements OnInit {
   error = '';
 
   searchText = '';
-  stateFilter: 'ALL' | 'A' | 'C' = 'ALL';
   expandedId: number | null = null;
 
   constructor(private partnerService: PartnerService) {}
@@ -44,18 +43,11 @@ export class ConsumptionsComponent implements OnInit {
   applyFilters(): void {
     const text = this.searchText.trim().toLowerCase();
     this.filtered = this.all.filter(c => {
-      const matchesState = this.stateFilter === 'ALL' || c.stateAccount === this.stateFilter;
-      const matchesText = !text ||
+      return !text ||
         c.enviroment.toLowerCase().includes(text) ||
         c.table.toLowerCase().includes(text) ||
         c.waiterName.toLowerCase().includes(text);
-      return matchesState && matchesText;
     });
-  }
-
-  setStateFilter(f: 'ALL' | 'A' | 'C'): void {
-    this.stateFilter = f;
-    this.applyFilters();
   }
 
   toggleExpand(id: number): void {
@@ -72,17 +64,15 @@ export class ConsumptionsComponent implements OnInit {
     }).format(amount);
   }
 
-  formatDate(dt: string): string {
+  formatDateTime(dt: string): string {
     if (!dt) return '—';
-    return new Date(dt + 'T00:00:00').toLocaleDateString('es-CO', {
+    return new Date(dt).toLocaleString('es-CO', {
       year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
     });
   }
 
   totalFor(c: Consumption): number {
     return c.consumptionValue + c.iva + c.service + c.tip;
   }
-
-  get openCount(): number  { return this.all.filter(c => c.stateAccount === 'A').length; }
-  get closedCount(): number { return this.all.filter(c => c.stateAccount === 'C').length; }
 }

@@ -1,17 +1,17 @@
 package co.unbosque.dto;
 
 public class AuthRequest {
-    private String email;
+    private String identification;
     private String password;
 
     public AuthRequest() {}
 
-    public String getEmail() {
-        return email;
+    public String getIdentification() {
+        return identification;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 
     public String getPassword() {

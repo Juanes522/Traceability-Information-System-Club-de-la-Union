@@ -1,6 +1,6 @@
 package co.unbosque.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.unbosque.dto.ConsumptionCreateRequest;
-import co.unbosque.model.ConsumptionValidation;
 import co.unbosque.model.Notification;
 import co.unbosque.model.PartnerConsumption;
 import co.unbosque.model.PersonPartner;
-import co.unbosque.repository.ConsumptionValidationRepository;
 import co.unbosque.repository.NotificationRepository;
 import co.unbosque.repository.PartnerConsumptionRepository;
 import co.unbosque.repository.PersonPartnerRepository;
@@ -32,9 +30,6 @@ public class PartnerConsumptionService {
 	@Autowired
 	private NotificationRepository notRepo;
 
-	@Autowired
-	private ConsumptionValidationRepository valRepo;
-
 	public PartnerConsumptionService() {
 	}
 
@@ -47,10 +42,8 @@ public class PartnerConsumptionService {
 		}
 		PersonPartner partner = partnerRepo.findByPersonId(req.getPartnerId()).get();
 
-		PersonPartner responsible = partner.getOwner() != null ? partner.getOwner() : partner;
-
 		PartnerConsumption consumption = new PartnerConsumption();
-		consumption.setPartner(responsible);
+		consumption.setPartner(partner);
 		consumption.setEnviroment(req.getEnviroment());
 		consumption.setAccount(req.getAccount());
 		consumption.setTable(req.getTable());
@@ -61,7 +54,7 @@ public class PartnerConsumptionService {
 		consumption.setService(req.getService());
 		consumption.setTip(req.getTip());
 		consumption.setConsumptionOpening(
-				req.getConsumptionOpening() != null ? req.getConsumptionOpening() : LocalDate.now());
+				req.getConsumptionOpening() != null ? req.getConsumptionOpening().atStartOfDay() : LocalDateTime.now());
 		return consumptionRepo.save(consumption);
 	}
 
@@ -72,27 +65,9 @@ public class PartnerConsumptionService {
 		Notification notification = new Notification();
 		notification.setConsumption(consumption);
 		notification.setNotificationType("CONSUMPTION_VALIDATION");
-		notification.setGenerationDate(LocalDate.now());
+		notification.setGenerationDate(LocalDateTime.now().toLocalDate());
 		notification.setState('P');
 		return notRepo.save(notification);
-	}
-
-	public ConsumptionValidation respondValidation(Long consumptionId, boolean partnerAccepts) {
-		PartnerConsumption consumption = consumptionRepo.findByConsumptionId(consumptionId)
-				.orElseThrow(() -> new RuntimeException("Consumption not found with id: " + consumptionId));
-
-		Notification notification = notRepo.findPendingValidationByConsumptionId(consumptionId).orElseThrow(
-				() -> new RuntimeException("No pending validation notification for consumption: " + consumptionId));
-		notification.setState('A');
-		notRepo.save(notification);
-		ConsumptionValidation validation = new ConsumptionValidation();
-		validation.setConsumption(consumption);
-		validation.setPresentPartner(true);
-		validation.setAnswerPartner(partnerAccepts);
-		validation.setValidationDate(LocalDate.now());
-		consumption.setStateAccount(partnerAccepts ? 'A' : 'R');
-		consumptionRepo.save(consumption);
-		return valRepo.save(validation);
 	}
 
 	public List<PartnerConsumption> getByEnviroment(String enviroment) {
@@ -119,13 +94,6 @@ public class PartnerConsumptionService {
 		return list;
 	}
 
-	public Boolean isConsumptionValidated(Long consumptionId) {
-		Optional<PartnerConsumption> opt = consumptionRepo.findByConsumptionId(consumptionId);
-		if (!opt.isPresent())
-			return null;
-		return opt.get().getValidation() != null;
-	}
-
 	public List<PartnerConsumption> getConsumptionsWithPendingValidation() {
 		List<Notification> pending = notRepo.findByStateAndNotificationType('P', "CONSUMPTION_VALIDATION");
 		if (pending == null || pending.isEmpty())
@@ -137,11 +105,5 @@ public class PartnerConsumptionService {
 		return consumptions;
 	}
 
-	public ConsumptionValidation getValidationDetails(Long consumptionId) {
-		Optional<PartnerConsumption> opt = consumptionRepo.findByConsumptionId(consumptionId);
-		if (!opt.isPresent())
-			return null;
-		return opt.get().getValidation();
-	}
 
 }

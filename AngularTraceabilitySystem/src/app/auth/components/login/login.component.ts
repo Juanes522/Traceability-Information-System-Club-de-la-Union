@@ -19,7 +19,7 @@ export class LoginComponent {
     private toast: ToastService,
   ) {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      identification: ['', Validators.required],
       password: ['', Validators.required],
     });
   }

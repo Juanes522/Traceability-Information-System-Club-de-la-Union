@@ -45,10 +45,6 @@ export class ManagerService {
     return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getbysecondname/${name}`);
   }
 
-  getDependentsByIdentification(identification: string): Observable<PartnerProfile[]> {
-    return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getdependents/identification/${identification}`);
-  }
-
   getConsumptionsByIdentification(identification: string): Observable<Consumption[]> {
     return this.http.get<Consumption[]>(`${API_BASE}/personpartner/getconsumptionsidentification/${identification}`);
   }

@@ -33,17 +33,17 @@ export class ConsumptionsComponent {
     ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; });
   }
 
-  get openCount(): number { return this.results.filter(c => c.stateAccount === 'A').length; }
-  get closedCount(): number { return this.results.filter(c => c.stateAccount !== 'A').length; }
-
   toggleExpand(id: number): void { this.expandedId = this.expandedId === id ? null : id; }
   isExpanded(id: number): boolean { return this.expandedId === id; }
 
   totalFor(c: Consumption): number { return c.consumptionValue + c.iva + c.service + c.tip; }
 
-  formatDate(d: string): string {
+  formatDateTime(d: string): string {
     if (!d) return '—';
-    return new Date(d + 'T00:00:00').toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' });
+    return new Date(d).toLocaleString('es-CO', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
   }
 
   formatCurrency(v: number): string {

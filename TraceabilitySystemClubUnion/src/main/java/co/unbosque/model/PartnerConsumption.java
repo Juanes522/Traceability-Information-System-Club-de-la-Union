@@ -1,9 +1,10 @@
 package co.unbosque.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -16,7 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,15 +35,17 @@ public class PartnerConsumption {
 
     private String waiterName;
     private Character isPartner;
-    private Character stateAccount;
 
     private Double consumptionValue;
     private Double iva;
     private Double service;
     private Double tip;
 
-    private LocalDate consumptionOpening;
-    private LocalDate consumptionClosing;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime consumptionOpening;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime consumptionClosing;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -59,15 +61,6 @@ public class PartnerConsumption {
     )
     private List<Notification> notifications = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToOne(
-        mappedBy = "consumption",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true,
-        fetch = FetchType.LAZY
-    )
-    private ConsumptionValidation validation;
-
     public PartnerConsumption() {}
 
     public void addNotification(Notification n){
@@ -78,13 +71,6 @@ public class PartnerConsumption {
     public void removeNotification(Notification n){
         notifications.remove(n);
         n.setConsumption(null);
-    }
-
-    public void setValidation(ConsumptionValidation validation){
-        this.validation = validation;
-        if(validation != null){
-            validation.setConsumption(this);
-        }
     }
 
 	public Long getConsumptionId() {
@@ -135,14 +121,6 @@ public class PartnerConsumption {
 		this.isPartner = isPartner;
 	}
 
-	public Character getStateAccount() {
-		return stateAccount;
-	}
-
-	public void setStateAccount(Character stateAccount) {
-		this.stateAccount = stateAccount;
-	}
-
 	public Double getConsumptionValue() {
 		return consumptionValue;
 	}
@@ -175,19 +153,19 @@ public class PartnerConsumption {
 		this.tip = tip;
 	}
 
-	public LocalDate getConsumptionOpening() {
+	public LocalDateTime getConsumptionOpening() {
 		return consumptionOpening;
 	}
 
-	public void setConsumptionOpening(LocalDate consumptionOpening) {
+	public void setConsumptionOpening(LocalDateTime consumptionOpening) {
 		this.consumptionOpening = consumptionOpening;
 	}
 
-	public LocalDate getConsumptionClosing() {
+	public LocalDateTime getConsumptionClosing() {
 		return consumptionClosing;
 	}
 
-	public void setConsumptionClosing(LocalDate consumptionClosing) {
+	public void setConsumptionClosing(LocalDateTime consumptionClosing) {
 		this.consumptionClosing = consumptionClosing;
 	}
 
@@ -207,8 +185,4 @@ public class PartnerConsumption {
 		this.notifications = notifications;
 	}
 
-	public ConsumptionValidation getValidation() {
-		return validation;
-	}
-	
 }

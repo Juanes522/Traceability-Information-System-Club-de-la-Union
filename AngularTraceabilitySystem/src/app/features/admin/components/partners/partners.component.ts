@@ -5,7 +5,7 @@ import { AdminService } from '../../admin.service';
 import { PartnerProfile, Consumption } from '../../../../shared/models';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
-type ActiveTab   = 'profile' | 'dependents' | 'consumptions';
+type ActiveTab   = 'profile' | 'consumptions';
 
 @Component({
   selector: 'app-admin-partners',
@@ -22,9 +22,7 @@ export class PartnersComponent {
 
   selectedPartner: PartnerProfile | null = null;
   activeTab: ActiveTab = 'profile';
-  dependents: PartnerProfile[] = [];
   consumptions: Consumption[] = [];
-  loadingDeps = false;
   loadingCons = false;
   expandedConsId: number | null = null;
 
@@ -111,24 +109,12 @@ export class PartnersComponent {
   selectPartner(p: PartnerProfile): void {
     this.selectedPartner = p;
     this.activeTab = 'profile';
-    this.dependents = [];
     this.consumptions = [];
-    this.loadDependents();
     this.loadConsumptions();
   }
 
   backToResults(): void { this.selectedPartner = null; }
   setTab(t: ActiveTab): void { this.activeTab = t; }
-
-  loadDependents(): void {
-    this.loadingDeps = true;
-    this.adminService.getDependentsByIdentification(this.selectedPartner!.identification).pipe(
-      catchError(err => {
-        if (err.status === 204 || err.status === 404) return of([]);
-        return of([]);
-      })
-    ).subscribe(d => { this.dependents = d; this.loadingDeps = false; });
-  }
 
   loadConsumptions(): void {
     this.loadingCons = true;
@@ -164,6 +150,14 @@ export class PartnersComponent {
   formatDate(d: string): string {
     if (!d) return '—';
     return new Date(d + 'T00:00:00').toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  formatDateTime(d: string): string {
+    if (!d) return '—';
+    return new Date(d).toLocaleString('es-CO', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
   }
 
   formatCurrency(v: number): string {
