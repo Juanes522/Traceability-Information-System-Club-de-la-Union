@@ -7,8 +7,9 @@ describe('DependentsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DependentsComponent],
+      imports: [DependentsComponent],
     }).compileComponents();
+
     fixture = TestBed.createComponent(DependentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

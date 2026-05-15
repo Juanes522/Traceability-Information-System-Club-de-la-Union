@@ -22,15 +22,14 @@ describe('SidebarComponent', () => {
     currentUser$ = new BehaviorSubject<UserSession | null>(null);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [SidebarComponent],
-      providers: [
+    imports: [RouterTestingModule, SidebarComponent],
+    providers: [
         {
-          provide: AuthService,
-          useValue: { role$, currentUser$, logout: jasmine.createSpy('logout') },
+            provide: AuthService,
+            useValue: { role$, currentUser$, logout: jasmine.createSpy('logout') },
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;

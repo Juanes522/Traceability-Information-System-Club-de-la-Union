@@ -1,11 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Consumption } from '../../../../shared/models';
 import { PartnerService } from '../../partner.service';
+import { NgIf, NgFor } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-partner-consumptions',
-  templateUrl: './consumptions.component.html',
-  styleUrls: ['./consumptions.component.scss'],
+    selector: 'app-partner-consumptions',
+    templateUrl: './consumptions.component.html',
+    styleUrls: ['./consumptions.component.scss'],
+    imports: [
+        NgIf,
+        ReactiveFormsModule,
+        FormsModule,
+        NgFor,
+    ],
 })
 export class ConsumptionsComponent implements OnInit {
   private all: Consumption[] = [];

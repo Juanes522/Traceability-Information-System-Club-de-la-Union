@@ -7,7 +7,7 @@ describe('SystemUsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SystemUsersComponent],
+      imports: [SystemUsersComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SystemUsersComponent);

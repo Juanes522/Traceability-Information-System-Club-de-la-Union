@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { PartnerProfile, Consumption } from '../../shared/models/index';
+import { PartnerProfile, Consumption, NotificationDTO } from '../../shared/models/index';
 
 @Injectable()
 export class PartnerService {
@@ -14,5 +14,9 @@ export class PartnerService {
 
   getConsumptions(): Observable<Consumption[]> {
     return this.http.get<Consumption[]>(`${API_BASE}/personpartner/getconsumptions/me`);
+  }
+
+  getNotifications(): Observable<NotificationDTO[]> {
+    return this.http.get<NotificationDTO[]>(`${API_BASE}/personpartner/notifications/me`);
   }
 }

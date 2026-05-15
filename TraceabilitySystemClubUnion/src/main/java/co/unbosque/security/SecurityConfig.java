@@ -21,44 +21,49 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // Usa NoOpPasswordEncoder temporalmente permitiendo leer texto plano como "hassed_pass_1".
-        // NOTA: Reemplazar por BCryptPasswordEncoder para producción.
-        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		// Usa NoOpPasswordEncoder temporalmente permitiendo leer texto plano como
+		// "hassed_pass_1".
+		// NOTA: Reemplazar por BCryptPasswordEncoder para producción.
+		return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOriginPatterns(Arrays.asList("http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080")); // Angular and Swagger UI
-                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-                config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
-                config.setAllowCredentials(true);
-                return config;
-            }))
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authz -> authz
-                // Open endpoints
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                // All other endpoints require authentication
-                .anyRequest().authenticated()
-            );
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.cors(cors -> cors.configurationSource(request -> {
+			CorsConfiguration config = new CorsConfiguration();
+			config.setAllowedOriginPatterns(
+					Arrays.asList("http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080")); // Angular
+																												// and
+																												// Swagger
+																												// UI
+			config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+			config.setAllowedHeaders(
+					Arrays.asList("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
+			config.setAllowCredentials(true);
+			return config;
+		})).csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authz -> authz
+						// Open endpoints
+						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+						.requestMatchers("/push/vapid-public-key").permitAll()
+						// All other endpoints require authentication
+						.anyRequest().authenticated());
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+		return http.build();
+	}
 }

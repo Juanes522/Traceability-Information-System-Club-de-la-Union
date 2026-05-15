@@ -95,6 +95,11 @@
           </div>
 
           <div class="form-field">
+            <label>Fecha de cierre <span class="field-optional">(opcional)</span></label>
+            <input type="date" formControlName="consumptionClosing" />
+          </div>
+
+          <div class="form-field">
             <label>Valor consumo ($)</label>
             <input type="number" formControlName="consumptionValue" placeholder="0.00" min="0" step="0.01"
               [class.invalid]="form.get('consumptionValue')?.invalid && form.get('consumptionValue')?.touched" />

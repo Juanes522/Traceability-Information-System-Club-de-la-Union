@@ -1,6 +1,5 @@
 package co.unbosque.service;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,74 +15,74 @@ import co.unbosque.repository.PersonPartnerRepository;
 @Transactional
 public class PersonPartnerService {
 
-    @Autowired
-    private PersonPartnerRepository partnerRepo;
+	@Autowired
+	private PersonPartnerRepository partnerRepo;
 
-    public PersonPartnerService() {
+	public PersonPartnerService() {
 	}
 
-    public void savePartner(PersonPartner save) {
-    	partnerRepo.save(save);
-    }
+	public void savePartner(PersonPartner save) {
+		partnerRepo.save(save);
+	}
 
-    public List<PersonPartner> getAll() {
-        return partnerRepo.findAll();
-    }
+	public List<PersonPartner> getAll() {
+		return partnerRepo.findAll();
+	}
 
-    public PersonPartner getById(Long id) {
-        Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
-        if(found.isPresent()) {
-        	return found.get();
-        }
-        return null;
-    }
+	public PersonPartner getById(Long id) {
+		Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
+		if (found.isPresent()) {
+			return found.get();
+		}
+		return null;
+	}
 
-    public PersonPartner getByIdentification(String identification) {
-        Optional<PersonPartner> found = partnerRepo.findByIdentification(identification);
-        if(found.isPresent()) {
-            return found.get();
-        }
-        return null;
-    }
+	public PersonPartner getByIdentification(String identification) {
+		Optional<PersonPartner> found = partnerRepo.findByIdentification(identification);
+		if (found.isPresent()) {
+			return found.get();
+		}
+		return null;
+	}
 
-    public PersonPartner getByEmail(String email) {
-        Optional<PersonPartner> found = partnerRepo.findByEmail(email);
-        if(found.isPresent()) {
-            return found.get();
-        }
-        return null;
-    }
+	public PersonPartner getByEmail(String email) {
+		Optional<PersonPartner> found = partnerRepo.findByEmailLike(email);
+		if (found.isPresent()) {
+			return found.get();
+		}
+		return null;
+	}
 
-    public List<PersonPartner> getByFirstName(String firstName) {
-    	List<PersonPartner> list=partnerRepo.findByFirstName(firstName);
-    	if(!list.isEmpty()) {
-    		return list;
-    	}
-        return null;
-    }
+	public List<PersonPartner> getByFirstName(String firstName) {
+		List<PersonPartner> list = partnerRepo.findByFirstName(firstName);
+		if (!list.isEmpty()) {
+			return list;
+		}
+		return null;
+	}
 
-    public List<PersonPartner> getBySecondName(String secondName) {
-    	List<PersonPartner> list=partnerRepo.findBySecondName(secondName);
-    	if(!list.isEmpty()) {
-    		return list;
-    	}
-        return null;
-    }
+	public List<PersonPartner> getBySecondName(String secondName) {
+		List<PersonPartner> list = partnerRepo.findBySecondName(secondName);
+		if (!list.isEmpty()) {
+			return list;
+		}
+		return null;
+	}
 
-    public List<PersonPartner> getByShareNumber(Long shareNumber) {
-    	List<PersonPartner> list=partnerRepo.findByShareNumber(shareNumber);
-    	if(!list.isEmpty()) {
-    		return list;
-    	}
-        return null;
-    }
+	public List<PersonPartner> getByShareNumber(Long shareNumber) {
+		List<PersonPartner> list = partnerRepo.findByShareNumber(shareNumber);
+		if (!list.isEmpty()) {
+			return list;
+		}
+		return null;
+	}
 
-    public List<PartnerConsumption> getByComsuption(Long id) {
-        Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
-        if(found.isPresent()) {
-        	return found.get().getConsumptions();
-        }
-        return null;
-    }
+	public List<PartnerConsumption> getByComsuption(Long id) {
+		Optional<PersonPartner> found = partnerRepo.findByPersonId(id);
+		if (found.isPresent()) {
+			return found.get().getConsumptions();
+		}
+		return null;
+	}
 
 }

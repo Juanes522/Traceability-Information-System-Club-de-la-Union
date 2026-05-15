@@ -21,13 +21,12 @@ describe('ChangePasswordComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([])],
-      declarations: [ChangePasswordComponent],
-      providers: [
+    imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([]), ChangePasswordComponent],
+    providers: [
         { provide: AuthApiService, useValue: authApiService },
         { provide: AuthService, useValue: authService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));

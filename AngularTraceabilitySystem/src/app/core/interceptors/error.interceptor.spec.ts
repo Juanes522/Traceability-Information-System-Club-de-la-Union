@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ErrorInterceptor } from './error.interceptor';
+import { errorInterceptor } from './error.interceptor';
 import { AuthService } from '../services/auth.service';
 
-describe('ErrorInterceptor', () => {
+describe('errorInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let authService: jasmine.SpyObj<AuthService>;
@@ -16,11 +17,11 @@ describe('ErrorInterceptor', () => {
     router      = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
+        provideHttpClient(withInterceptors([errorInterceptor])),
+        provideHttpClientTesting(),
         { provide: AuthService, useValue: authService },
         { provide: Router,      useValue: router },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
       ],
     });
 

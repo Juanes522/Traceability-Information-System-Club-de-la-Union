@@ -1,0 +1,21 @@
+{
+  "name": "Club de la Unión",
+  "short_name": "Club Unión",
+  "theme_color": "#8B6914",
+  "background_color": "#1a1a2e",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/ClubIcon.PNG",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/ClubIcon.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

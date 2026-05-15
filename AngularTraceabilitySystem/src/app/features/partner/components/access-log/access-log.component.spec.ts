@@ -7,8 +7,8 @@ describe('AccessLogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessLogComponent],
-    }).compileComponents();
+    imports: [AccessLogComponent],
+}).compileComponents();
     fixture = TestBed.createComponent(AccessLogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

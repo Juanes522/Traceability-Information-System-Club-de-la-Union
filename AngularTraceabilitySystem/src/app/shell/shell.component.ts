@@ -1,15 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+﻿import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter, take } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 import { AuthApiService } from '../core/services/auth-api.service';
 import { ToastService } from '../core/services/toast.service';
+import { PushNotificationService } from '../core/services/push-notification.service';
+import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
+import { RouterOutlet } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-shell',
-  templateUrl: './shell.component.html',
-  styleUrls: ['./shell.component.scss'],
+    selector: 'app-shell',
+    templateUrl: './shell.component.html',
+    styleUrls: ['./shell.component.scss'],
+    imports: [
+        SidebarComponent,
+        RouterOutlet,
+        NgIf,
+        ReactiveFormsModule,
+    ],
 })
 export class ShellComponent implements OnInit, OnDestroy {
   sidebarOpen = false;
@@ -25,6 +35,7 @@ export class ShellComponent implements OnInit, OnDestroy {
     private authApiService: AuthApiService,
     private fb: FormBuilder,
     private toast: ToastService,
+    private pushService: PushNotificationService,
   ) {
     this.pwForm = this.fb.group({
       newPassword:     ['', [Validators.required, Validators.minLength(6)]],
@@ -36,6 +47,16 @@ export class ShellComponent implements OnInit, OnDestroy {
     this.authService.needsPasswordChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe(needs => { this.showPasswordModal = needs; });
+
+    this.authService.role$
+      .pipe(
+        filter(role => role === 'ROLE_PARTNER'),
+        take(1),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        this.pushService.subscribeToPartnerNotifications();
+      });
   }
 
   ngOnDestroy(): void { this.destroy$.next(); this.destroy$.complete(); }

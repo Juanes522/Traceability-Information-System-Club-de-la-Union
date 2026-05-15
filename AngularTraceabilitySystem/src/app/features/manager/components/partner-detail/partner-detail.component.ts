@@ -1,15 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+﻿import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ManagerService } from '../../manager.service';
 import { PartnerProfile, Consumption } from '../../../../shared/models';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 type ActiveTab = 'profile' | 'consumptions';
 
 @Component({
-  selector: 'app-manager-partner-detail',
-  templateUrl: './partner-detail.component.html',
-  styleUrls: ['./partner-detail.component.scss'],
+    selector: 'app-manager-partner-detail',
+    templateUrl: './partner-detail.component.html',
+    styleUrls: ['./partner-detail.component.scss'],
+    imports: [
+        NgIf,
+        NgClass,
+        NgFor,
+    ],
 })
 export class PartnerDetailComponent implements OnInit {
   @Input() partner!: PartnerProfile;

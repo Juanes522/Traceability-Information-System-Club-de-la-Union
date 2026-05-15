@@ -20,26 +20,28 @@ describe('AdminService', () => {
 
   it('getAllPartners hace GET a la URL correcta', () => {
     service.getAllPartners().subscribe();
-    http.expectOne(`${API_BASE}/personpartner/getallpartners`).flush([]);
+    http.expectOne(`${API_BASE}/personpartner/getall`).flush([]);
   });
 
-  it('createPartner hace POST a la URL correcta', () => {
-    service.createPartner({ name: 'Test' } as any).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/createpartner`).flush({});
+  it('searchByIdentification hace GET a la URL correcta', () => {
+    service.searchByIdentification('12345678').subscribe();
+    http.expectOne(`${API_BASE}/personpartner/getbyidentification/12345678`).flush({});
   });
 
-  it('updatePartner hace PUT a la URL correcta', () => {
-    service.updatePartner(1, { name: 'Updated' } as any).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/updatepartner/1`).flush({});
+  it('searchByShareNumber hace GET a la URL correcta', () => {
+    service.searchByShareNumber('42').subscribe();
+    http.expectOne(`${API_BASE}/personpartner/getbysharenumber/42`).flush([]);
   });
 
-  it('deletePartner hace DELETE a la URL correcta', () => {
-    service.deletePartner(2).subscribe();
-    http.expectOne(`${API_BASE}/personpartner/deletepartner/2`).flush(null);
+  it('getConsumptionsByEnvironment hace GET a la URL correcta', () => {
+    service.getConsumptionsByEnvironment('Restaurante').subscribe();
+    http.expectOne(`${API_BASE}/partnerconsumption/by-environment/Restaurante`).flush([]);
   });
 
-  it('getAllConsumptions hace GET a la URL correcta', () => {
-    service.getAllConsumptions().subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/getallconsumptions`).flush([]);
+  it('registerConsumption hace POST a la URL correcta', () => {
+    const req: any = { partnerId: 1, enviroment: 'Bar', account: 5, table: '3', waiterName: 'Juan',
+                       isPartner: 'S', consumptionValue: 50000, iva: 4750, service: 5000, tip: 0, consumptionOpening: '2026-05-12' };
+    service.registerConsumption(req).subscribe();
+    http.expectOne(`${API_BASE}/partnerconsumption/registerconsumption`).flush({});
   });
 });

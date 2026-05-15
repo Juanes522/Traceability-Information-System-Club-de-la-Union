@@ -7,8 +7,8 @@ describe('ConsumptionDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConsumptionDetailComponent],
-    }).compileComponents();
+    imports: [ConsumptionDetailComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ConsumptionDetailComponent);
     component = fixture.componentInstance;

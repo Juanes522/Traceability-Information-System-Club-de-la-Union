@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ManagerService } from '../../manager.service';
 import { Consumption } from '../../../../shared/models';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-manager-consumption-list',
-  templateUrl: './consumption-list.component.html',
-  styleUrls: ['./consumption-list.component.scss'],
+    selector: 'app-manager-consumption-list',
+    templateUrl: './consumption-list.component.html',
+    styleUrls: ['./consumption-list.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        NgIf,
+        NgFor,
+    ],
 })
 export class ConsumptionListComponent {
   environment = '';
@@ -16,14 +24,32 @@ export class ConsumptionListComponent {
   searched = false;
   error = '';
   expandedId: number | null = null;
+  pageSize = 10;
+  currentPage = 1;
 
   constructor(private managerService: ManagerService) {}
+
+  get pagedResults(): Consumption[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.results.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number { return Math.ceil(this.results.length / this.pageSize); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(n: number): void {
+    if (n >= 1 && n <= this.totalPages) { this.currentPage = n; this.expandedId = null; }
+  }
 
   search(): void {
     if (!this.environment.trim()) return;
     this.searching = true;
     this.error = '';
     this.searched = false;
+    this.currentPage = 1;
     this.managerService.getConsumptionsByEnvironment(this.environment.trim()).pipe(
       catchError(err => {
         if (err.status === 204 || err.status === 404) return of([]);
