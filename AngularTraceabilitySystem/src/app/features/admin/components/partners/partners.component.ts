@@ -1,16 +1,25 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AdminService } from '../../admin.service';
 import { PartnerProfile, Consumption } from '../../../../shared/models';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
 type ActiveTab   = 'profile' | 'consumptions';
 
 @Component({
-  selector: 'app-admin-partners',
-  templateUrl: './partners.component.html',
-  styleUrls: ['./partners.component.scss'],
+    selector: 'app-admin-partners',
+    templateUrl: './partners.component.html',
+    styleUrls: ['./partners.component.scss'],
+    imports: [
+        NgIf,
+        NgFor,
+        ReactiveFormsModule,
+        FormsModule,
+        NgClass,
+    ],
 })
 export class PartnersComponent {
   searchField: SearchField = 'identification';

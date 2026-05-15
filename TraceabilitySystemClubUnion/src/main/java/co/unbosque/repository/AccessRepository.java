@@ -14,14 +14,13 @@ import co.unbosque.model.Access;
 @Repository
 public interface AccessRepository extends JpaRepository<Access, Long> {
 
-    List<Access> findByPartnerPersonIdOrderByDateTimeAdmissionDesc(Long personId);
+	List<Access> findByPartnerPersonIdOrderByDateTimeAdmissionDesc(Long personId);
 
-    @Query("SELECT a FROM Access a WHERE a.partner.personId = :personId AND a.dateTimeDeparture IS NULL ORDER BY a.dateTimeAdmission DESC")
-    Optional<Access> findOpenAccessByPartnerId(@Param("personId") Long personId);
+	@Query("SELECT a FROM Access a WHERE a.partner.personId = :personId AND a.dateTimeDeparture IS NULL ORDER BY a.dateTimeAdmission DESC")
+	Optional<Access> findOpenAccessByPartnerId(@Param("personId") Long personId);
 
-    @Query("SELECT COUNT(a) > 0 FROM Access a WHERE a.partner.personId = :personId AND a.dateTimeDeparture IS NULL")
-    boolean isPartnerCurrentlyPresent(@Param("personId") Long personId);
+	@Query("SELECT COUNT(a) > 0 FROM Access a WHERE a.partner.personId = :personId AND a.dateTimeDeparture IS NULL")
+	boolean isPartnerCurrentlyPresent(@Param("personId") Long personId);
 
-    List<Access> findByPartnerPersonIdAndDateTimeAdmissionBetween(
-            Long personId, LocalDateTime from, LocalDateTime to);
+	List<Access> findByPartnerPersonIdAndDateTimeAdmissionBetween(Long personId, LocalDateTime from, LocalDateTime to);
 }

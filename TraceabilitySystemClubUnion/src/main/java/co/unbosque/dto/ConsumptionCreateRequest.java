@@ -15,6 +15,7 @@ public class ConsumptionCreateRequest {
 	private Double service;
 	private Double tip;
 	private LocalDate consumptionOpening;
+	private LocalDate consumptionClosing;
 
 	public ConsumptionCreateRequest() {
 	}
@@ -105,5 +106,13 @@ public class ConsumptionCreateRequest {
 
 	public void setConsumptionOpening(LocalDate consumptionOpening) {
 		this.consumptionOpening = consumptionOpening;
+	}
+
+	public LocalDate getConsumptionClosing() {
+		return consumptionClosing;
+	}
+
+	public void setConsumptionClosing(LocalDate consumptionClosing) {
+		this.consumptionClosing = consumptionClosing;
 	}
 }

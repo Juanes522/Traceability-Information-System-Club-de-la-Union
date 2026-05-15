@@ -16,6 +16,7 @@ export interface ConsumptionCreateRequest {
   service: number;
   tip: number;
   consumptionOpening: string; // YYYY-MM-DD
+  consumptionClosing: string | null; // YYYY-MM-DD
 }
 
 @Injectable()

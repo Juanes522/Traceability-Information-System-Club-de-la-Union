@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { JwtInterceptor } from './jwt.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
+import { jwtInterceptor } from './jwt.interceptor';
 import { TokenService } from '../services/token.service';
 
-describe('JwtInterceptor', () => {
+describe('jwtInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let tokenService: jasmine.SpyObj<TokenService>;
@@ -13,10 +14,10 @@ describe('JwtInterceptor', () => {
     tokenService = jasmine.createSpyObj('TokenService', ['obtenerToken']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
+        provideHttpClient(withInterceptors([jwtInterceptor])),
+        provideHttpClientTesting(),
         { provide: TokenService, useValue: tokenService },
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
       ],
     });
 

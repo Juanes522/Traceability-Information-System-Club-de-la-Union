@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# pnpm — exclude npm lockfile, track pnpm lockfile
+package-lock.json

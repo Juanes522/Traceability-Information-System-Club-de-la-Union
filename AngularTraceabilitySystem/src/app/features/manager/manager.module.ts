@@ -26,16 +26,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    RegisterConsumptionComponent,
-    ConsumptionListComponent,
-    SendNotificationComponent,
-    ConsumptionDetailComponent,
-    PartnerSearchComponent,
-    PartnerDetailComponent,
-  ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes)],
-  providers: [ManagerService],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes), DashboardComponent,
+        RegisterConsumptionComponent,
+        ConsumptionListComponent,
+        SendNotificationComponent,
+        ConsumptionDetailComponent,
+        PartnerSearchComponent,
+        PartnerDetailComponent],
+    providers: [ManagerService],
 })
 export class ManagerModule {}

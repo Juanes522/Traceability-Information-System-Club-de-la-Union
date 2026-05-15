@@ -17,13 +17,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    PartnersComponent,
-    ConsumptionsComponent,
-    AdminRegisterConsumptionComponent,
-  ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes)],
-  providers: [AdminService],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes), DashboardComponent,
+        PartnersComponent,
+        ConsumptionsComponent,
+        AdminRegisterConsumptionComponent],
+    providers: [AdminService],
 })
 export class AdminModule {}

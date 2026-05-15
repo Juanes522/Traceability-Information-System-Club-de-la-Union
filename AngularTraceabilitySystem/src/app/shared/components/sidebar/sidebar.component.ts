@@ -1,15 +1,24 @@
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+﻿import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 import { NavItem, UserSession } from '../../models/index';
 import { NAV_ITEMS } from '../../../core/config/nav-items.config';
+import { NgFor, NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+    selector: 'app-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    imports: [
+        NgFor,
+        RouterLinkActive,
+        RouterLink,
+        NgIf,
+        AsyncPipe,
+        TitleCasePipe,
+    ],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;

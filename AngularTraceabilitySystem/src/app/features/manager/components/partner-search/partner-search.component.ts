@@ -1,17 +1,28 @@
-import { Component } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ManagerService } from '../../manager.service';
 import { PartnerProfile } from '../../../../shared/models';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PartnerDetailComponent } from '../partner-detail/partner-detail.component';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
 
 @Component({
-  selector: 'app-manager-partner-search',
-  templateUrl: './partner-search.component.html',
-  styleUrls: ['./partner-search.component.scss'],
+    selector: 'app-manager-partner-search',
+    templateUrl: './partner-search.component.html',
+    styleUrls: ['./partner-search.component.scss'],
+    imports: [
+        NgIf,
+        NgFor,
+        ReactiveFormsModule,
+        FormsModule,
+        NgClass,
+        PartnerDetailComponent,
+    ],
 })
-export class PartnerSearchComponent {
+export class PartnerSearchComponent implements OnInit {
   searchField: SearchField = 'identification';
   searchValue = '';
   results: PartnerProfile[] = [];
@@ -38,7 +49,11 @@ export class PartnerSearchComponent {
     secondName: 'Ej: Andrés',
   };
 
-  constructor(private managerService: ManagerService) {}
+  constructor(private managerService: ManagerService, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.loadAll();
+  }
 
   setField(field: SearchField): void {
     this.searchField = field;
@@ -83,7 +98,7 @@ export class PartnerSearchComponent {
         this.error = 'Error al buscar socios. Verifica la conexión con el servidor.';
         return of([]);
       })
-    ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; });
+    ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; this.cdr.detectChanges(); });
   }
 
   loadAll(): void {
@@ -97,7 +112,7 @@ export class PartnerSearchComponent {
         this.error = 'Error al cargar socios.';
         return of([]);
       })
-    ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; });
+    ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; this.cdr.detectChanges(); });
   }
 
   selectPartner(p: PartnerProfile): void { this.selectedPartner = p; }

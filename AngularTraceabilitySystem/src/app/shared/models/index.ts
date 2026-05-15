@@ -47,10 +47,15 @@ export interface ConsumptionValidation {
   validationDate: string;
 }
 
-export interface Notification {
-  id: number;
-  message: string;
-  sentAt: string;
+export interface NotificationDTO {
+  notificationId: number;
+  title: string;
+  body: string;
+  generationDate: string;
+  state: string;
+  consumptionId: number;
+  environment: string;
+  totalAmount: number;
 }
 
 export interface AccessLog {
@@ -70,6 +75,15 @@ export interface SystemUser {
 }
 
 export interface ChangePasswordRequest {
+  newPassword: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
   newPassword: string;
 }
 

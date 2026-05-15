@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShellComponent } from './shell.component';
-import { ShellModule } from './shell.module';
-import { RoleGuard } from '../core/guards/role.guard';
+
+import { roleGuard } from '../core/guards/role.guard';
 
 const routes: Routes = [
   {
@@ -11,19 +11,19 @@ const routes: Routes = [
     children: [
       {
         path: 'partner',
-        canActivate: [RoleGuard],
+        canActivate: [roleGuard],
         data: { role: 'ROLE_PARTNER' },
         loadChildren: () => import('../features/partner/partner.module').then((m) => m.PartnerModule),
       },
       {
         path: 'manager',
-        canActivate: [RoleGuard],
+        canActivate: [roleGuard],
         data: { role: 'ROLE_MANAGER' },
         loadChildren: () => import('../features/manager/manager.module').then((m) => m.ManagerModule),
       },
       {
         path: 'admin',
-        canActivate: [RoleGuard],
+        canActivate: [roleGuard],
         data: { role: 'ROLE_ADMIN' },
         loadChildren: () => import('../features/admin/admin.module').then((m) => m.AdminModule),
       },
@@ -34,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ShellModule, RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class ShellRoutingModule {}

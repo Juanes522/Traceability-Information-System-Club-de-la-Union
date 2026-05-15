@@ -19,14 +19,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    ProfileComponent,
-    ConsumptionsComponent,
-    NotificationsComponent,
-    AccessLogComponent,
-  ],
-  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
-  providers: [PartnerService],
+    imports: [CommonModule, FormsModule, RouterModule.forChild(routes), DashboardComponent,
+        ProfileComponent,
+        ConsumptionsComponent,
+        NotificationsComponent,
+        AccessLogComponent],
+    providers: [PartnerService],
 })
 export class PartnerModule {}

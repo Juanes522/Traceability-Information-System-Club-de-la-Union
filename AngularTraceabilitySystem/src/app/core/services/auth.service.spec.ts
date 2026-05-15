@@ -18,8 +18,8 @@ describe('AuthService', () => {
   beforeEach(() => {
     tokenService = jasmine.createSpyObj('TokenService', ['guardarSesion', 'obtenerSesion', 'limpiar', 'existeSesion']);
     tokenService.obtenerSesion.and.returnValue(null);
-    authApi      = jasmine.createSpyObj('AuthApiService', ['login', 'changePassword']);
-    router       = jasmine.createSpyObj('Router', ['navigate']);
+    authApi = jasmine.createSpyObj('AuthApiService', ['login', 'changePassword']);
+    router  = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -54,17 +54,17 @@ describe('AuthService', () => {
 
   it('login guarda sesión y navega al dashboard del rol', fakeAsync(() => {
     authApi.login.and.returnValue(of(PARTNER_SESSION));
-    service.login({ email: 'a@b.com', password: '123' }).subscribe();
+    service.login({ identification: '12345678', password: '123' }).subscribe();
     tick();
     expect(tokenService.guardarSesion).toHaveBeenCalledWith(PARTNER_SESSION);
     expect(router.navigate).toHaveBeenCalledWith(['/app/partner/dashboard']);
   }));
 
-  it('login con needsPasswordChange=true navega a change-password', fakeAsync(() => {
+  it('login con needsPasswordChange=true navega al dashboard (modal maneja el cambio)', fakeAsync(() => {
     authApi.login.and.returnValue(of(FORCE_SESSION));
-    service.login({ email: 'a@b.com', password: '123' }).subscribe();
+    service.login({ identification: '12345678', password: '123' }).subscribe();
     tick();
-    expect(router.navigate).toHaveBeenCalledWith(['/auth/change-password']);
+    expect(router.navigate).toHaveBeenCalledWith(['/app/partner/dashboard']);
   }));
 
   it('logout limpia la sesión y navega a login', () => {
@@ -75,7 +75,7 @@ describe('AuthService', () => {
 
   it('clearNeedsPasswordChange actualiza el estado', fakeAsync(() => {
     authApi.login.and.returnValue(of(FORCE_SESSION));
-    service.login({ email: 'a@b.com', password: '123' }).subscribe();
+    service.login({ identification: '12345678', password: '123' }).subscribe();
     tick();
     service.clearNeedsPasswordChange();
     let value: boolean = true;
@@ -89,7 +89,7 @@ describe('AuthService', () => {
 
   it('currentRole devuelve el rol de la sesión activa', fakeAsync(() => {
     authApi.login.and.returnValue(of(PARTNER_SESSION));
-    service.login({ email: 'a@b.com', password: '123' }).subscribe();
+    service.login({ identification: '12345678', password: '123' }).subscribe();
     tick();
     expect(service.currentRole).toBe('ROLE_PARTNER');
   }));

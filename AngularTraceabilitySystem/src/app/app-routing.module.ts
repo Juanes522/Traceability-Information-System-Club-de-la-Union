@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
-import { NoAuthGuard } from './core/guards/no-auth.guard';
-import { PasswordChangeGuard } from './core/guards/password-change.guard';
-import { RoleGuard } from './core/guards/role.guard';
+import { authGuard } from './core/guards/auth.guard';
+import { noAuthGuard } from './core/guards/no-auth.guard';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 
 const routes: Routes = [
@@ -13,7 +11,7 @@ const routes: Routes = [
   // Auth routes (lazy) — only for unauthenticated users
   {
     path: 'auth',
-    canActivate: [NoAuthGuard],
+    canActivate: [noAuthGuard],
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
 
@@ -21,7 +19,7 @@ const routes: Routes = [
   // PasswordChangeGuard removed: the modal in ShellComponent handles forced password change
   {
     path: 'app',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     loadChildren: () => import('./shell/shell-routing.module').then((m) => m.ShellRoutingModule),
   },
 

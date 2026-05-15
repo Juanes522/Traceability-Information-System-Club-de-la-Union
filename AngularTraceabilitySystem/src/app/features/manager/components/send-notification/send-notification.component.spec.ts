@@ -7,8 +7,8 @@ describe('SendNotificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SendNotificationComponent],
-    }).compileComponents();
+    imports: [SendNotificationComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SendNotificationComponent);
     component = fixture.componentInstance;

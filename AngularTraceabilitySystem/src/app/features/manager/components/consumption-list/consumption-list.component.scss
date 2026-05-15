@@ -287,6 +287,23 @@
 
 .spinner-gold { color: #c7a567; }
 
+.pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.3rem; padding: 1rem 1.5rem; border-top: 1px solid #f1f3f5;
+}
+
+.page-btn {
+  min-width: 34px; height: 34px; padding: 0 0.5rem;
+  border: 1px solid #dee2e6; border-radius: 7px; background: #fff;
+  color: #495057; font-size: 0.82rem; font-weight: 500; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &:hover:not(:disabled):not(.active) { background: #f8f9fa; border-color: #adb5bd; }
+  &.active { background: #212529; border-color: #212529; color: #fff; font-weight: 700; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
 @media (max-width: 575px) {
   .page-header { padding: 1rem; }
   .page-title  { font-size: 1rem; }

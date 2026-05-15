@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ShellComponent } from './shell.component';
-import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { AuthService } from '../core/services/auth.service';
+import { AuthApiService } from '../core/services/auth-api.service';
+import { ToastService } from '../core/services/toast.service';
+import { PushNotificationService } from '../core/services/push-notification.service';
 
 describe('ShellComponent', () => {
   let component: ShellComponent;
@@ -11,16 +13,30 @@ describe('ShellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ShellComponent, SidebarComponent],
+      imports: [ShellComponent],
       providers: [
+        provideRouter([]),
         {
           provide: AuthService,
           useValue: {
             role$: new BehaviorSubject(null),
             currentUser$: new BehaviorSubject(null),
+            needsPasswordChange$: new BehaviorSubject(false),
+            clearNeedsPasswordChange: jasmine.createSpy('clearNeedsPasswordChange'),
             logout: jasmine.createSpy('logout'),
           },
+        },
+        {
+          provide: AuthApiService,
+          useValue: { changePassword: jasmine.createSpy('changePassword') },
+        },
+        {
+          provide: ToastService,
+          useValue: { success: jasmine.createSpy('success'), error: jasmine.createSpy('error') },
+        },
+        {
+          provide: PushNotificationService,
+          useValue: { subscribeToPartnerNotifications: jasmine.createSpy('subscribeToPartnerNotifications') },
         },
       ],
     }).compileComponents();

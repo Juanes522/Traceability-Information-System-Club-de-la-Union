@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+﻿import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiService } from '../../../core/services/auth-api.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { NgIf } from '@angular/common';
 
 const ROLE_ROUTES: Record<string, string> = {
   ROLE_PARTNER: '/app/partner/dashboard',
@@ -11,8 +12,9 @@ const ROLE_ROUTES: Record<string, string> = {
 };
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
+    selector: 'app-change-password',
+    templateUrl: './change-password.component.html',
+    imports: [ReactiveFormsModule, NgIf],
 })
 export class ChangePasswordComponent {
   form: FormGroup;

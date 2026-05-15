@@ -130,6 +130,20 @@
   &:hover { color: rgba(255, 255, 255, 0.7); }
 }
 
+.forgot-wrap {
+  margin-top: 0.875rem;
+  text-align: center;
+}
+
+.forgot-link {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover { color: #c7a567; }
+}
+
 .login-btn {
   width: 100%;
   background: var(--color-accent);

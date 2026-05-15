@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { PartnerProfile } from '../../../../shared/models';
 import { PartnerService } from '../../partner.service';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-partner-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+    selector: 'app-partner-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
+    imports: [
+        NgIf,
+        NgClass,
+        NgFor,
+    ],
 })
 export class ProfileComponent implements OnInit {
   profile: PartnerProfile | null = null;

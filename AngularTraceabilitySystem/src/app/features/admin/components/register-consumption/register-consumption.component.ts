@@ -1,15 +1,21 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+﻿import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AdminService } from '../../admin.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { PartnerProfile } from '../../../../shared/models';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-admin-register-consumption',
-  templateUrl: './register-consumption.component.html',
-  styleUrls: ['./register-consumption.component.scss'],
+    selector: 'app-admin-register-consumption',
+    templateUrl: './register-consumption.component.html',
+    styleUrls: ['./register-consumption.component.scss'],
+    imports: [
+        NgIf,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
 })
 export class AdminRegisterConsumptionComponent {
   identificationInput = '';
@@ -35,6 +41,7 @@ export class AdminRegisterConsumptionComponent {
       service:            [null, [Validators.required, Validators.min(0)]],
       tip:                [0,    [Validators.required, Validators.min(0)]],
       consumptionOpening: [today, Validators.required],
+      consumptionClosing: [null],
     });
   }
 
@@ -59,7 +66,7 @@ export class AdminRegisterConsumptionComponent {
     this.partnerFound = null;
     this.identificationInput = '';
     this.partnerError = '';
-    this.form.reset({ tip: 0, consumptionOpening: new Date().toISOString().split('T')[0] });
+    this.form.reset({ tip: 0, consumptionOpening: new Date().toISOString().split('T')[0], consumptionClosing: null });
   }
 
   fullName(p: PartnerProfile): string {
