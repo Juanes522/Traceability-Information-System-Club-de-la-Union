@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import co.unbosque.dto.PushSubscriptionRequest;
 import co.unbosque.model.PersonPartner;
 import co.unbosque.model.PushSubscription;
-import co.unbosque.repository.PersonPartnerRepository;
+import co.unbosque.service.PersonPartnerService;
 import co.unbosque.repository.PushSubscriptionRepository;
 import co.unbosque.service.PushNotificationService;
 
@@ -19,13 +19,13 @@ import co.unbosque.service.PushNotificationService;
 public class PushSubscriptionController {
 
 	private final PushSubscriptionRepository subRepo;
-	private final PersonPartnerRepository partnerRepo;
+	private final PersonPartnerService partnerServ;
 	private final PushNotificationService pushService;
 
-	public PushSubscriptionController(PushSubscriptionRepository subRepo, PersonPartnerRepository partnerRepo,
+	public PushSubscriptionController(PushSubscriptionRepository subRepo, PersonPartnerService partnerServ,
 			PushNotificationService pushService) {
 		this.subRepo = subRepo;
-		this.partnerRepo = partnerRepo;
+		this.partnerServ = partnerServ;
 		this.pushService = pushService;
 	}
 
@@ -40,7 +40,7 @@ public class PushSubscriptionController {
 		if (identification == null)
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-		PersonPartner partner = partnerRepo.findByIdentification(identification).orElse(null);
+		PersonPartner partner = partnerServ.getByIdentification(identification);
 		if (partner == null)
 			return ResponseEntity.notFound().build();
 
