@@ -46,9 +46,20 @@ public class PersonPartnerService {
 	}
 
 	public PersonPartner getByEmail(String email) {
-		Optional<PersonPartner> found = partnerRepo.findByEmailLike(email);
-		if (found.isPresent()) {
-			return found.get();
+		if (email == null || email.isBlank()) {
+			return null;
+		}
+		String target = email.trim();
+		for (PersonPartner partner : partnerRepo.findAll()) {
+			String[] emails = partner.getEmail();
+			if (emails == null) {
+				continue;
+			}
+			for (String candidate : emails) {
+				if (candidate != null && target.equalsIgnoreCase(candidate.trim())) {
+					return partner;
+				}
+			}
 		}
 		return null;
 	}
