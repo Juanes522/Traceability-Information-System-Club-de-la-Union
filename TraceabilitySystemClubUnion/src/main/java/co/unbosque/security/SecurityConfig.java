@@ -9,12 +9,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -25,11 +29,14 @@ public class SecurityConfig {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
+	@SuppressWarnings("deprecation")
 	public PasswordEncoder passwordEncoder() {
-		// Usa NoOpPasswordEncoder temporalmente permitiendo leer texto plano como
-		// "hassed_pass_1".
-		// NOTA: Reemplazar por BCryptPasswordEncoder para producción.
-		return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+		encoders.put("bcrypt", new BCryptPasswordEncoder());
+		DelegatingPasswordEncoder delegating = new DelegatingPasswordEncoder("bcrypt", encoders);
+		delegating.setDefaultPasswordEncoderForMatches(
+				org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
+		return delegating;
 	}
 
 	@Bean
@@ -55,11 +62,11 @@ public class SecurityConfig {
 		})).csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authz -> authz
-						// Open endpoints
+						
 						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						.requestMatchers("/push/vapid-public-key").permitAll()
-						// All other endpoints require authentication
+						
 						.anyRequest().authenticated());
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

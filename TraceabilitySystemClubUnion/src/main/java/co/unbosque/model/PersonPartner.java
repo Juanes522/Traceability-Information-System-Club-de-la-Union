@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import co.unbosque.converter.StringArrayConverter;
+import co.unbosque.converter.EncryptedStringArrayConverter;
+import co.unbosque.converter.EncryptedStringConverter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -42,11 +43,17 @@ public class PersonPartner {
 	private Long shareNumber;
 	private Boolean partnerState;
 
+	@Convert(converter = EncryptedStringConverter.class)
+	@Column(length = 512)
 	private String phone;
+
+	@Convert(converter = EncryptedStringConverter.class)
+	@Column(length = 512)
 	private String cellPhone;
 	private Character gender;
 
-	@Convert(converter = StringArrayConverter.class)
+	@Convert(converter = EncryptedStringArrayConverter.class)
+	@Column(length = 1000)
 	private String[] email;
 
 	@Column(name = "force_password_change")
