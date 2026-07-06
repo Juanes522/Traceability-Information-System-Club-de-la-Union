@@ -28,6 +28,9 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+	@Autowired
+	private RateLimitFilter rateLimitFilter;
+
 	@Bean
 	@SuppressWarnings("deprecation")
 	public PasswordEncoder passwordEncoder() {
@@ -70,6 +73,7 @@ public class SecurityConfig {
 						.anyRequest().authenticated());
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(rateLimitFilter, JwtAuthenticationFilter.class);
 
 		return http.build();
 	}

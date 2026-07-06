@@ -14,6 +14,7 @@ import co.unbosque.repository.PasswordResetTokenRepository;
 import co.unbosque.security.JwtUtil;
 import co.unbosque.service.EmailService;
 import co.unbosque.service.PersonPartnerService;
+import co.unbosque.service.RateLimitService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +38,11 @@ public class AuthController {
 	private final PasswordEncoder passwordEncoder;
 	private final PasswordResetTokenRepository tokenRepo;
 	private final EmailService emailService;
+	private final RateLimitService rateLimitService;
 
 	public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService,
 			JwtUtil jwtUtil, PersonPartnerService personPartnerService, PasswordEncoder passwordEncoder,
-			PasswordResetTokenRepository tokenRepo, EmailService emailService) {
+			PasswordResetTokenRepository tokenRepo, EmailService emailService, RateLimitService rateLimitService) {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 		this.jwtUtil = jwtUtil;
@@ -48,16 +50,23 @@ public class AuthController {
 		this.passwordEncoder = passwordEncoder;
 		this.tokenRepo = tokenRepo;
 		this.emailService = emailService;
+		this.rateLimitService = rateLimitService;
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) {
+		if (rateLimitService.isUserBlocked(authRequest.getIdentification())) {
+			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+					.body("Demasiados intentos. Intente de nuevo más tarde.");
+		}
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getIdentification(),
 					authRequest.getPassword()));
 		} catch (Exception e) {
+			rateLimitService.registerFailedLogin(authRequest.getIdentification());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
 		}
+		rateLimitService.resetUserFailures(authRequest.getIdentification());
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getIdentification());
 		final String jwt = jwtUtil.generateToken(userDetails);
