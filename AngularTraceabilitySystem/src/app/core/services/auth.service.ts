@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, EMPTY } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { AuthApiService } from './auth-api.service';
 import { UserSession } from '../../shared/models';
@@ -47,9 +47,14 @@ export class AuthService {
   }
 
   logout(): void {
-    this.tokenService.limpiar();
-    this.subject.next(null);
-    this.router.navigate(['/auth/login']);
+    this.authApi.logout().pipe(
+      catchError(() => EMPTY),
+      finalize(() => {
+        this.tokenService.limpiar();
+        this.subject.next(null);
+        this.router.navigate(['/auth/login']);
+      }),
+    ).subscribe();
   }
 
   clearNeedsPasswordChange(): void {

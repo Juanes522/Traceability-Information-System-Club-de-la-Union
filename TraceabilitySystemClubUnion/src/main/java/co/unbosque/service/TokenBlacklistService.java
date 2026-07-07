@@ -18,7 +18,7 @@ public class TokenBlacklistService {
     }
 
     public void revoke(String jti, LocalDateTime expiryDate) {
-        if (jti == null) {
+        if (jti == null || repository.existsByJti(jti)) {
             return;
         }
         repository.save(new RevokedToken(jti, expiryDate));

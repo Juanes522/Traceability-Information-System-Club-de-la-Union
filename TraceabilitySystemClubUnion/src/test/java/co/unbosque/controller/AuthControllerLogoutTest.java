@@ -65,4 +65,19 @@ class AuthControllerLogoutTest {
         ResponseEntity<?> response = controller.logout(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    void logout_withInvalidOrExpiredToken_returnsOkAndDoesNotThrow() {
+        when(jwtUtil.extractJti("bad-token"))
+                .thenThrow(new io.jsonwebtoken.ExpiredJwtException(null, null, "expired"));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer bad-token");
+
+        ResponseEntity<?> response = controller.logout(request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(tokenBlacklist, org.mockito.Mockito.never())
+                .revoke(org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.any());
+    }
 }

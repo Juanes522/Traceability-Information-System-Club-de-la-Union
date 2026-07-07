@@ -11,6 +11,8 @@ import co.unbosque.dto.ConsumptionCreateRequest;
 import co.unbosque.model.PartnerConsumption;
 import co.unbosque.service.PartnerConsumptionService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/partnerconsumption")
 public class PartnerConsumptionController {
@@ -22,7 +24,7 @@ public class PartnerConsumptionController {
 	}
 
 	@PostMapping(path = "/registerconsumption")
-	public ResponseEntity<PartnerConsumption> registerConsumption(@RequestBody ConsumptionCreateRequest req) {
+	public ResponseEntity<PartnerConsumption> registerConsumption(@Valid @RequestBody ConsumptionCreateRequest req) {
 		try {
 			PartnerConsumption consumption = consumptionServ.register(req);
 			if (consumption == null) {

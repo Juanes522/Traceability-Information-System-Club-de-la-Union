@@ -20,6 +20,7 @@ import co.unbosque.service.RateLimitService;
 import co.unbosque.service.TokenBlacklistService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) {
+	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequest authRequest) {
 		if (rateLimitService.isUserBlocked(authRequest.getIdentification())) {
 			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
 					.body("Demasiados intentos. Intente de nuevo más tarde.");
@@ -88,7 +89,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/change-password")
-	public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
+	public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -112,16 +113,19 @@ public class AuthController {
 		String header = request.getHeader("Authorization");
 		if (header != null && header.startsWith("Bearer ")) {
 			String jwt = header.substring(7);
-			String jti = jwtUtil.extractJti(jwt);
-			Date expiration = jwtUtil.extractExpiration(jwt);
-			tokenBlacklistService.revoke(jti,
-					expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			try {
+				String jti = jwtUtil.extractJti(jwt);
+				Date expiration = jwtUtil.extractExpiration(jwt);
+				tokenBlacklistService.revoke(jti,
+						expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			} catch (Exception e) {
+			}
 		}
 		return ResponseEntity.ok("Sesión cerrada.");
 	}
 
 	@PostMapping("/forgot-password")
-	public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+	public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
 		String email = request.getEmail();
 		PersonPartner partner = personPartnerService.getByEmail(email);
 
@@ -143,7 +147,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/reset-password")
-	public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
 		PasswordResetToken resetToken = tokenRepo.findByToken(request.getToken()).orElse(null);
 
 		if (resetToken == null || resetToken.isExpired()) {
