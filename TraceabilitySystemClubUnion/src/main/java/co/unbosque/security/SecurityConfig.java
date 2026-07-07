@@ -64,6 +64,13 @@ public class SecurityConfig {
 			return config;
 		})).csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.headers(headers -> headers
+						.contentSecurityPolicy(csp -> csp.policyDirectives(
+								"default-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'"))
+						.frameOptions(frame -> frame.deny())
+						.httpStrictTransportSecurity(hsts -> hsts
+								.includeSubDomains(true)
+								.maxAgeInSeconds(31536000)))
 				.authorizeHttpRequests(authz -> authz
 						
 						.requestMatchers("/auth/**").permitAll()

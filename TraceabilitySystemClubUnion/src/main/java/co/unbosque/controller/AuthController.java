@@ -1,6 +1,8 @@
 package co.unbosque.controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 import co.unbosque.dto.AuthRequest;
@@ -15,6 +17,9 @@ import co.unbosque.security.JwtUtil;
 import co.unbosque.service.EmailService;
 import co.unbosque.service.PersonPartnerService;
 import co.unbosque.service.RateLimitService;
+import co.unbosque.service.TokenBlacklistService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +44,12 @@ public class AuthController {
 	private final PasswordResetTokenRepository tokenRepo;
 	private final EmailService emailService;
 	private final RateLimitService rateLimitService;
+	private final TokenBlacklistService tokenBlacklistService;
 
 	public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService,
 			JwtUtil jwtUtil, PersonPartnerService personPartnerService, PasswordEncoder passwordEncoder,
-			PasswordResetTokenRepository tokenRepo, EmailService emailService, RateLimitService rateLimitService) {
+			PasswordResetTokenRepository tokenRepo, EmailService emailService, RateLimitService rateLimitService,
+			TokenBlacklistService tokenBlacklistService) {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 		this.jwtUtil = jwtUtil;
@@ -51,6 +58,7 @@ public class AuthController {
 		this.tokenRepo = tokenRepo;
 		this.emailService = emailService;
 		this.rateLimitService = rateLimitService;
+		this.tokenBlacklistService = tokenBlacklistService;
 	}
 
 	@PostMapping("/login")
@@ -97,6 +105,19 @@ public class AuthController {
 		personPartnerService.savePartner(titular);
 
 		return ResponseEntity.ok("Contraseña cambiada exitosamente.");
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		String header = request.getHeader("Authorization");
+		if (header != null && header.startsWith("Bearer ")) {
+			String jwt = header.substring(7);
+			String jti = jwtUtil.extractJti(jwt);
+			Date expiration = jwtUtil.extractExpiration(jwt);
+			tokenBlacklistService.revoke(jti,
+					expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+		}
+		return ResponseEntity.ok("Sesión cerrada.");
 	}
 
 	@PostMapping("/forgot-password")
