@@ -1,9 +1,14 @@
 package co.unbosque.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class PushSubscriptionRequest {
 
+	@NotBlank
 	private String endpoint;
+	@NotBlank
 	private String p256dhKey;
+	@NotBlank
 	private String authKey;
 
 	public PushSubscriptionRequest() {

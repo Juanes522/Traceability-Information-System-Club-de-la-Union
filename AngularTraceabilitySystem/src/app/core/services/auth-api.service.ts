@@ -12,6 +12,12 @@ export class AuthApiService {
     return this.http.post<UserSession>(`${API_BASE}/auth/login`, credentials);
   }
 
+  logout(): Observable<string> {
+    return this.http.post(`${API_BASE}/auth/logout`, null, {
+      responseType: 'text' as 'json',
+    }) as unknown as Observable<string>;
+  }
+
   changePassword(req: ChangePasswordRequest): Observable<void> {
     return this.http.post(`${API_BASE}/auth/change-password`, req, {
       responseType: 'text' as 'json',

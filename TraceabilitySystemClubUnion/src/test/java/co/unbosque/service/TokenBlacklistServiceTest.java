@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,6 +37,13 @@ class TokenBlacklistServiceTest {
         verify(repository).save(captor.capture());
         assertEquals("jti-123", captor.getValue().getJti());
         assertEquals(expiry, captor.getValue().getExpiryDate());
+    }
+
+    @Test
+    void revoke_isIdempotent_doesNotSaveDuplicateJti() {
+        when(repository.existsByJti("jti-dup")).thenReturn(true);
+        service.revoke("jti-dup", LocalDateTime.now().plusHours(1));
+        verify(repository, never()).save(any());
     }
 
     @Test

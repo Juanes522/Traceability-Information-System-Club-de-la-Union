@@ -15,6 +15,7 @@ const MOCK_REQ: ConsumptionCreateRequest = {
   service: 5000,
   tip: 0,
   consumptionOpening: '2026-05-12',
+  consumptionClosing: null,
 };
 
 describe('ManagerService', () => {

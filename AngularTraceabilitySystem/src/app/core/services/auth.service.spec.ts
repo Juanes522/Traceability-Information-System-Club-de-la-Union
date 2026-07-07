@@ -1,6 +1,6 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TokenService } from './token.service';
 import { AuthApiService } from './auth-api.service';
@@ -18,7 +18,8 @@ describe('AuthService', () => {
   beforeEach(() => {
     tokenService = jasmine.createSpyObj('TokenService', ['guardarSesion', 'obtenerSesion', 'limpiar', 'existeSesion']);
     tokenService.obtenerSesion.and.returnValue(null);
-    authApi = jasmine.createSpyObj('AuthApiService', ['login', 'changePassword']);
+    authApi = jasmine.createSpyObj('AuthApiService', ['login', 'changePassword', 'logout']);
+    authApi.logout.and.returnValue(of('Sesión cerrada.'));
     router  = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
@@ -67,8 +68,17 @@ describe('AuthService', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/app/partner/dashboard']);
   }));
 
-  it('logout limpia la sesión y navega a login', () => {
+  it('logout revoca el token en el backend y luego limpia la sesión y navega a login', () => {
     service.logout();
+    expect(authApi.logout).toHaveBeenCalled();
+    expect(tokenService.limpiar).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/auth/login']);
+  });
+
+  it('logout limpia la sesión aunque la llamada al backend falle', () => {
+    authApi.logout.and.returnValue(throwError(() => new Error('network down')));
+    service.logout();
+    expect(authApi.logout).toHaveBeenCalled();
     expect(tokenService.limpiar).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/auth/login']);
   });

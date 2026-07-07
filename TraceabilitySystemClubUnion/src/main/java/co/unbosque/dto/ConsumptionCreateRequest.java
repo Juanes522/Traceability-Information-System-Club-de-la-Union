@@ -2,18 +2,38 @@ package co.unbosque.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 public class ConsumptionCreateRequest {
 
+	@NotNull
 	private Long partnerId;
+	@NotBlank
+	@Size(max = 100)
 	private String enviroment;
 	private Integer account;
+	@Size(max = 50)
 	private String table;
+	@NotBlank
+	@Size(max = 100)
 	private String waiterName;
 	private Character isPartner;
+	@NotNull
+	@PositiveOrZero
 	private Double consumptionValue;
+	@NotNull
+	@PositiveOrZero
 	private Double iva;
+	@NotNull
+	@PositiveOrZero
 	private Double service;
+	@NotNull
+	@PositiveOrZero
 	private Double tip;
+	@NotNull
 	private LocalDate consumptionOpening;
 	private LocalDate consumptionClosing;
 

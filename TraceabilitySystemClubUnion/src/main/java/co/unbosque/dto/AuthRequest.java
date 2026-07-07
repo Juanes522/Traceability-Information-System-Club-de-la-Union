@@ -1,7 +1,11 @@
 package co.unbosque.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AuthRequest {
+    @NotBlank
     private String identification;
+    @NotBlank
     private String password;
 
     public AuthRequest() {}

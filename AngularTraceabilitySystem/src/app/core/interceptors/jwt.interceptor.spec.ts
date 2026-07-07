@@ -51,11 +51,19 @@ describe('jwtInterceptor', () => {
     req.flush({});
   });
 
-  it('NO adjunta Authorization header a /auth/change-password', () => {
+  it('adjunta Authorization header a /auth/change-password', () => {
     tokenService.obtenerToken.and.returnValue('my-jwt');
     http.post('/auth/change-password', {}).subscribe();
     const req = httpMock.expectOne('/auth/change-password');
-    expect(req.request.headers.has('Authorization')).toBeFalse();
+    expect(req.request.headers.get('Authorization')).toBe('Bearer my-jwt');
+    req.flush(null);
+  });
+
+  it('adjunta Authorization header a /auth/logout', () => {
+    tokenService.obtenerToken.and.returnValue('my-jwt');
+    http.post('/auth/logout', null).subscribe();
+    const req = httpMock.expectOne('/auth/logout');
+    expect(req.request.headers.get('Authorization')).toBe('Bearer my-jwt');
     req.flush(null);
   });
 });

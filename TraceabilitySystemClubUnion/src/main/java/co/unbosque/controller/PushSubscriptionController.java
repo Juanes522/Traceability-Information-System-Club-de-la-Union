@@ -14,6 +14,8 @@ import co.unbosque.service.PersonPartnerService;
 import co.unbosque.repository.PushSubscriptionRepository;
 import co.unbosque.service.PushNotificationService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/push")
 public class PushSubscriptionController {
@@ -35,7 +37,7 @@ public class PushSubscriptionController {
 	}
 
 	@PostMapping("/subscribe")
-	public ResponseEntity<Void> subscribe(@RequestBody PushSubscriptionRequest req) {
+	public ResponseEntity<Void> subscribe(@Valid @RequestBody PushSubscriptionRequest req) {
 		String identification = currentIdentification();
 		if (identification == null)
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
