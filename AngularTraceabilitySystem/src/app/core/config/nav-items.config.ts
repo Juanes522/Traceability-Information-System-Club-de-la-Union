@@ -15,12 +15,12 @@ export const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Buscar Socio',       icon: 'bi-person-lines-fill', route: '/app/manager/partner-search' },
     { label: 'Registrar Consumo',  icon: 'bi-plus-circle',       route: '/app/manager/register' },
     { label: 'Consumos Ambiente',  icon: 'bi-receipt',           route: '/app/manager/consumptions' },
-    { label: 'Notificaciones',     icon: 'bi-bell',              route: '/app/manager/my/notifications' },
   ],
   ROLE_ADMIN: [
     { label: 'Dashboard',          icon: 'bi-grid-1x2',          route: '/app/admin/dashboard' },
     { label: 'Socios',             icon: 'bi-people',            route: '/app/admin/partners' },
     { label: 'Registrar Consumo',  icon: 'bi-plus-circle',       route: '/app/admin/register' },
     { label: 'Consumos Ambiente',  icon: 'bi-receipt',           route: '/app/admin/consumptions' },
+    { label: 'Auditoría',          icon: 'bi-clipboard-data',    route: '/app/admin/audit' },
   ],
 };

@@ -1,11 +1,9 @@
-/* ===== PAGE SHELL ===== */
 .notifications-page {
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
-/* ===== PAGE HEADER ===== */
 .page-header {
   background: #212529;
   padding: 1.5rem 2rem 1.25rem;
@@ -19,7 +17,6 @@
   margin: 0;
 }
 
-/* ===== NOTIFICATION LIST ===== */
 .notif-list {
   flex: 1;
   padding: 1.5rem 2rem;
@@ -33,7 +30,6 @@
   }
 }
 
-/* ===== NOTIFICATION CARD ===== */
 .notif-card {
   background: #fff;
   border-radius: 10px;
@@ -117,7 +113,6 @@
   }
 }
 
-/* ===== EMPTY STATE ===== */
 .empty-state {
   text-align: center;
   padding: 5rem 2rem;
@@ -141,7 +136,6 @@
   }
 }
 
-/* ===== LOADING ===== */
 .loading-wrap {
   display: flex;
   justify-content: center;
@@ -151,4 +145,6 @@
   flex: 1;
 }
 
-.spinner-gold { color: #c7a567; }
+.spinner-gold {
+  color: #c7a567;
+}

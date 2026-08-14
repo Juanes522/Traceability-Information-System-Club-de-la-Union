@@ -8,7 +8,7 @@
   <!-- Error -->
   <div *ngIf="!loading && error" class="alert alert-danger m-4">{{ error }}</div>
 
-  <ng-container *ngIf="!loading && !error">
+  <ng-container *ngIf="!loading">
 
     <!-- ── Page header ── -->
     <header class="page-header">
@@ -17,30 +17,27 @@
       </h1>
     </header>
 
-    <!-- ── Toolbar ── -->
-    <div class="toolbar">
-      <div class="search-wrap">
-        <i class="bi bi-search search-icon"></i>
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Buscar por ambiente, mesa o mesero..."
-          [(ngModel)]="searchText"
-          (input)="applyFilters()"
-        />
-      </div>
-      <span class="result-count">{{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }}</span>
+    <!-- ── Preset bar ── -->
+    <div class="preset-bar">
+      <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+      <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+      <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+      <button type="button" class="preset-btn" (click)="allTime()">Todo</button>
+      <input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" />
+      <input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" />
+      <span class="result-count">{{ totalElements }} resultado{{ totalElements !== 1 ? 's' : '' }}</span>
     </div>
+    <div class="range-error" *ngIf="rangeError"><i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.</div>
 
     <!-- ── Table ── -->
-    <div class="table-wrap">
+    <div class="table-wrap" *ngIf="!error">
 
-      <div *ngIf="filtered.length === 0" class="empty-state">
+      <div *ngIf="results.length === 0" class="empty-state">
         <i class="bi bi-receipt"></i>
-        <p>No se encontraron consumos con los filtros aplicados.</p>
+        <p>No se encontraron consumos en el rango seleccionado.</p>
       </div>
 
-      <table *ngIf="filtered.length > 0" class="data-table">
+      <table *ngIf="results.length > 0" class="data-table">
         <thead>
           <tr>
             <th>Ambiente</th>
@@ -53,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let c of filtered">
+          <ng-container *ngFor="let c of results">
             <tr class="data-row" [class.expanded-row]="isExpanded(c.consumptionId)" (click)="toggleExpand(c.consumptionId)">
               <td>{{ c.enviroment }}</td>
               <td>{{ c.table }}</td>
@@ -116,6 +113,8 @@
           </ng-container>
         </tbody>
       </table>
+
+      <app-paginator *ngIf="results.length" [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="goToPage($event)"></app-paginator>
 
     </div>
 

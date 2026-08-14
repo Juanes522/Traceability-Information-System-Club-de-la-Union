@@ -1,11 +1,9 @@
-/* ===== PAGE SHELL ===== */
 .consumptions-page {
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
-/* ===== PAGE HEADER ===== */
 .page-header {
   background: #212529;
   padding: 1.5rem 2rem 1.25rem;
@@ -45,14 +43,20 @@
     border-radius: 50%;
   }
 
-  &.open-chip  { background: rgba(245,158,11,.15); color: #fcd34d; }
-  &.closed-chip { background: rgba(16,185,129,.15); color: #6ee7b7; }
+  &.open-chip {
+    background: rgba(245, 158, 11, .15);
+    color: #fcd34d;
+  }
+
+  &.closed-chip {
+    background: rgba(16, 185, 129, .15);
+    color: #6ee7b7;
+  }
 }
 
-/* ===== TOOLBAR ===== */
 .toolbar {
   background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
   padding: 0.85rem 1.5rem;
   display: flex;
   align-items: center;
@@ -91,7 +95,9 @@
       background: #fff;
     }
 
-    &::placeholder { color: #adb5bd; }
+    &::placeholder {
+      color: #adb5bd;
+    }
   }
 }
 
@@ -111,15 +117,26 @@
   cursor: pointer;
   transition: all 0.15s;
 
-  &:hover { border-color: #c7a567; color: #c7a567; background: #fff; }
+  &:hover {
+    border-color: #c7a567;
+    color: #c7a567;
+    background: #fff;
+  }
 
   &.active {
     background: #212529;
     border-color: #212529;
     color: #fff;
 
-    &.state-open   { background: #92400e; border-color: #92400e; }
-    &.state-closed { background: #065f46; border-color: #065f46; }
+    &.state-open {
+      background: #92400e;
+      border-color: #92400e;
+    }
+
+    &.state-closed {
+      background: #065f46;
+      border-color: #065f46;
+    }
   }
 }
 
@@ -130,7 +147,60 @@
   white-space: nowrap;
 }
 
-/* ===== TABLE AREA ===== */
+.preset-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.6rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.preset-btn {
+  border: 1px solid #dee2e6;
+  border-radius: 99px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #212529;
+    border-color: #212529;
+    color: #fff;
+  }
+}
+
+.filter-date {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #dee2e6;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  color: #495057;
+  background: #f8f9fa;
+  outline: none;
+
+  &:focus {
+    border-color: #c7a567;
+    background: #fff;
+  }
+}
+
+.range-error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-bottom: 1px solid #fecaca;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .table-wrap {
   flex: 1;
   overflow-x: auto;
@@ -156,7 +226,9 @@
       text-align: left;
       white-space: nowrap;
 
-      &.col-amount { text-align: right; }
+      &.col-amount {
+        text-align: right;
+      }
     }
   }
 
@@ -165,8 +237,14 @@
     cursor: pointer;
     transition: background 0.12s;
 
-    &:hover { background: #f8f9fa; }
-    &.expanded-row { background: #fffdf7; border-bottom: none; }
+    &:hover {
+      background: #f8f9fa;
+    }
+
+    &.expanded-row {
+      background: #fffdf7;
+      border-bottom: none;
+    }
 
     td {
       padding: 0.9rem 1rem;
@@ -186,11 +264,12 @@
   tbody tr.expand-row {
     border-bottom: 1px solid #e9ecef;
 
-    td { padding: 0; }
+    td {
+      padding: 0;
+    }
   }
 }
 
-/* ===== STATE BADGE ===== */
 .state-badge {
   display: inline-flex;
   align-items: center;
@@ -201,20 +280,29 @@
   border-radius: 99px;
   white-space: nowrap;
 
-  &.open   { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-  &.closed { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+  &.open {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+  }
+
+  &.closed {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+  }
 }
 
-/* ===== EXPAND TOGGLE ===== */
 .expand-icon {
   color: #adb5bd;
   font-size: 0.75rem;
   transition: transform 0.2s ease;
 
-  &.open { transform: rotate(180deg); }
+  &.open {
+    transform: rotate(180deg);
+  }
 }
 
-/* ===== EXPAND DETAIL PANEL ===== */
 .detail-panel {
   background: #fffdf7;
   border-top: 1px dashed #e9d8a6;
@@ -255,15 +343,23 @@
   &.total {
     font-weight: 700;
     color: #212529;
-    border-top: 1px solid rgba(0,0,0,.08);
+    border-top: 1px solid rgba(0, 0, 0, .08);
     margin-top: 4px;
     padding-top: 8px;
 
-    .amount-accent { color: #c7a567; font-weight: 800; }
+    .amount-accent {
+      color: #c7a567;
+      font-weight: 800;
+    }
   }
 
-  span:first-child { color: #6c757d; }
-  span:last-child { font-variant-numeric: tabular-nums; }
+  span:first-child {
+    color: #6c757d;
+  }
+
+  span:last-child {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .detail-meta {
@@ -278,24 +374,43 @@
     gap: 0.5rem;
     align-items: flex-start;
 
-    i { color: #adb5bd; margin-top: 2px; font-size: 0.8rem; flex-shrink: 0; }
+    i {
+      color: #adb5bd;
+      margin-top: 2px;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
 
-    .meta-label { color: #9ca3af; min-width: 70px; font-size: 0.75rem; }
-    .meta-value { color: #212529; font-weight: 500; }
+    .meta-label {
+      color: #9ca3af;
+      min-width: 70px;
+      font-size: 0.75rem;
+    }
+
+    .meta-value {
+      color: #212529;
+      font-weight: 500;
+    }
   }
 }
 
-/* ===== EMPTY STATE ===== */
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
   color: #adb5bd;
 
-  i { font-size: 2.25rem; display: block; margin-bottom: 0.75rem; }
-  p { font-size: 0.875rem; margin: 0; }
+  i {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
 }
 
-/* ===== LOADING ===== */
 .loading-wrap {
   display: flex;
   justify-content: center;
@@ -305,15 +420,30 @@
   flex: 1;
 }
 
-.spinner-gold { color: #c7a567; }
+.spinner-gold {
+  color: #c7a567;
+}
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 575px) {
-  .page-header { padding: 1rem; }
-  .page-title  { font-size: 1rem; }
-  .toolbar     { padding: 0.65rem 1rem; }
-  .search-wrap { max-width: 100%; }
+  .page-header {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1rem;
+  }
+
+  .toolbar {
+    padding: 0.65rem 1rem;
+  }
+
+  .search-wrap {
+    max-width: 100%;
+  }
 
   .data-table thead th:nth-child(3),
-  .data-table tbody td:nth-child(3) { display: none; } /* hide waiter on small */
+  .data-table tbody td:nth-child(3) {
+    display: none;
+  }
+
 }

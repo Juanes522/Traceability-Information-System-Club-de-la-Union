@@ -5,6 +5,7 @@ import { AdminService } from '../../admin.service';
 import { PartnerProfile, Consumption } from '../../../../shared/models';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
 type ActiveTab   = 'profile' | 'consumptions';
@@ -19,6 +20,7 @@ type ActiveTab   = 'profile' | 'consumptions';
         ReactiveFormsModule,
         FormsModule,
         NgClass,
+        PaginatorComponent,
     ],
 })
 export class PartnersComponent {
@@ -33,11 +35,22 @@ export class PartnersComponent {
   activeTab: ActiveTab = 'profile';
   consumptions: Consumption[] = [];
   loadingCons = false;
+  consError = false;
   expandedConsId: number | null = null;
+
+  consCurrentPage = 1;
+  readonly consPageSize = 10;
+  consTotalElements = 0;
+  consFrom?: string;
+  consTo?: string;
+  consRangeError = false;
+  private readonly CONS_MAX_RANGE_DAYS = 92;
 
   // Pagination
   currentPage = 1;
   readonly pageSize = 10;
+  mode: 'search' | 'all' = 'search';
+  totalElements = 0;
 
   readonly searchFields: SearchField[] = ['identification', 'shareNumber', 'firstName', 'secondName'];
   readonly fieldLabels: Record<SearchField, string> = {
@@ -56,6 +69,7 @@ export class PartnersComponent {
   constructor(private adminService: AdminService) {}
 
   setField(f: SearchField): void {
+    this.mode = 'search';
     this.searchField = f;
     this.searchValue = '';
     this.results = [];
@@ -66,6 +80,7 @@ export class PartnersComponent {
 
   search(): void {
     if (!this.searchValue.trim()) return;
+    this.mode = 'search';
     this.searching = true;
     this.error = '';
     this.searched = false;
@@ -102,37 +117,115 @@ export class PartnersComponent {
   }
 
   loadAll(): void {
-    this.searching = true;
+    this.mode = 'all';
     this.error = '';
     this.selectedPartner = null;
     this.currentPage = 1;
-    this.adminService.getAllPartners().pipe(
-      catchError(err => {
-        if (err.status === 204) return of([]);
+    this.loadAllPage(0);
+  }
+
+  private loadAllPage(pageIndex: number): void {
+    this.searching = true;
+    this.error = '';
+    this.adminService.getAllPartners(pageIndex, this.pageSize).pipe(
+      catchError(() => of(null))
+    ).subscribe(page => {
+      if (pageIndex !== this.currentPage - 1) {
+        return;
+      }
+      if (page === null) {
         this.error = 'Error al cargar socios.';
-        return of([]);
-      })
-    ).subscribe(r => { this.results = r; this.searching = false; this.searched = true; });
+        this.results = [];
+        this.totalElements = 0;
+      } else {
+        this.results = page.content;
+        this.totalElements = page.totalElements;
+      }
+      this.searching = false;
+      this.searched = true;
+    });
   }
 
   selectPartner(p: PartnerProfile): void {
     this.selectedPartner = p;
     this.activeTab = 'profile';
     this.consumptions = [];
-    this.loadConsumptions();
+    this.consLastWeek();
   }
 
   backToResults(): void { this.selectedPartner = null; }
   setTab(t: ActiveTab): void { this.activeTab = t; }
 
   loadConsumptions(): void {
+    if (!this.isConsRangeValid()) { this.consRangeError = true; return; }
+    this.consRangeError = false;
+    this.consError = false;
     this.loadingCons = true;
-    this.adminService.getConsumptionsByIdentification(this.selectedPartner!.identification).pipe(
-      catchError(err => {
-        if (err.status === 204 || err.status === 404) return of([]);
-        return of([]);
-      })
-    ).subscribe(c => { this.consumptions = c; this.loadingCons = false; });
+    this.expandedConsId = null;
+    this.adminService.getConsumptionsByIdentification(this.selectedPartner!.identification, {
+      from: this.consFrom, to: this.consTo, page: this.consCurrentPage - 1, size: this.consPageSize,
+    }).pipe(
+      catchError(() => { this.consError = true; return of({ content: [] as Consumption[], totalElements: 0, number: 0, size: this.consPageSize }); })
+    ).subscribe(page => {
+      this.consumptions = page.content;
+      this.consTotalElements = page.totalElements;
+      this.loadingCons = false;
+    });
+  }
+
+  consToday(): void {
+    const now = new Date();
+    const start = new Date(now);
+    start.setHours(0, 0, 0, 0);
+    this.applyConsWindow(this.consFmt(start), this.consFmt(now));
+  }
+
+  consLastWeek(): void {
+    const now = new Date();
+    const from = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    this.applyConsWindow(this.consFmt(from), this.consFmt(now));
+  }
+
+  consLastMonth(): void {
+    const now = new Date();
+    const from = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    this.applyConsWindow(this.consFmt(from), this.consFmt(now));
+  }
+
+  consAllTime(): void {
+    this.applyConsWindow(undefined, undefined);
+  }
+
+  consGoToPage(n: number): void {
+    if (n < 1 || n > this.consTotalPages || n === this.consCurrentPage) return;
+    this.consCurrentPage = n;
+    this.expandedConsId = null;
+    this.loadConsumptions();
+  }
+
+  onConsWindowEdit(): void {
+    this.consCurrentPage = 1;
+    this.loadConsumptions();
+  }
+
+  get consTotalPages(): number { return Math.ceil(this.consTotalElements / this.consPageSize); }
+
+  private applyConsWindow(from?: string, to?: string): void {
+    this.consFrom = from;
+    this.consTo = to;
+    this.consCurrentPage = 1;
+    this.loadConsumptions();
+  }
+
+  private isConsRangeValid(): boolean {
+    if (!this.consFrom || !this.consTo) return true;
+    const ms = new Date(this.consTo).getTime() - new Date(this.consFrom).getTime();
+    return ms <= this.CONS_MAX_RANGE_DAYS * 24 * 60 * 60 * 1000;
+  }
+
+  private consFmt(d: Date): string {
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
   }
 
   toggleCon(id: number): void {
@@ -140,13 +233,21 @@ export class PartnersComponent {
   }
 
   // Pagination helpers
-  get totalPages(): number { return Math.ceil(this.results.length / this.pageSize); }
+  get totalPages(): number {
+    const total = this.mode === 'all' ? this.totalElements : this.results.length;
+    return Math.ceil(total / this.pageSize);
+  }
   get pagedResults(): PartnerProfile[] {
+    if (this.mode === 'all') return this.results;
     const start = (this.currentPage - 1) * this.pageSize;
     return this.results.slice(start, start + this.pageSize);
   }
-  get pageNumbers(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
-  goToPage(n: number): void { if (n >= 1 && n <= this.totalPages) this.currentPage = n; }
+  get resultCount(): number { return this.mode === 'all' ? this.totalElements : this.results.length; }
+  goToPage(n: number): void {
+    if (n < 1 || n > this.totalPages || n === this.currentPage) return;
+    this.currentPage = n;
+    if (this.mode === 'all') this.loadAllPage(n - 1);
+  }
 
   fullName(p: PartnerProfile): string {
     return [p.firstName, p.secondName, p.lastName].filter(Boolean).join(' ');

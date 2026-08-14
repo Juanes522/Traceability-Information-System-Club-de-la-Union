@@ -92,3 +92,45 @@ export interface NavItem {
   icon: string;
   route: string;
 }
+
+export interface AuditEvent {
+  id: string;
+  timestamp: string;
+  eventType: string;
+  result: string;
+  username: string | null;
+  ipAddress: string | null;
+  detail: string | null;
+  targetId: string | null;
+}
+
+export interface AuditPage {
+  content: AuditEvent[];
+  totalElements: number;
+  number: number;
+  size: number;
+}
+
+export interface AuditFilters {
+  username?: string;
+  eventType?: string;
+  result?: string;
+  from?: string;
+  to?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface PartnerPage {
+  content: PartnerProfile[];
+  totalElements: number;
+  number: number;
+  size: number;
+}
+
+export interface ConsumptionPage {
+  content: Consumption[];
+  totalElements: number;
+  number: number;
+  size: number;
+}

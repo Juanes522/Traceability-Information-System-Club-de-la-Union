@@ -25,12 +25,14 @@ class AuthControllerLogoutTest {
 
     private JwtUtil jwtUtil;
     private TokenBlacklistService tokenBlacklist;
+    private co.unbosque.service.AuditService auditService;
     private AuthController controller;
 
     @BeforeEach
     void setUp() {
         jwtUtil = mock(JwtUtil.class);
         tokenBlacklist = mock(TokenBlacklistService.class);
+        auditService = mock(co.unbosque.service.AuditService.class);
         controller = new AuthController(
                 mock(AuthenticationManager.class),
                 mock(UserDetailsService.class),
@@ -40,7 +42,8 @@ class AuthControllerLogoutTest {
                 mock(PasswordResetTokenRepository.class),
                 mock(EmailService.class),
                 mock(RateLimitService.class),
-                tokenBlacklist);
+                tokenBlacklist,
+                auditService);
     }
 
     @Test
@@ -57,6 +60,27 @@ class AuthControllerLogoutTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(tokenBlacklist).revoke("jti-xyz",
                 expiry.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+    }
+
+    @Test
+    void logout_recordsLogoutEventWithUsernameFromToken() {
+        Date expiry = new Date(System.currentTimeMillis() + 3600000);
+        when(jwtUtil.extractJti("token-xyz")).thenReturn("jti-xyz");
+        when(jwtUtil.extractExpiration("token-xyz")).thenReturn(expiry);
+        when(jwtUtil.extractUsername("token-xyz")).thenReturn("123456789");
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer token-xyz");
+
+        controller.logout(request);
+
+        verify(auditService).record(
+                org.mockito.ArgumentMatchers.eq(co.unbosque.model.AuditEventType.LOGOUT),
+                org.mockito.ArgumentMatchers.eq(co.unbosque.model.AuditResult.SUCCESS),
+                org.mockito.ArgumentMatchers.eq("123456789"),
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.any());
     }
 
     @Test

@@ -31,6 +31,9 @@ public class SecurityConfig {
 	@Autowired
 	private RateLimitFilter rateLimitFilter;
 
+	@Autowired
+	private AuditAccessDeniedHandler auditAccessDeniedHandler;
+
 	@Bean
 	@SuppressWarnings("deprecation")
 	public PasswordEncoder passwordEncoder() {
@@ -71,6 +74,7 @@ public class SecurityConfig {
 						.httpStrictTransportSecurity(hsts -> hsts
 								.includeSubDomains(true)
 								.maxAgeInSeconds(31536000)))
+				.exceptionHandling(ex -> ex.accessDeniedHandler(auditAccessDeniedHandler))
 				.authorizeHttpRequests(authz -> authz
 						
 						.requestMatchers("/auth/**").permitAll()

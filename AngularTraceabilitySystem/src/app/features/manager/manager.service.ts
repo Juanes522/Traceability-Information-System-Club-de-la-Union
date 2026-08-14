@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { Consumption, PartnerProfile } from '../../shared/models/index';
+import { Consumption, PartnerProfile, ConsumptionPage } from '../../shared/models/index';
 
 export interface ConsumptionCreateRequest {
   partnerId: number;
@@ -46,8 +46,11 @@ export class ManagerService {
     return this.http.get<PartnerProfile[]>(`${API_BASE}/personpartner/getbysecondname/${name}`);
   }
 
-  getConsumptionsByIdentification(identification: string): Observable<Consumption[]> {
-    return this.http.get<Consumption[]>(`${API_BASE}/personpartner/getconsumptionsidentification/${identification}`);
+  getConsumptionsByIdentification(identification: string, filters: { from?: string; to?: string; page: number; size: number }): Observable<ConsumptionPage> {
+    let params = new HttpParams().set('page', String(filters.page)).set('size', String(filters.size));
+    if (filters.from) { params = params.set('from', filters.from); }
+    if (filters.to) { params = params.set('to', filters.to); }
+    return this.http.get<ConsumptionPage>(`${API_BASE}/personpartner/getconsumptionsidentification/${identification}`, { params });
   }
 
   // ── Consumption management ─────────────────────────────────────────────────
@@ -55,7 +58,10 @@ export class ManagerService {
     return this.http.post<Consumption>(`${API_BASE}/partnerconsumption/registerconsumption`, req);
   }
 
-  getConsumptionsByEnvironment(env: string): Observable<Consumption[]> {
-    return this.http.get<Consumption[]>(`${API_BASE}/partnerconsumption/by-environment/${encodeURIComponent(env)}`);
+  getConsumptionsByEnvironment(env: string, filters: { from?: string; to?: string; page: number; size: number }): Observable<ConsumptionPage> {
+    let params = new HttpParams().set('page', String(filters.page)).set('size', String(filters.size));
+    if (filters.from) { params = params.set('from', filters.from); }
+    if (filters.to) { params = params.set('to', filters.to); }
+    return this.http.get<ConsumptionPage>(`${API_BASE}/partnerconsumption/by-environment/${encodeURIComponent(env)}`, { params });
   }
 }

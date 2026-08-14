@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { PartnerProfile, Consumption, NotificationDTO } from '../../shared/models/index';
+import { PartnerProfile, Consumption, NotificationDTO, ConsumptionPage } from '../../shared/models/index';
 
 @Injectable()
 export class PartnerService {
@@ -12,8 +12,11 @@ export class PartnerService {
     return this.http.get<PartnerProfile>(`${API_BASE}/personpartner/me`);
   }
 
-  getConsumptions(): Observable<Consumption[]> {
-    return this.http.get<Consumption[]>(`${API_BASE}/personpartner/getconsumptions/me`);
+  getConsumptions(filters: { from?: string; to?: string; page: number; size: number }): Observable<ConsumptionPage> {
+    let params = new HttpParams().set('page', String(filters.page)).set('size', String(filters.size));
+    if (filters.from) { params = params.set('from', filters.from); }
+    if (filters.to) { params = params.set('to', filters.to); }
+    return this.http.get<ConsumptionPage>(`${API_BASE}/personpartner/getconsumptions/me`, { params });
   }
 
   getNotifications(): Observable<NotificationDTO[]> {

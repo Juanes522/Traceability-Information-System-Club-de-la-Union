@@ -102,10 +102,20 @@
 
     <!-- CONSUMPTIONS TAB -->
     <ng-container *ngIf="activeTab === 'consumptions'">
+      <div class="preset-bar">
+        <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+        <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+        <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+        <button type="button" class="preset-btn" (click)="allTime()">Todo</button>
+        <input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" />
+        <input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" />
+      </div>
+      <div class="range-error" *ngIf="rangeError"><i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.</div>
+      <div class="range-error" *ngIf="consError"><i class="bi bi-exclamation-circle"></i> No se pudieron cargar los consumos.</div>
       <div *ngIf="loadingCons" class="empty-tab">
         <div class="spinner-border spinner-gold"></div>
       </div>
-      <div *ngIf="!loadingCons && consumptions.length === 0" class="empty-tab">
+      <div *ngIf="!loadingCons && !consError && consumptions.length === 0" class="empty-tab">
         <i class="bi bi-receipt"></i>
         <p>Este socio no tiene consumos registrados.</p>
       </div>
@@ -154,6 +164,7 @@
           </tbody>
         </table>
       </div>
+      <app-paginator *ngIf="!loadingCons && consumptions.length" [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="goToPage($event)"></app-paginator>
     </ng-container>
 
   </div><!-- /tab-content -->

@@ -1,11 +1,9 @@
-/* ===== PAGE SHELL ===== */
 .dependents-page {
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
-/* ===== PAGE HEADER ===== */
 .page-header {
   background: #212529;
   padding: 1.5rem 2rem 1.25rem;
@@ -38,14 +36,12 @@
   white-space: nowrap;
 }
 
-/* ===== CONTENT AREA ===== */
 .page-content {
   flex: 1;
   padding: 1.75rem 2rem;
   background: #f8f9fa;
 }
 
-/* ===== DEPENDENT LIST ===== */
 .dep-list {
   background: #fff;
   border-radius: 10px;
@@ -61,11 +57,15 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   transition: background 0.15s ease;
 
-  &:last-child { border-bottom: none; }
-  &:hover { background: #f8f9fa; }
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: #f8f9fa;
+  }
 }
 
-/* ===== AVATAR ===== */
 .dep-avatar {
   width: 44px;
   height: 44px;
@@ -86,7 +86,6 @@
   }
 }
 
-/* ===== DEPENDENT INFO ===== */
 .dep-info {
   flex: 1;
   min-width: 0;
@@ -123,7 +122,6 @@
   color: #868e96;
 }
 
-/* ===== STATUS BADGE ===== */
 .dep-badge {
   display: inline-flex;
   align-items: center;
@@ -148,17 +146,23 @@
   }
 }
 
-/* ===== EMPTY STATE ===== */
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
   color: #adb5bd;
 
-  i { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
-  p { font-size: 0.9rem; margin: 0; }
+  i {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
 }
 
-/* ===== LOADING ===== */
 .loading-wrap {
   display: flex;
   justify-content: center;
@@ -167,13 +171,24 @@
   flex: 1;
 }
 
-.spinner-gold { color: #c7a567; }
+.spinner-gold {
+  color: #c7a567;
+}
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 575px) {
-  .page-header  { padding: 1rem; }
-  .page-title   { font-size: 1rem; }
-  .page-content { padding: 1rem; }
+  .page-header {
+    padding: 1rem;
+  }
 
-  .dep-name { font-size: 0.875rem; }
+  .page-title {
+    font-size: 1rem;
+  }
+
+  .page-content {
+    padding: 1rem;
+  }
+
+  .dep-name {
+    font-size: 0.875rem;
+  }
 }

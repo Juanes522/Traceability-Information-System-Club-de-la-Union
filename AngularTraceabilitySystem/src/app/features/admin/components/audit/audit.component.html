@@ -1,0 +1,102 @@
+<section class="audit-page">
+  <header class="page-header">
+    <h1 class="page-title">Auditoría</h1>
+    <span class="result-count" *ngIf="!loading && events.length">{{ totalElements }} evento(s)</span>
+    <div class="refresh-controls">
+      <span class="last-updated" *ngIf="lastUpdated">Actualizado {{ lastUpdated | date: 'HH:mm:ss' }}</span>
+      <label class="auto-toggle">
+        <input type="checkbox" [checked]="autoRefresh" (change)="toggleAutoRefresh()" /> Auto
+      </label>
+      <button type="button" class="btn-refresh" (click)="refreshNow()">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar ahora
+      </button>
+    </div>
+  </header>
+
+  <div class="preset-bar">
+    <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+    <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+    <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+    <button type="button" class="preset-btn" (click)="allTime()">Todo</button>
+  </div>
+
+  <form class="search-toolbar" (ngSubmit)="search()">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" name="username" placeholder="Identificación" [(ngModel)]="filters.username" />
+    </div>
+
+    <select class="filter-select" name="eventType" [(ngModel)]="filters.eventType">
+      <option value="">Tipo: todos</option>
+      <option *ngFor="let t of eventTypes" [value]="t">{{ t }}</option>
+    </select>
+
+    <select class="filter-select" name="result" [(ngModel)]="filters.result">
+      <option value="">Resultado: todos</option>
+      <option *ngFor="let r of results" [value]="r">{{ r }}</option>
+    </select>
+
+    <input class="filter-date" type="datetime-local" name="from" [(ngModel)]="filters.from" />
+    <input class="filter-date" type="datetime-local" name="to" [(ngModel)]="filters.to" />
+
+    <button type="submit" class="btn-search">
+      <i class="bi bi-funnel"></i> Buscar
+    </button>
+  </form>
+
+  <div class="range-error" *ngIf="rangeError">
+    <i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Resultado</th>
+          <th>Identificación</th>
+          <th>IP</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="data-row" *ngFor="let e of events">
+          <td class="nowrap num">{{ e.timestamp | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td><span class="type-tag">{{ e.eventType }}</span></td>
+          <td>
+            <span class="result-badge"
+                  [class.ok]="e.result === 'SUCCESS'"
+                  [class.fail]="e.result === 'FAILURE'">
+              <span class="dot"></span>{{ e.result === 'SUCCESS' ? 'Éxito' : 'Fallo' }}
+            </span>
+          </td>
+          <td class="num">{{ e.username || '—' }}</td>
+          <td class="muted">{{ e.ipAddress || '—' }}</td>
+          <td class="detail-cell">{{ e.detail }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="loading-wrap" *ngIf="loading">
+      <div class="spinner-border spinner-gold" role="status"><span class="visually-hidden">Cargando…</span></div>
+    </div>
+
+    <div class="error-state" *ngIf="!loading && error">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>No se pudieron cargar los registros.</p>
+      <p class="hint">Verifica que el servicio de auditoría esté disponible e intenta de nuevo.</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && !error && !events.length">
+      <i class="bi bi-clipboard-x"></i>
+      <p>Sin eventos.</p>
+      <p class="hint">Ajusta los filtros o realiza acciones en el sistema para generar registros.</p>
+    </div>
+
+    <app-paginator *ngIf="!loading && !error && events.length"
+                   [currentPage]="(filters.page || 0) + 1"
+                   [totalPages]="totalPages"
+                   (pageChange)="goToPage($event)"></app-paginator>
+  </div>
+</section>

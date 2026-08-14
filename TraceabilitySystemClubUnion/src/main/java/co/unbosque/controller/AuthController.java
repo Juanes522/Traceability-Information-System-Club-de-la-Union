@@ -10,10 +10,15 @@ import co.unbosque.dto.AuthResponse;
 import co.unbosque.dto.ChangePasswordRequest;
 import co.unbosque.dto.ForgotPasswordRequest;
 import co.unbosque.dto.ResetPasswordRequest;
+import co.unbosque.model.AuditEventType;
+import co.unbosque.model.AuditResult;
 import co.unbosque.model.PasswordResetToken;
 import co.unbosque.model.PersonPartner;
 import co.unbosque.repository.PasswordResetTokenRepository;
+import co.unbosque.security.HttpRequestUtils;
 import co.unbosque.security.JwtUtil;
+import co.unbosque.security.PiiMasking;
+import co.unbosque.service.AuditService;
 import co.unbosque.service.EmailService;
 import co.unbosque.service.PersonPartnerService;
 import co.unbosque.service.RateLimitService;
@@ -46,11 +51,12 @@ public class AuthController {
 	private final EmailService emailService;
 	private final RateLimitService rateLimitService;
 	private final TokenBlacklistService tokenBlacklistService;
+	private final AuditService auditService;
 
 	public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService,
 			JwtUtil jwtUtil, PersonPartnerService personPartnerService, PasswordEncoder passwordEncoder,
 			PasswordResetTokenRepository tokenRepo, EmailService emailService, RateLimitService rateLimitService,
-			TokenBlacklistService tokenBlacklistService) {
+			TokenBlacklistService tokenBlacklistService, AuditService auditService) {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 		this.jwtUtil = jwtUtil;
@@ -60,11 +66,15 @@ public class AuthController {
 		this.emailService = emailService;
 		this.rateLimitService = rateLimitService;
 		this.tokenBlacklistService = tokenBlacklistService;
+		this.auditService = auditService;
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequest authRequest) {
+		String ip = HttpRequestUtils.currentClientIp();
 		if (rateLimitService.isUserBlocked(authRequest.getIdentification())) {
+			auditService.record(AuditEventType.RATE_LIMIT_BLOCK, AuditResult.FAILURE,
+					authRequest.getIdentification(), ip, "Bloqueo por intentos", null);
 			return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
 					.body("Demasiados intentos. Intente de nuevo más tarde.");
 		}
@@ -73,9 +83,13 @@ public class AuthController {
 					authRequest.getPassword()));
 		} catch (Exception e) {
 			rateLimitService.registerFailedLogin(authRequest.getIdentification());
+			auditService.record(AuditEventType.LOGIN_FAILED, AuditResult.FAILURE,
+					authRequest.getIdentification(), ip, "Credenciales incorrectas", null);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
 		}
 		rateLimitService.resetUserFailures(authRequest.getIdentification());
+		auditService.record(AuditEventType.LOGIN_SUCCESS, AuditResult.SUCCESS,
+				authRequest.getIdentification(), ip, "Inicio de sesión", null);
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getIdentification());
 		final String jwt = jwtUtil.generateToken(userDetails);
@@ -105,22 +119,31 @@ public class AuthController {
 		titular.setForcePasswordChange(false);
 		personPartnerService.savePartner(titular);
 
+		auditService.record(AuditEventType.PASSWORD_CHANGED, AuditResult.SUCCESS,
+				identification, HttpRequestUtils.currentClientIp(), "Cambio de contraseña", null);
+
 		return ResponseEntity.ok("Contraseña cambiada exitosamente.");
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
+		String username = null;
 		if (header != null && header.startsWith("Bearer ")) {
 			String jwt = header.substring(7);
 			try {
+				username = jwtUtil.extractUsername(jwt);
 				String jti = jwtUtil.extractJti(jwt);
 				Date expiration = jwtUtil.extractExpiration(jwt);
 				tokenBlacklistService.revoke(jti,
 						expiration.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+				auditService.record(AuditEventType.TOKEN_REVOKED, AuditResult.SUCCESS,
+						username, HttpRequestUtils.currentClientIp(), "Token revocado", null);
 			} catch (Exception e) {
 			}
 		}
+		auditService.record(AuditEventType.LOGOUT, AuditResult.SUCCESS, username,
+				HttpRequestUtils.currentClientIp(), "Cierre de sesión", null);
 		return ResponseEntity.ok("Sesión cerrada.");
 	}
 
@@ -143,6 +166,10 @@ public class AuthController {
 			}
 		}
 
+		auditService.record(AuditEventType.PASSWORD_RESET_REQUESTED, AuditResult.SUCCESS,
+				PiiMasking.maskEmail(request.getEmail()), HttpRequestUtils.currentClientIp(),
+				"Solicitud de recuperación", null);
+
 		return ResponseEntity.ok("Si el correo existe en nuestro sistema, recibirás las instrucciones en breve.");
 	}
 
@@ -161,6 +188,9 @@ public class AuthController {
 		personPartnerService.savePartner(partner);
 
 		tokenRepo.delete(resetToken);
+
+		auditService.record(AuditEventType.PASSWORD_RESET, AuditResult.SUCCESS,
+				partner.getIdentification(), HttpRequestUtils.currentClientIp(), "Restablecimiento de contraseña", null);
 
 		return ResponseEntity.ok("Contraseña restablecida exitosamente.");
 	}
