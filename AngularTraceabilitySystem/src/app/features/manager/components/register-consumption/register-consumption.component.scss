@@ -17,7 +17,7 @@
   }
 
   .subtitle {
-    color: rgba(255,255,255,.45);
+    color: rgba(255, 255, 255, .45);
     font-size: 0.8rem;
     margin-top: 2px;
   }
@@ -32,22 +32,24 @@
   gap: 1.5rem;
 }
 
-/* ── Step 1: find partner ── */
 .find-card {
   background: #fff;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,.07);
+  border: 1px solid rgba(0, 0, 0, .07);
   overflow: hidden;
 }
 
 .card-heading {
   padding: 0.8rem 1.25rem;
-  border-bottom: 1px solid rgba(0,0,0,.06);
+  border-bottom: 1px solid rgba(0, 0, 0, .06);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 
-  i { color: #c7a567; font-size: 0.9rem; }
+  i {
+    color: #c7a567;
+    font-size: 0.9rem;
+  }
 
   span {
     font-size: 0.68rem;
@@ -90,8 +92,13 @@
     transition: border-color 0.15s;
     width: 100%;
 
-    &:focus { border-color: #c7a567; }
-    &::placeholder { color: #adb5bd; }
+    &:focus {
+      border-color: #c7a567;
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
   }
 }
 
@@ -110,8 +117,14 @@
   white-space: nowrap;
   transition: background 0.15s;
 
-  &:hover:not(:disabled) { background: #343a40; }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: #343a40;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 /* ── Partner found chip ── */
@@ -144,8 +157,17 @@
   flex: 1;
   min-width: 0;
 
-  .chip-name { font-weight: 600; font-size: 0.9rem; color: #065f46; }
-  .chip-meta { font-size: 0.75rem; color: #6c757d; margin-top: 1px; }
+  .chip-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #065f46;
+  }
+
+  .chip-meta {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 1px;
+  }
 }
 
 .btn-clear {
@@ -158,14 +180,16 @@
   border-radius: 4px;
   transition: color 0.15s, background 0.15s;
 
-  &:hover { color: #ef4444; background: #fee2e2; }
+  &:hover {
+    color: #ef4444;
+    background: #fee2e2;
+  }
 }
 
-/* ── Consumption form ── */
 .form-card {
   background: #fff;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,.07);
+  border: 1px solid rgba(0, 0, 0, .07);
   overflow: hidden;
 }
 
@@ -175,7 +199,9 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-field {
@@ -199,11 +225,21 @@
     outline: none;
     transition: border-color 0.15s;
 
-    &:focus { border-color: #c7a567; }
-    &.invalid { border-color: #ef4444; }
-    &::placeholder { color: #adb5bd; }
+    &:focus {
+      border-color: #c7a567;
+    }
 
-    &[type="number"] { font-variant-numeric: tabular-nums; }
+    &.invalid {
+      border-color: #ef4444;
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+
+    &[type="number"] {
+      font-variant-numeric: tabular-nums;
+    }
   }
 }
 
@@ -212,7 +248,6 @@
   color: #ef4444;
 }
 
-/* ── Total summary ── */
 .total-row {
   margin: 0 1.25rem 1.25rem;
   background: #fffdf7;
@@ -224,11 +259,19 @@
   justify-content: space-between;
   font-size: 0.875rem;
 
-  .total-label { color: #6c757d; font-weight: 600; }
-  .total-amount { color: #c7a567; font-weight: 800; font-size: 1rem; font-variant-numeric: tabular-nums; }
+  .total-label {
+    color: #6c757d;
+    font-weight: 600;
+  }
+
+  .total-amount {
+    color: #c7a567;
+    font-weight: 800;
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* ── Submit ── */
 .form-footer {
   padding: 0 1.25rem 1.25rem;
 }
@@ -247,14 +290,31 @@
   gap: 0.5rem;
   transition: background 0.15s, transform 0.1s;
 
-  &:hover:not(:disabled) { background: #d4b06a; transform: translateY(-1px); }
-  &:active:not(:disabled) { transform: translateY(0); }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: #d4b06a;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
-.spinner-gold { color: #c7a567; }
+.spinner-gold {
+  color: #c7a567;
+}
 
 @media (max-width: 575px) {
-  .page-header { padding: 1rem; }
-  .page-content { padding: 1rem; }
+  .page-header {
+    padding: 1rem;
+  }
+
+  .page-content {
+    padding: 1rem;
+  }
 }

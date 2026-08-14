@@ -3,17 +3,22 @@ package co.unbosque.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.unbosque.dto.ConsumptionCreateRequest;
 import co.unbosque.dto.NotificationDTO;
+import co.unbosque.model.AuditEventType;
+import co.unbosque.model.AuditResult;
 import co.unbosque.model.Notification;
 import co.unbosque.model.PartnerConsumption;
 import co.unbosque.model.PersonPartner;
 import co.unbosque.repository.NotificationRepository;
 import co.unbosque.repository.PartnerConsumptionRepository;
 import co.unbosque.repository.PersonPartnerRepository;
+import co.unbosque.security.HttpRequestUtils;
 
 @Service
 @Transactional
@@ -24,17 +29,20 @@ public class PartnerConsumptionService {
     private final NotificationRepository notRepo;
     private final PushNotificationService pushService;
     private final EmailService emailService;
+    private final AuditService auditService;
 
     public PartnerConsumptionService(PartnerConsumptionRepository consumptionRepo,
                                      PersonPartnerRepository partnerRepo,
                                      NotificationRepository notRepo,
                                      PushNotificationService pushService,
-                                     EmailService emailService) {
+                                     EmailService emailService,
+                                     AuditService auditService) {
         this.consumptionRepo = consumptionRepo;
         this.partnerRepo     = partnerRepo;
         this.notRepo         = notRepo;
         this.pushService     = pushService;
         this.emailService    = emailService;
+        this.auditService    = auditService;
     }
 
     public PartnerConsumption register(ConsumptionCreateRequest req) {
@@ -86,12 +94,31 @@ public class PartnerConsumptionService {
         pushService.sendToPartner(partner.getIdentification(), title, body);
         emailService.sendConsumptionNotificationEmail(partner, saved, total);
 
+        auditService.record(AuditEventType.CHARGE_REGISTERED, AuditResult.SUCCESS,
+                partner.getIdentification(), HttpRequestUtils.currentClientIp(),
+                String.format("Cargo de $%.2f en %s", total, req.getEnviroment()),
+                String.valueOf(saved.getConsumptionId()));
+
         return saved;
     }
 
     public List<PartnerConsumption> getByEnviroment(String enviroment) {
         List<PartnerConsumption> list = consumptionRepo.findByEnviroment(enviroment);
         return list.isEmpty() ? null : list;
+    }
+
+    public Page<PartnerConsumption> getByEnviromentPaged(String env, LocalDateTime from, LocalDateTime to, Pageable pageable) {
+        if (from != null && to != null) {
+            return consumptionRepo.findByEnviromentAndConsumptionOpeningBetween(env, from, to, pageable);
+        }
+        return consumptionRepo.findByEnviroment(env, pageable);
+    }
+
+    public Page<PartnerConsumption> getByPartnerPaged(Long personId, LocalDateTime from, LocalDateTime to, Pageable pageable) {
+        if (from != null && to != null) {
+            return consumptionRepo.findByPartnerPersonIdAndConsumptionOpeningBetween(personId, from, to, pageable);
+        }
+        return consumptionRepo.findByPartnerPersonId(personId, pageable);
     }
 
     public List<PartnerConsumption> getByPartnerId(Long partnerPersonId) {

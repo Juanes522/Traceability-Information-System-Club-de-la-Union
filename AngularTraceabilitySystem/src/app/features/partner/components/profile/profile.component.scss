@@ -1,11 +1,9 @@
-/* ===== PAGE SHELL ===== */
 .profile-page {
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
-/* ===== PAGE HEADER ===== */
 .page-header {
   background: #212529;
   padding: 1.75rem 2rem 1.5rem;
@@ -58,18 +56,25 @@
   border-radius: 99px;
   white-space: nowrap;
 
-  &.active   { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-  &.inactive { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  &.active {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+  }
+
+  &.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+  }
 }
 
-/* ===== CONTENT AREA ===== */
 .profile-content {
   flex: 1;
   padding: 2rem;
   background: #f8f9fa;
 }
 
-/* ===== GRID ===== */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -82,7 +87,6 @@
   }
 }
 
-/* ===== SECTION ===== */
 .info-section {
   background: #ffffff;
   border-radius: 10px;
@@ -98,7 +102,10 @@
   align-items: center;
   gap: 0.5rem;
 
-  i { color: #c7a567; font-size: 0.9rem; }
+  i {
+    color: #c7a567;
+    font-size: 0.9rem;
+  }
 
   span {
     font-size: 0.68rem;
@@ -109,7 +116,6 @@
   }
 }
 
-/* ===== INFO ROW ===== */
 .info-row {
   display: grid;
   grid-template-columns: 36px 1fr;
@@ -118,7 +124,9 @@
   padding: 0.85rem 1.25rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 
   .row-icon {
     color: #adb5bd;
@@ -126,7 +134,7 @@
     padding-top: 2px;
   }
 
-  .row-content { }
+  .row-content {}
 
   .row-label {
     font-size: 0.68rem;
@@ -150,7 +158,6 @@
     font-weight: 700;
   }
 
-  /* email list */
   .email-list {
     display: flex;
     flex-direction: column;
@@ -158,7 +165,6 @@
   }
 }
 
-/* ===== LOADING / ERROR ===== */
 .loading-wrap {
   display: flex;
   justify-content: center;
@@ -170,7 +176,6 @@
   color: #c7a567;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 575px) {
   .page-header {
     padding: 1.25rem 1rem;
@@ -183,9 +188,15 @@
     font-size: 1rem;
   }
 
-  .page-header-text .name { font-size: 1.1rem; }
+  .page-header-text .name {
+    font-size: 1.1rem;
+  }
 
-  .status-badge { display: none; } /* moved below in mobile layout */
+  .status-badge {
+    display: none;
+  }
 
-  .profile-content { padding: 1rem; }
+  .profile-content {
+    padding: 1rem;
+  }
 }

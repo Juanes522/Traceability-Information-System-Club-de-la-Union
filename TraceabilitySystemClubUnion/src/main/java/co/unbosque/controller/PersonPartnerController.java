@@ -1,14 +1,21 @@
 package co.unbosque.controller;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import co.unbosque.dto.NotificationDTO;
-import co.unbosque.model.PartnerConsumption;
 import co.unbosque.model.PersonPartner;
 import co.unbosque.service.PartnerConsumptionService;
 import co.unbosque.service.PersonPartnerService;
@@ -81,6 +88,16 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partners, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getallpaged")
+	public ResponseEntity<Page<PersonPartner>> getAllPaged(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		int safePage = Math.max(page, 0);
+		int safeSize = Math.min(Math.max(size, 1), 100);
+		return new ResponseEntity<>(partnerServ.getAllPaged(PageRequest.of(safePage, safeSize)), HttpStatus.OK);
+	}
+
 	@GetMapping(path = "/me")
 	public ResponseEntity<PersonPartner> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -98,36 +115,48 @@ public class PersonPartnerController {
 	}
 
 	@GetMapping(path = "/getconsumptions/me")
-	public ResponseEntity<List<PartnerConsumption>> getMyConsumptions() {
+	public ResponseEntity<?> getMyConsumptions(
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null || !auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+		if (from != null && to != null && ChronoUnit.DAYS.between(from, to) > 92) {
+			return ResponseEntity.badRequest().body(Map.of("message", "El rango no puede superar 3 meses"));
 		}
 		String identification = ((UserDetails) auth.getPrincipal()).getUsername();
 		PersonPartner partner = partnerServ.getByIdentification(identification);
 		if (partner == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
-		List<PartnerConsumption> consumptions = partnerServ.getByComsuption(partner.getPersonId());
-
-		if (consumptions == null || consumptions.isEmpty()) {
-			return new ResponseEntity<>(consumptions, HttpStatus.NO_CONTENT);
-		}
-
-		return new ResponseEntity<>(consumptions, HttpStatus.OK);
+		int safePage = Math.max(page, 0);
+		int safeSize = Math.min(Math.max(size, 1), 100);
+		Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by(Sort.Direction.DESC, "consumptionOpening"));
+		return ResponseEntity.ok(consumptionServ.getByPartnerPaged(partner.getPersonId(), from, to, pageable));
 	}
 
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping(path = "/getconsumptionsidentification/{identification}")
-	public ResponseEntity<List<PartnerConsumption>> getConsumptionsByIdentification(
-			@PathVariable String identification) {
-		PersonPartner titular = partnerServ.getByIdentification(identification);
-		List<PartnerConsumption> consumptions = titular.getConsumptions();
-		if (consumptions == null || consumptions.isEmpty()) {
-			return new ResponseEntity<>(consumptions, HttpStatus.NO_CONTENT);
+	public ResponseEntity<?> getConsumptionsByIdentification(
+			@PathVariable String identification,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		if (from != null && to != null && ChronoUnit.DAYS.between(from, to) > 92) {
+			return ResponseEntity.badRequest().body(Map.of("message", "El rango no puede superar 3 meses"));
 		}
-		return new ResponseEntity<>(consumptions, HttpStatus.OK);
+		PersonPartner titular = partnerServ.getByIdentification(identification);
+		if (titular == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		int safePage = Math.max(page, 0);
+		int safeSize = Math.min(Math.max(size, 1), 100);
+		Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by(Sort.Direction.DESC, "consumptionOpening"));
+		return ResponseEntity.ok(consumptionServ.getByPartnerPaged(titular.getPersonId(), from, to, pageable));
 	}
 
 	@GetMapping("/notifications/me")

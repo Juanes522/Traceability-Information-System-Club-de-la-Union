@@ -6,6 +6,7 @@ import { PartnerProfile } from '../../../../shared/models';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PartnerDetailComponent } from '../partner-detail/partner-detail.component';
+import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
 
@@ -20,6 +21,7 @@ type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName'
         FormsModule,
         NgClass,
         PartnerDetailComponent,
+        PaginatorComponent,
     ],
 })
 export class PartnerSearchComponent implements OnInit {
@@ -124,7 +126,6 @@ export class PartnerSearchComponent implements OnInit {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.results.slice(start, start + this.pageSize);
   }
-  get pageNumbers(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
   goToPage(n: number): void { if (n >= 1 && n <= this.totalPages) this.currentPage = n; }
 
   fullName(p: PartnerProfile): string {

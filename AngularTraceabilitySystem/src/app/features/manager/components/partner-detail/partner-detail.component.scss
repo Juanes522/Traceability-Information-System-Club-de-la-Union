@@ -1,11 +1,9 @@
-/* ===== DETAIL PAGE ===== */
 .detail-page {
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
-/* ===== HEADER ===== */
 .detail-header {
   background: #212529;
   padding: 1.25rem 2rem;
@@ -90,7 +88,6 @@
   }
 }
 
-/* ===== TABS ===== */
 .tab-bar {
   background: #fff;
   border-bottom: 2px solid #e9ecef;
@@ -126,7 +123,6 @@
   }
 }
 
-/* ===== TAB CONTENT ===== */
 .tab-content {
   flex: 1;
   background: #f8f9fa;
@@ -134,7 +130,6 @@
   padding: 1.5rem;
 }
 
-/* ===== PROFILE TAB ===== */
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -213,7 +208,6 @@
   }
 }
 
-/* ===== DEPENDENTS TAB ===== */
 .dep-table {
   width: 100%;
   border-collapse: collapse;
@@ -282,7 +276,6 @@
   }
 }
 
-/* ===== CONSUMPTIONS TAB ===== */
 .cons-table {
   width: 100%;
   border-collapse: collapse;
@@ -437,7 +430,6 @@
   }
 }
 
-/* ===== EMPTY / LOADING ===== */
 .empty-tab {
   text-align: center;
   padding: 3rem 2rem;
@@ -459,7 +451,6 @@
   color: #c7a567;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 575px) {
   .detail-header {
     padding: 1rem;
@@ -479,4 +470,58 @@
   .tab-content {
     padding: 1rem;
   }
+}
+
+.preset-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.6rem 0 0.9rem;
+}
+
+.preset-btn {
+  border: 1px solid #dee2e6;
+  border-radius: 99px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #212529;
+    border-color: #212529;
+    color: #fff;
+  }
+}
+
+.filter-date {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #dee2e6;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  color: #495057;
+  background: #f8f9fa;
+  outline: none;
+
+  &:focus {
+    border-color: #c7a567;
+    background: #fff;
+  }
+}
+
+.range-error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 600;
 }

@@ -1,0 +1,12 @@
+<div class="pagination" *ngIf="totalPages > 1">
+  <button type="button" class="page-btn" [disabled]="currentPage === 1" (click)="prev()">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+  <ng-container *ngFor="let p of pages">
+    <button type="button" class="page-btn" *ngIf="isNumber(p)" [class.active]="p === currentPage" (click)="go(p)">{{ p }}</button>
+    <span class="page-ellipsis" *ngIf="!isNumber(p)">…</span>
+  </ng-container>
+  <button type="button" class="page-btn" [disabled]="currentPage === totalPages" (click)="next()">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+</div>

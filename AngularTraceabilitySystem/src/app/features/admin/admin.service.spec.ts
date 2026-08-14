@@ -18,9 +18,10 @@ describe('AdminService', () => {
 
   afterEach(() => http.verify());
 
-  it('getAllPartners hace GET a la URL correcta', () => {
-    service.getAllPartners().subscribe();
-    http.expectOne(`${API_BASE}/personpartner/getall`).flush([]);
+  it('getAllPartners hace GET a la URL paginada', () => {
+    service.getAllPartners(2, 10).subscribe();
+    http.expectOne(`${API_BASE}/personpartner/getallpaged?page=2&size=10`)
+      .flush({ content: [], totalElements: 0, number: 2, size: 10 });
   });
 
   it('searchByIdentification hace GET a la URL correcta', () => {
@@ -33,9 +34,19 @@ describe('AdminService', () => {
     http.expectOne(`${API_BASE}/personpartner/getbysharenumber/42`).flush([]);
   });
 
-  it('getConsumptionsByEnvironment hace GET a la URL correcta', () => {
-    service.getConsumptionsByEnvironment('Restaurante').subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/by-environment/Restaurante`).flush([]);
+  it('getConsumptionsByIdentification hace GET a la URL paginada', () => {
+    service.getConsumptionsByIdentification('123', { from: '2026-08-01T00:00', to: '2026-08-08T00:00', page: 0, size: 10 }).subscribe();
+    const req = http.expectOne(
+      `${API_BASE}/personpartner/getconsumptionsidentification/123?page=0&size=10&from=2026-08-01T00:00&to=2026-08-08T00:00`
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalElements: 0, number: 0, size: 10 });
+  });
+
+  it('getConsumptionsByEnvironment hace GET a la URL paginada', () => {
+    service.getConsumptionsByEnvironment('Restaurante', { from: '2026-08-01T00:00', to: '2026-08-08T00:00', page: 1, size: 10 }).subscribe();
+    http.expectOne(`${API_BASE}/partnerconsumption/by-environment/Restaurante?page=1&size=10&from=2026-08-01T00:00&to=2026-08-08T00:00`)
+      .flush({ content: [], totalElements: 0, number: 1, size: 10 });
   });
 
   it('registerConsumption hace POST a la URL correcta', () => {

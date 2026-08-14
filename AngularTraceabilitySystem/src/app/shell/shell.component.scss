@@ -8,10 +8,9 @@
   flex: 1;
   overflow-y: auto;
   background-color: #f8f9fa;
-  min-width: 0; /* prevent flex overflow */
+  min-width: 0;
 }
 
-/* ── Mobile topbar ── */
 .mobile-topbar {
   display: none;
   align-items: center;
@@ -42,7 +41,6 @@
   letter-spacing: 0.02em;
 }
 
-/* ── Backdrop overlay ── */
 .sidebar-backdrop {
   display: none;
   position: fixed;
@@ -74,7 +72,6 @@
   }
 }
 
-/* ── Password-change modal ── */
 .pw-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -165,7 +162,9 @@
     transition: border-color 0.2s, background 0.2s;
     width: 100%;
 
-    &::placeholder { color: rgba(255, 255, 255, 0.2); }
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
 
     &:focus {
       border-color: var(--color-accent);
@@ -205,7 +204,9 @@
     transform: translateY(-1px);
   }
 
-  &:active:not(:disabled) { transform: translateY(0); }
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 
   &:disabled {
     opacity: 0.6;
