@@ -35,6 +35,9 @@ public class AuditEvent {
 	@Field(type = FieldType.Keyword)
 	private String targetId;
 
+	@Field(type = FieldType.Keyword)
+	private String severity;
+
 	public AuditEvent() {
 	}
 
@@ -100,5 +103,13 @@ public class AuditEvent {
 
 	public void setTargetId(String targetId) {
 		this.targetId = targetId;
+	}
+
+	public String getSeverity() {
+		return severity;
+	}
+
+	public void setSeverity(String severity) {
+		this.severity = severity;
 	}
 }

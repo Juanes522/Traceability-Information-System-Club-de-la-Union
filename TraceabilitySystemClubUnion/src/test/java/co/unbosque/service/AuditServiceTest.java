@@ -44,6 +44,38 @@ class AuditServiceTest {
     }
 
     @Test
+    void record_setsCriticalSeverity_forRateLimitBlock() {
+        service.record(AuditEventType.RATE_LIMIT_BLOCK, AuditResult.FAILURE, "123", "10.0.0.1", "bloqueo", null);
+        ArgumentCaptor<AuditEvent> captor = ArgumentCaptor.forClass(AuditEvent.class);
+        verify(operations).save(captor.capture());
+        assertEquals(co.unbosque.model.AuditSeverity.CRITICAL, captor.getValue().getSeverity());
+    }
+
+    @Test
+    void record_setsCriticalSeverity_forAccessDenied() {
+        service.record(AuditEventType.ACCESS_DENIED, AuditResult.FAILURE, "123", "10.0.0.1", "denegado", null);
+        ArgumentCaptor<AuditEvent> captor = ArgumentCaptor.forClass(AuditEvent.class);
+        verify(operations).save(captor.capture());
+        assertEquals(co.unbosque.model.AuditSeverity.CRITICAL, captor.getValue().getSeverity());
+    }
+
+    @Test
+    void record_setsWarningSeverity_forFailureResult() {
+        service.record(AuditEventType.LOGIN_FAILED, AuditResult.FAILURE, "123", "10.0.0.1", "fallo", null);
+        ArgumentCaptor<AuditEvent> captor = ArgumentCaptor.forClass(AuditEvent.class);
+        verify(operations).save(captor.capture());
+        assertEquals(co.unbosque.model.AuditSeverity.WARNING, captor.getValue().getSeverity());
+    }
+
+    @Test
+    void record_setsInfoSeverity_forSuccessEvent() {
+        service.record(AuditEventType.LOGIN_SUCCESS, AuditResult.SUCCESS, "123", "10.0.0.1", "ok", null);
+        ArgumentCaptor<AuditEvent> captor = ArgumentCaptor.forClass(AuditEvent.class);
+        verify(operations).save(captor.capture());
+        assertEquals(co.unbosque.model.AuditSeverity.INFO, captor.getValue().getSeverity());
+    }
+
+    @Test
     void record_isFailOpen_whenSaveThrows() {
         when(operations.save(any(AuditEvent.class))).thenThrow(new RuntimeException("ES down"));
 

@@ -102,6 +102,7 @@ export interface AuditEvent {
   ipAddress: string | null;
   detail: string | null;
   targetId: string | null;
+  severity: string | null;
 }
 
 export interface AuditPage {

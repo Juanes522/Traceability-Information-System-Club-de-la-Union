@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import co.unbosque.model.AuditEvent;
+import co.unbosque.model.AuditEventType;
+import co.unbosque.model.AuditResult;
+import co.unbosque.model.AuditSeverity;
 
 @Service
 public class AuditService {
@@ -29,9 +32,20 @@ public class AuditService {
 			event.setIpAddress(ipAddress);
 			event.setDetail(detail);
 			event.setTargetId(targetId);
+			event.setSeverity(deriveSeverity(eventType, result));
 			operations.save(event);
 		} catch (Exception e) {
 			System.err.println("Audit record failed: " + e.getMessage());
 		}
+	}
+
+	private String deriveSeverity(String eventType, String result) {
+		if (AuditEventType.RATE_LIMIT_BLOCK.equals(eventType) || AuditEventType.ACCESS_DENIED.equals(eventType)) {
+			return AuditSeverity.CRITICAL;
+		}
+		if (AuditResult.FAILURE.equals(result)) {
+			return AuditSeverity.WARNING;
+		}
+		return AuditSeverity.INFO;
 	}
 }
