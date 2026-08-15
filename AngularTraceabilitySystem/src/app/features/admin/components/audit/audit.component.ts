@@ -94,6 +94,15 @@ export class AuditComponent implements OnInit, OnDestroy {
     return this.autoRefresh && (this.filters.page ?? 0) === 0 && this.activePreset !== 'custom';
   }
 
+  severityLabel(severity: string | null): string {
+    switch (severity) {
+      case 'CRITICAL': return 'Crítico';
+      case 'WARNING': return 'Advertencia';
+      case 'INFO': return 'Info';
+      default: return '—';
+    }
+  }
+
   goToPage(n: number): void {
     const target = n - 1;
     if (target >= 0 && target < this.totalPages && target !== (this.filters.page ?? 0)) {

@@ -55,6 +55,7 @@
           <th>Fecha</th>
           <th>Tipo</th>
           <th>Resultado</th>
+          <th>Nivel</th>
           <th>Identificación</th>
           <th>IP</th>
           <th>Detalle</th>
@@ -70,6 +71,12 @@
                   [class.fail]="e.result === 'FAILURE'">
               <span class="dot"></span>{{ e.result === 'SUCCESS' ? 'Éxito' : 'Fallo' }}
             </span>
+          </td>
+          <td>
+            <span class="sev-badge"
+                  [class.sev-critical]="e.severity === 'CRITICAL'"
+                  [class.sev-warning]="e.severity === 'WARNING'"
+                  [class.sev-info]="e.severity === 'INFO'">{{ severityLabel(e.severity) }}</span>
           </td>
           <td class="num">{{ e.username || '—' }}</td>
           <td class="muted">{{ e.ipAddress || '—' }}</td>

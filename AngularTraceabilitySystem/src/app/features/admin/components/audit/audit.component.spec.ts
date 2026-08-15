@@ -120,6 +120,13 @@ describe('AuditComponent', () => {
     expect(component.lastUpdated).toBeTruthy();
   });
 
+  it('traduce el nivel de severidad a etiqueta en español', () => {
+    expect(component.severityLabel('CRITICAL')).toBe('Crítico');
+    expect(component.severityLabel('WARNING')).toBe('Advertencia');
+    expect(component.severityLabel('INFO')).toBe('Info');
+    expect(component.severityLabel(null)).toBe('—');
+  });
+
   it('auto-refresca periódicamente mientras está en vivo y se detiene al destruir', fakeAsync(() => {
     component.ngOnDestroy();
     component.ngOnInit();
