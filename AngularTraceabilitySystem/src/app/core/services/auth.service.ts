@@ -20,6 +20,7 @@ export class AuthService {
   isAuthenticated$     = this.currentUser$.pipe(map((u) => u !== null));
   role$                = this.currentUser$.pipe(map((u) => u?.role ?? null));
   needsPasswordChange$ = this.currentUser$.pipe(map((u) => u?.needsPasswordChange ?? false));
+  needsConsent$        = this.currentUser$.pipe(map((u) => u?.needsConsent ?? false));
 
   constructor(
     private tokenService: TokenService,
@@ -46,8 +47,8 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    this.authApi.logout().pipe(
+  logout(reason?: string): void {
+    this.authApi.logout(reason).pipe(
       catchError(() => EMPTY),
       finalize(() => {
         this.tokenService.limpiar();
@@ -61,6 +62,15 @@ export class AuthService {
     const current = this.subject.value;
     if (current) {
       const updated: UserSession = { ...current, needsPasswordChange: false };
+      this.tokenService.guardarSesion(updated);
+      this.subject.next(updated);
+    }
+  }
+
+  clearNeedsConsent(): void {
+    const current = this.subject.value;
+    if (current) {
+      const updated: UserSession = { ...current, needsConsent: false };
       this.tokenService.guardarSesion(updated);
       this.subject.next(updated);
     }

@@ -66,7 +66,7 @@
                     <div class="p-avatar" [class.inactive]="!p.partnerState">{{ getInitials(p) }}</div>
                     <div>
                       <div class="name">{{ fullName(p) }}</div>
-                      <div class="share">{{ p.shareNumber }}</div>
+                      <div class="share">{{ p.shareNumber | accion }}</div>
                     </div>
                   </div>
                 </td>

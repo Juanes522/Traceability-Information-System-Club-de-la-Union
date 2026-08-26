@@ -9,7 +9,7 @@ describe('NotificationsComponent', () => {
 
   beforeEach(async () => {
     const partnerServiceSpy = jasmine.createSpyObj('PartnerService', ['getNotifications']);
-    partnerServiceSpy.getNotifications.and.returnValue(of([]));
+    partnerServiceSpy.getNotifications.and.returnValue(of({ content: [], totalElements: 0, number: 0, size: 10 }));
 
     await TestBed.configureTestingModule({
       imports: [NotificationsComponent],

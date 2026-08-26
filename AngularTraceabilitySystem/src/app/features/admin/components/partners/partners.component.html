@@ -66,7 +66,7 @@
                     <div class="p-avatar" [class.inactive]="!p.partnerState">{{ getInitials(p) }}</div>
                     <div>
                       <div class="name">{{ fullName(p) }}</div>
-                      <div class="share">{{ p.shareNumber }}</div>
+                      <div class="share">{{ p.shareNumber | accion }}</div>
                     </div>
                   </div>
                 </td>
@@ -101,12 +101,12 @@
 
     <div class="detail-header">
       <button class="btn-back" (click)="backToResults()">
-        <i class="bi bi-arrow-left"></i> Resultados
+        Resultados
       </button>
       <div class="header-avatar">{{ getInitials(selectedPartner) }}</div>
       <div class="header-info">
         <div class="hname">{{ fullName(selectedPartner) }}</div>
-        <div class="hshare">Acción {{ selectedPartner.shareNumber }}</div>
+        <div class="hshare">Acción {{ selectedPartner.shareNumber | accion }}</div>
       </div>
       <span class="status-badge" [ngClass]="selectedPartner.partnerState ? 'active' : 'inactive'">
         <i class="bi" [ngClass]="selectedPartner.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
@@ -120,6 +120,9 @@
       </button>
       <button class="tab-btn-inner" [class.active]="activeTab === 'consumptions'" (click)="setTab('consumptions')">
         <i class="bi bi-receipt"></i> Consumos
+      </button>
+      <button class="tab-btn-inner" [class.active]="activeTab === 'metrics'" (click)="setTab('metrics')">
+        <i class="bi bi-graph-up"></i> Métricas
       </button>
     </div>
 
@@ -151,7 +154,7 @@
             <div class="section-heading"><i class="bi bi-award-fill"></i><span>Membresía</span></div>
             <div class="info-row">
               <i class="bi bi-card-text row-icon"></i>
-              <div><div class="row-label">Número de acción</div><div class="row-value row-value-accent">{{ selectedPartner.shareNumber }}</div></div>
+              <div><div class="row-label">Número de acción</div><div class="row-value row-value-accent">{{ selectedPartner.shareNumber | accion }}</div></div>
             </div>
             <div class="info-row" *ngIf="selectedPartner.ingressDate">
               <i class="bi bi-calendar-check row-icon"></i>
@@ -172,8 +175,8 @@
           <button type="button" class="preset-btn" (click)="consLastWeek()">Última semana</button>
           <button type="button" class="preset-btn" (click)="consLastMonth()">Último mes</button>
           <button type="button" class="preset-btn" (click)="consAllTime()">Todo</button>
-          <input class="filter-date" type="datetime-local" [(ngModel)]="consFrom" (change)="onConsWindowEdit()" />
-          <input class="filter-date" type="datetime-local" [(ngModel)]="consTo" (change)="onConsWindowEdit()" />
+          <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="consFrom" (change)="onConsWindowEdit()" /></label>
+          <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="consTo" (change)="onConsWindowEdit()" /></label>
         </div>
         <div class="range-error" *ngIf="consRangeError"><i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.</div>
         <div class="range-error" *ngIf="consError"><i class="bi bi-exclamation-circle"></i> No se pudieron cargar los consumos.</div>
@@ -222,6 +225,11 @@
           </table>
         </div>
         <app-paginator *ngIf="!loadingCons && consumptions.length" [currentPage]="consCurrentPage" [totalPages]="consTotalPages" (pageChange)="consGoToPage($event)"></app-paginator>
+      </ng-container>
+
+      <!-- METRICS -->
+      <ng-container *ngIf="activeTab === 'metrics'">
+        <app-partner-metrics [identification]="selectedPartner.identification"></app-partner-metrics>
       </ng-container>
 
     </div>

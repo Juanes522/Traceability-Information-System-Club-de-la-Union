@@ -18,8 +18,8 @@
         (keyup.enter)="search()"
       />
     </div>
-    <input class="filter-date" type="datetime-local" [(ngModel)]="from" />
-    <input class="filter-date" type="datetime-local" [(ngModel)]="to" />
+    <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="from" /></label>
+    <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="to" /></label>
     <button class="btn-search" (click)="search()" [disabled]="searching || !environment.trim()">
       <span *ngIf="searching" class="spinner-border spinner-border-sm spinner-gold"></span>
       <span *ngIf="!searching"><i class="bi bi-search"></i> Buscar</span>
@@ -65,6 +65,7 @@
       <thead>
         <tr>
           <th>Ambiente</th>
+          <th>Acción</th>
           <th>Mesa</th>
           <th>Mesero</th>
           <th>Apertura</th>
@@ -77,6 +78,7 @@
         <ng-container *ngFor="let c of pagedResults">
           <tr class="data-row" [class.expanded-row]="isExpanded(c.consumptionId)" (click)="toggleExpand(c.consumptionId)">
             <td>{{ c.enviroment }}</td>
+            <td>{{ c.shareNumber | accion }}</td>
             <td>{{ c.table }}</td>
             <td>{{ c.waiterName }}</td>
             <td>{{ formatDateTime(c.consumptionOpening) }}</td>
@@ -85,7 +87,7 @@
             <td><i class="bi bi-chevron-down expand-icon" [class.open]="isExpanded(c.consumptionId)"></i></td>
           </tr>
           <tr *ngIf="isExpanded(c.consumptionId)" class="expand-row">
-            <td colspan="7">
+            <td colspan="8">
               <div class="detail-panel">
                 <div class="detail-group">
                   <div class="detail-title">Desglose</div>

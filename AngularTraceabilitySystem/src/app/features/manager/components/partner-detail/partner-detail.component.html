@@ -3,12 +3,12 @@
   <!-- ── Header ── -->
   <div class="detail-header">
     <button class="btn-back" (click)="back.emit()">
-      <i class="bi bi-arrow-left"></i> Resultados
+      Resultados
     </button>
     <div class="header-avatar">{{ getInitials(partner) }}</div>
     <div class="header-info">
       <div class="hname">{{ fullName(partner) }}</div>
-      <div class="hshare">{{ partner.shareNumber }}</div>
+      <div class="hshare">{{ partner.shareNumber | accion }}</div>
     </div>
     <span class="status-badge" [ngClass]="partner.partnerState ? 'active' : 'inactive'">
       <i class="bi" [ngClass]="partner.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
@@ -23,6 +23,9 @@
     </button>
     <button class="tab-btn" [class.active]="activeTab === 'consumptions'" (click)="setTab('consumptions')">
       <i class="bi bi-receipt"></i> Consumos
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'metrics'" (click)="setTab('metrics')">
+      <i class="bi bi-graph-up"></i> Métricas
     </button>
   </div>
 
@@ -78,7 +81,7 @@
             <i class="bi bi-card-text row-icon"></i>
             <div>
               <div class="row-label">Número de acción</div>
-              <div class="row-value row-value-accent">{{ partner.shareNumber }}</div>
+              <div class="row-value row-value-accent">{{ partner.shareNumber | accion }}</div>
             </div>
           </div>
           <div class="info-row" *ngIf="partner.ingressDate">
@@ -107,8 +110,8 @@
         <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
         <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
         <button type="button" class="preset-btn" (click)="allTime()">Todo</button>
-        <input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" />
-        <input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" />
+        <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" /></label>
+        <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" /></label>
       </div>
       <div class="range-error" *ngIf="rangeError"><i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.</div>
       <div class="range-error" *ngIf="consError"><i class="bi bi-exclamation-circle"></i> No se pudieron cargar los consumos.</div>
@@ -165,6 +168,10 @@
         </table>
       </div>
       <app-paginator *ngIf="!loadingCons && consumptions.length" [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="goToPage($event)"></app-paginator>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'metrics'">
+      <app-partner-metrics [identification]="partner.identification"></app-partner-metrics>
     </ng-container>
 
   </div><!-- /tab-content -->

@@ -48,11 +48,4 @@ describe('AdminService', () => {
     http.expectOne(`${API_BASE}/partnerconsumption/by-environment/Restaurante?page=1&size=10&from=2026-08-01T00:00&to=2026-08-08T00:00`)
       .flush({ content: [], totalElements: 0, number: 1, size: 10 });
   });
-
-  it('registerConsumption hace POST a la URL correcta', () => {
-    const req: any = { partnerId: 1, enviroment: 'Bar', account: 5, table: '3', waiterName: 'Juan',
-                       isPartner: 'S', consumptionValue: 50000, iva: 4750, service: 5000, tip: 0, consumptionOpening: '2026-05-12' };
-    service.registerConsumption(req).subscribe();
-    http.expectOne(`${API_BASE}/partnerconsumption/registerconsumption`).flush({});
-  });
 });

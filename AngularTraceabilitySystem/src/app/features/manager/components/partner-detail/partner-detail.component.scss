@@ -5,7 +5,7 @@
 }
 
 .detail-header {
-  background: #212529;
+  background: #1A1F4D;
   padding: 1.25rem 2rem;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, #c7a567 0%, #a8863f 100%);
-  color: #212529;
+  color: #1A1F4D;
   font-size: 1rem;
   font-weight: 800;
   display: flex;
@@ -114,11 +114,11 @@
   white-space: nowrap;
 
   &:hover {
-    color: #212529;
+    color: #1A1F4D;
   }
 
   &.active {
-    color: #212529;
+    color: #1A1F4D;
     border-bottom-color: #c7a567;
   }
 }
@@ -198,7 +198,7 @@
 
   .row-value {
     font-size: 0.875rem;
-    color: #212529;
+    color: #1A1F4D;
     font-weight: 500;
   }
 
@@ -256,7 +256,7 @@
     height: 30px;
     border-radius: 50%;
     background: linear-gradient(135deg, #c7a567 0%, #a8863f 100%);
-    color: #212529;
+    color: #1A1F4D;
     font-size: 0.65rem;
     font-weight: 800;
     display: flex;
@@ -392,7 +392,7 @@
 
     &.total {
       font-weight: 700;
-      color: #212529;
+      color: #1A1F4D;
       border-top: 1px solid rgba(0, 0, 0, .08);
       margin-top: 4px;
       padding-top: 6px;
@@ -424,7 +424,7 @@
     }
 
     .mv {
-      color: #212529;
+      color: #1A1F4D;
       font-weight: 500;
     }
   }
@@ -491,8 +491,8 @@
   cursor: pointer;
 
   &:hover {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
   }
 }

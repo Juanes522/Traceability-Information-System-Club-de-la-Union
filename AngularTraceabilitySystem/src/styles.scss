@@ -1,4 +1,4 @@
-$primary: #212529;
+$primary: #1A1F4D;
 $secondary: #C7A567;
 $font-family-sans-serif: 'Segoe UI', system-ui, sans-serif;
 
@@ -9,7 +9,7 @@ $font-family-sans-serif: 'Segoe UI', system-ui, sans-serif;
 @import 'bootstrap-icons/font/bootstrap-icons';
 
 :root {
-  --color-primary: #212529;
+  --color-primary: #1A1F4D;
   --color-accent: #C7A567;
   --color-bg: #ffffff;
   --sidebar-width: 260px;
@@ -48,4 +48,16 @@ body {
 
 .scroll-x {
   overflow-x: auto;
+}
+
+.range-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.range-label {
+  font-size: 11px;
+  color: #6b7280;
+  white-space: nowrap;
 }

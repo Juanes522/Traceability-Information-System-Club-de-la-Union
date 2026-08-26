@@ -6,6 +6,8 @@ import { AuthService } from '../core/services/auth.service';
 import { AuthApiService } from '../core/services/auth-api.service';
 import { ToastService } from '../core/services/toast.service';
 import { PushNotificationService } from '../core/services/push-notification.service';
+import { IdleService } from '../core/services/idle.service';
+import { of } from 'rxjs';
 
 describe('ShellComponent', () => {
   let component: ShellComponent;
@@ -22,13 +24,19 @@ describe('ShellComponent', () => {
             role$: new BehaviorSubject(null),
             currentUser$: new BehaviorSubject(null),
             needsPasswordChange$: new BehaviorSubject(false),
+            needsConsent$: new BehaviorSubject(false),
             clearNeedsPasswordChange: jasmine.createSpy('clearNeedsPasswordChange'),
+            clearNeedsConsent: jasmine.createSpy('clearNeedsConsent'),
             logout: jasmine.createSpy('logout'),
           },
         },
         {
           provide: AuthApiService,
-          useValue: { changePassword: jasmine.createSpy('changePassword') },
+          useValue: {
+            changePassword: jasmine.createSpy('changePassword'),
+            acceptConsent: jasmine.createSpy('acceptConsent'),
+            getConsentPolicy: jasmine.createSpy('getConsentPolicy').and.returnValue(of({ version: '1.0', title: 'T', text: 'X' })),
+          },
         },
         {
           provide: ToastService,
@@ -37,6 +45,10 @@ describe('ShellComponent', () => {
         {
           provide: PushNotificationService,
           useValue: { subscribeToPartnerNotifications: jasmine.createSpy('subscribeToPartnerNotifications') },
+        },
+        {
+          provide: IdleService,
+          useValue: jasmine.createSpyObj('IdleService', ['start', 'stop']),
         },
       ],
     }).compileComponents();

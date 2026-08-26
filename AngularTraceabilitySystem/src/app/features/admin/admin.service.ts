@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { PartnerProfile, Consumption, PartnerPage, ConsumptionPage } from '../../shared/models/index';
-import { ConsumptionCreateRequest } from '../manager/manager.service';
+import { PartnerProfile, PartnerPage, ConsumptionPage } from '../../shared/models/index';
 
 @Injectable()
 export class AdminService {
@@ -39,10 +38,6 @@ export class AdminService {
   }
 
   // ── Consumption management ─────────────────────────────────────────────────
-  registerConsumption(req: ConsumptionCreateRequest): Observable<Consumption> {
-    return this.http.post<Consumption>(`${API_BASE}/partnerconsumption/registerconsumption`, req);
-  }
-
   getConsumptionsByEnvironment(env: string, filters: { from?: string; to?: string; page: number; size: number }): Observable<ConsumptionPage> {
     let params = new HttpParams().set('page', String(filters.page)).set('size', String(filters.size));
     if (filters.from) { params = params.set('from', filters.from); }

@@ -49,6 +49,8 @@
       </div>
     </div>
 
+    <app-paginator *ngIf="notifications.length" [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="goToPage($event)"></app-paginator>
+
   </ng-container>
 
 </div>

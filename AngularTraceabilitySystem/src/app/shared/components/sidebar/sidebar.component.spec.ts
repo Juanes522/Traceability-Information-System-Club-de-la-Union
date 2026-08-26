@@ -15,6 +15,7 @@ describe('SidebarComponent', () => {
     token: 'tok',
     role: 'ROLE_PARTNER',
     needsPasswordChange: false,
+    needsConsent: false,
   };
 
   beforeEach(async () => {

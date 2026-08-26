@@ -6,8 +6,10 @@ import { PartnerProfile, Consumption } from '../../../../shared/models';
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
+import { PartnerMetricsComponent } from '../../../../shared/components/partner-metrics/partner-metrics.component';
+import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
 
-type ActiveTab = 'profile' | 'consumptions';
+type ActiveTab = 'profile' | 'consumptions' | 'metrics';
 
 @Component({
     selector: 'app-manager-partner-detail',
@@ -19,6 +21,8 @@ type ActiveTab = 'profile' | 'consumptions';
         NgFor,
         FormsModule,
         PaginatorComponent,
+        PartnerMetricsComponent,
+        AccionPipe,
     ],
 })
 export class PartnerDetailComponent implements OnInit {
@@ -141,7 +145,7 @@ export class PartnerDetailComponent implements OnInit {
   }
 
   formatCurrency(v: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
   }
 
   totalFor(c: Consumption): number {

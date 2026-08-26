@@ -10,6 +10,7 @@
 .sidebar {
   height: 100%;
   overflow-y: auto;
+  background-color: #1A1F4D !important;
 }
 
 .nav-link {
@@ -21,11 +22,11 @@
 
   &.active-link {
     background-color: var(--color-accent);
-    color: #212529 !important;
+    color: #1A1F4D !important;
     font-weight: 600;
 
     i {
-      color: #212529;
+      color: #1A1F4D;
     }
   }
 }
@@ -69,13 +70,7 @@
     width: 260px;
   }
 
-  :host-context(.sidebar-open-host) {
-    transform: translateX(0);
-  }
-
-  .sidebar.open {}
-
-  :host(.open-host) {
+  :host(.drawer-open) {
     transform: translateX(0);
   }
 }

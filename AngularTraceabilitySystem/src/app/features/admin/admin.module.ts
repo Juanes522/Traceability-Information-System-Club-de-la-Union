@@ -6,16 +6,16 @@ import { AdminService } from './admin.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PartnersComponent } from './components/partners/partners.component';
 import { ConsumptionsComponent } from './components/consumptions/consumptions.component';
-import { AdminRegisterConsumptionComponent } from './components/register-consumption/register-consumption.component';
 import { AuditComponent } from './components/audit/audit.component';
 import { AuditService } from './audit.service';
+import { AdminReportsComponent } from './components/reports/reports.component';
 
 const routes: Routes = [
   { path: 'dashboard',  component: DashboardComponent },
   { path: 'partners',   component: PartnersComponent },
   { path: 'consumptions', component: ConsumptionsComponent },
-  { path: 'register',   component: AdminRegisterConsumptionComponent },
   { path: 'audit',      component: AuditComponent },
+  { path: 'reports',    component: AdminReportsComponent },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
@@ -23,8 +23,8 @@ const routes: Routes = [
     imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild(routes), DashboardComponent,
         PartnersComponent,
         ConsumptionsComponent,
-        AdminRegisterConsumptionComponent,
-        AuditComponent],
+        AuditComponent,
+        AdminReportsComponent],
     providers: [AdminService, AuditService],
 })
 export class AdminModule {}

@@ -1,0 +1,128 @@
+.reports {
+  padding: 0 0 2rem;
+}
+
+.reports-head {
+  background: #1A1F4D;
+  padding: 1.3rem 1.5rem;
+}
+
+.reports-title {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-card {
+  background: #fff;
+  border: 1px solid #e6e2d8;
+  border-radius: 10px;
+  margin: 1.2rem 1.5rem 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 680px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7076;
+  font-weight: 600;
+}
+
+.input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #dee2e6;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: #1A1F4D;
+  background: #f8f9fa;
+  outline: none;
+
+  &:focus {
+    border-color: #c7a567;
+    background: #fff;
+  }
+}
+
+.preset-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  border: 1px solid #dee2e6;
+  border-radius: 99px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #1A1F4D;
+    border-color: #1A1F4D;
+    color: #fff;
+  }
+}
+
+.dates {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .field {
+    flex: 1;
+    min-width: 180px;
+  }
+}
+
+.range-error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.btn-download {
+  align-self: flex-start;
+  background: #1A1F4D;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  &:hover:not(:disabled) {
+    background: #c7a567;
+    color: #1A1F4D;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}

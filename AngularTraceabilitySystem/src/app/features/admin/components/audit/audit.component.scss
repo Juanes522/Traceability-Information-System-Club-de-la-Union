@@ -5,7 +5,7 @@
 }
 
 .page-header {
-  background: #212529;
+  background: #1A1F4D;
   padding: 1.5rem 2rem 1.25rem;
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@
   &:hover {
     background: #c7a567;
     border-color: #c7a567;
-    color: #212529;
+    color: #1A1F4D;
   }
 }
 
@@ -145,7 +145,7 @@
 }
 
 .btn-search {
-  background: #212529;
+  background: #1A1F4D;
   color: #fff;
   border: none;
   border-radius: 7px;
@@ -203,7 +203,7 @@
     td {
       padding: 0.8rem 1rem;
       font-size: 0.85rem;
-      color: #212529;
+      color: #1A1F4D;
       vertical-align: middle;
 
       &.num {
@@ -403,8 +403,8 @@
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 
   &:hover {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
   }
 }
@@ -452,8 +452,8 @@
   }
 
   &.active {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
     font-weight: 700;
   }

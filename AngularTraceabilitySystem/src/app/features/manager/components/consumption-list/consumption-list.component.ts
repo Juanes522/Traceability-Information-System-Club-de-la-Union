@@ -6,12 +6,13 @@ import { Consumption } from '../../../../shared/models';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
+import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
 
 @Component({
     selector: 'app-manager-consumption-list',
     templateUrl: './consumption-list.component.html',
     styleUrls: ['./consumption-list.component.scss'],
-    imports: [ReactiveFormsModule, FormsModule, NgIf, NgFor, PaginatorComponent],
+    imports: [ReactiveFormsModule, FormsModule, NgIf, NgFor, PaginatorComponent, AccionPipe],
 })
 export class ConsumptionListComponent implements OnInit {
   environment = '';
@@ -123,6 +124,6 @@ export class ConsumptionListComponent implements OnInit {
     return new Date(d).toLocaleString('es-CO', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
   formatCurrency(v: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
   }
 }

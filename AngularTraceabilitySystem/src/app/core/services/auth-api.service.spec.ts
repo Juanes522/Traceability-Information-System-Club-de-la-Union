@@ -20,7 +20,7 @@ describe('AuthApiService', () => {
   afterEach(() => httpMock.verify());
 
   it('login hace POST a /auth/login y retorna UserSession', (done) => {
-    const mockSession: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false };
+    const mockSession: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false, needsConsent: false };
 
     service.login({ identification: '000000000', password: '123' }).subscribe((session) => {
       expect(session).toEqual(mockSession);

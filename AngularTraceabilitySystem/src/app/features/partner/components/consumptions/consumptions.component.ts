@@ -113,7 +113,7 @@ export class ConsumptionsComponent implements OnInit {
   isExpanded(id: number): boolean { return this.expandedId === id; }
 
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
   }
   formatDateTime(dt: string): string {
     if (!dt) return '—';

@@ -51,9 +51,9 @@ describe('ChangePasswordComponent', () => {
 
   it('llama a changePassword y clearNeedsPasswordChange al enviar con contraseña válida', () => {
     authApiService.changePassword.and.returnValue(of(undefined));
-    component.form.setValue({ newPassword: 'nueva123' });
+    component.form.setValue({ newPassword: 'Abcdefghij12' });
     component.submit();
-    expect(authApiService.changePassword).toHaveBeenCalledWith({ newPassword: 'nueva123' });
+    expect(authApiService.changePassword).toHaveBeenCalledWith({ newPassword: 'Abcdefghij12' });
     expect(authService.clearNeedsPasswordChange).toHaveBeenCalled();
   });
 
@@ -61,7 +61,7 @@ describe('ChangePasswordComponent', () => {
     authApiService.changePassword.and.returnValue(
       throwError(() => ({ error: { message: 'Error de servidor' } }))
     );
-    component.form.setValue({ newPassword: 'nueva123' });
+    component.form.setValue({ newPassword: 'Abcdefghij12' });
     component.submit();
     expect(component.errorMsg).toBe('Error de servidor');
   });
