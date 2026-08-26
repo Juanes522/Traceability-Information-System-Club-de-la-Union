@@ -6,6 +6,7 @@ const MOCK_SESSION: UserSession = {
   token: 'test-jwt-token',
   role: 'ROLE_PARTNER',
   needsPasswordChange: false,
+  needsConsent: false,
 };
 
 describe('TokenService', () => {

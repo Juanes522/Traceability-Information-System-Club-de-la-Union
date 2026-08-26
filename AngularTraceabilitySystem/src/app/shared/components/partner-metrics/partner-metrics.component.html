@@ -1,0 +1,45 @@
+<div class="pm">
+  <div class="preset-bar">
+    <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+    <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+    <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+    <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="load()" /></label>
+    <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="load()" /></label>
+  </div>
+
+  <div *ngIf="loading" class="loading-wrap"><div class="spinner-border spinner-gold"></div></div>
+  <div *ngIf="!loading && error" class="pm-error"><i class="bi bi-exclamation-triangle"></i> {{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+    <section class="kpi-row" *ngIf="summary">
+      <div class="kpi"><span class="kpi-label">Total consumido</span><span class="kpi-value">{{ formatCurrency(summary.totalBilled) }}</span></div>
+      <div class="kpi"><span class="kpi-label">N° de consumos</span><span class="kpi-value">{{ summary.chargeCount }}</span></div>
+      <div class="kpi"><span class="kpi-label">Valor promedio</span><span class="kpi-value">{{ formatCurrency(summary.averagePerAccount) }}</span></div>
+      <div class="kpi"><span class="kpi-label">Visitas</span><span class="kpi-value">{{ visits ?? 0 }}</span></div>
+      <div class="kpi"><span class="kpi-label">Última visita</span><span class="kpi-value pm-last">{{ lastVisit || '—' }}</span></div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Dónde consume más</h2>
+      <app-chart [options]="envOptions" height="280px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Tendencia de consumo</h2>
+        <div class="gran-toggle">
+          <button type="button" [class.active]="granularity === 'day'" (click)="setGranularity('day')">Día</button>
+          <button type="button" [class.active]="granularity === 'week'" (click)="setGranularity('week')">Semana</button>
+          <button type="button" [class.active]="granularity === 'month'" (click)="setGranularity('month')">Mes</button>
+        </div>
+      </div>
+      <app-chart [options]="trendOptions" height="300px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Tus productos más consumidos</h2>
+      <p class="panel-hint" *ngIf="!hasTopProducts">Aún no hay productos registrados en este rango.</p>
+      <app-chart *ngIf="hasTopProducts" [options]="topProductsOptions" height="280px"></app-chart>
+    </section>
+  </ng-container>
+</div>

@@ -15,7 +15,7 @@
       <div class="avatar">{{ initials }}</div>
       <div class="page-header-text">
         <h1 class="name">{{ fullName(profile) }}</h1>
-        <div class="share">Acción {{ profile.shareNumber }}</div>
+        <div class="share">Acción {{ profile.shareNumber | accion }}</div>
       </div>
       <span class="status-badge d-none d-sm-inline-flex" [ngClass]="profile.partnerState ? 'active' : 'inactive'">
         <i class="bi" [ngClass]="profile.partnerState ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
@@ -92,7 +92,7 @@
               <i class="bi bi-card-text row-icon"></i>
               <div class="row-content">
                 <div class="row-label">Número de acción</div>
-                <div class="row-value row-value-accent">{{ profile.shareNumber }}</div>
+                <div class="row-value row-value-accent">{{ profile.shareNumber | accion }}</div>
               </div>
             </div>
 

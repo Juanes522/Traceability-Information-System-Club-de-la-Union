@@ -5,7 +5,7 @@
 }
 
 .page-header {
-  background: #212529;
+  background: #1A1F4D;
   padding: 1.5rem 2rem 1.25rem;
   display: flex;
   align-items: center;
@@ -124,8 +124,8 @@
   }
 
   &.active {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
 
     &.state-open {
@@ -168,8 +168,8 @@
   cursor: pointer;
 
   &:hover {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
   }
 }
@@ -249,14 +249,14 @@
     td {
       padding: 0.9rem 1rem;
       font-size: 0.875rem;
-      color: #212529;
+      color: #1A1F4D;
       vertical-align: middle;
 
       &.col-amount {
         text-align: right;
         font-variant-numeric: tabular-nums;
         font-weight: 600;
-        color: #212529;
+        color: #1A1F4D;
       }
     }
   }
@@ -342,7 +342,7 @@
 
   &.total {
     font-weight: 700;
-    color: #212529;
+    color: #1A1F4D;
     border-top: 1px solid rgba(0, 0, 0, .08);
     margin-top: 4px;
     padding-top: 8px;
@@ -388,7 +388,7 @@
     }
 
     .meta-value {
-      color: #212529;
+      color: #1A1F4D;
       font-weight: 500;
     }
   }

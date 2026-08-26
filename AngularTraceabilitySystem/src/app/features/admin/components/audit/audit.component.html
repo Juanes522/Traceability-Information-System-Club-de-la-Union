@@ -36,8 +36,8 @@
       <option *ngFor="let r of results" [value]="r">{{ r }}</option>
     </select>
 
-    <input class="filter-date" type="datetime-local" name="from" [(ngModel)]="filters.from" />
-    <input class="filter-date" type="datetime-local" name="to" [(ngModel)]="filters.to" />
+    <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" name="from" [(ngModel)]="filters.from" /></label>
+    <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" name="to" [(ngModel)]="filters.to" /></label>
 
     <button type="submit" class="btn-search">
       <i class="bi bi-funnel"></i> Buscar

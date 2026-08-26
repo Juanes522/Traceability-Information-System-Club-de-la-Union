@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthApiService } from '../../../core/services/auth-api.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { NgIf } from '@angular/common';
+import { strongPasswordValidator, PASSWORD_REQUIREMENTS_TEXT } from '../../../core/validators/password.validator';
 
 const ROLE_ROUTES: Record<string, string> = {
   ROLE_PARTNER: '/app/partner/dashboard',
@@ -20,6 +21,7 @@ export class ChangePasswordComponent {
   form: FormGroup;
   loading = false;
   errorMsg = '';
+  readonly passwordHint = PASSWORD_REQUIREMENTS_TEXT;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,7 @@ export class ChangePasswordComponent {
     private router: Router,
   ) {
     this.form = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, strongPasswordValidator()]],
     });
   }
 

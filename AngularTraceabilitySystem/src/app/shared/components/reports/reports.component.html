@@ -1,0 +1,62 @@
+<div class="reports">
+  <header class="reports-head">
+    <h1 class="reports-title"><i class="bi bi-file-earmark-pdf me-2"></i>Reportes</h1>
+  </header>
+
+  <section class="form-card">
+    <label class="field">
+      <span class="field-label">Tipo de reporte</span>
+      <select class="input" [(ngModel)]="reportType">
+        <option value="consumptions">Consumos por periodo</option>
+        <option value="income">Ingresos por ambiente</option>
+        <option value="partner">Estado de cuenta por socio</option>
+        <option *ngIf="showSecurity" value="security">Administrativo de seguridad</option>
+      </select>
+    </label>
+
+    <div class="preset-bar">
+      <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+      <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+      <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+    </div>
+
+    <div class="dates">
+      <label class="field">
+        <span class="field-label">Desde</span>
+        <input class="input" type="datetime-local" [(ngModel)]="from" />
+      </label>
+      <label class="field">
+        <span class="field-label">Hasta</span>
+        <input class="input" type="datetime-local" [(ngModel)]="to" />
+      </label>
+    </div>
+
+    <label class="field" *ngIf="needsEnvironment">
+      <span class="field-label">Ambiente (opcional)</span>
+      <input class="input" type="text" [(ngModel)]="environment" placeholder="Ej: Restaurante" />
+    </label>
+
+    <label class="field" *ngIf="needsIdentification">
+      <span class="field-label">Consultar socio por</span>
+      <select class="input" [(ngModel)]="partnerBy">
+        <option value="identification">Cédula</option>
+        <option value="shareNumber">Número de acción</option>
+      </select>
+    </label>
+
+    <label class="field" *ngIf="needsIdentification">
+      <span class="field-label">{{ partnerBy === 'shareNumber' ? 'Número de acción' : 'Cédula del socio' }}</span>
+      <input class="input" type="text" [(ngModel)]="identification"
+             [placeholder]="partnerBy === 'shareNumber' ? 'Ej: 000121' : 'Cédula'" />
+    </label>
+
+    <div class="range-error" *ngIf="error">
+      <i class="bi bi-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <button class="btn-download" (click)="download()" [disabled]="!canDownload">
+      <span *ngIf="downloading" class="spinner-border spinner-border-sm"></span>
+      <span *ngIf="!downloading"><i class="bi bi-download"></i> Descargar PDF</span>
+    </button>
+  </section>
+</div>

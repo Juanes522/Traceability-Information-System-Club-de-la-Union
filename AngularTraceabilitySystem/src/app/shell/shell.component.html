@@ -17,9 +17,6 @@
   </main>
 </div>
 
-<!-- ══════════════════════════════════════════
-     Password-change modal (first login)
-══════════════════════════════════════════ -->
 <div class="pw-modal-backdrop" *ngIf="showPasswordModal">
   <div class="pw-modal" role="dialog" aria-modal="true" aria-labelledby="pwModalTitle">
 
@@ -39,13 +36,11 @@
           id="newPw"
           type="password"
           formControlName="newPassword"
-          placeholder="Mínimo 6 caracteres"
+          placeholder="Mínimo 12 caracteres"
           autocomplete="new-password"
           [class.invalid]="pwForm.get('newPassword')?.invalid && pwForm.get('newPassword')?.touched"
         />
-        <span class="field-hint" *ngIf="pwForm.get('newPassword')?.invalid && pwForm.get('newPassword')?.touched">
-          Mínimo 6 caracteres.
-        </span>
+        <span class="field-hint">{{ passwordHint }}</span>
       </div>
 
       <div class="pw-field">
@@ -70,6 +65,41 @@
       </button>
 
     </form>
+
+  </div>
+</div>
+
+<div class="pw-modal-backdrop" *ngIf="showConsentModal">
+  <div class="pw-modal consent-modal" role="dialog" aria-modal="true" aria-labelledby="consentModalTitle">
+
+    <div class="pw-modal-header">
+      <div class="pw-icon-wrap">
+        <i class="bi bi-file-earmark-text-fill"></i>
+      </div>
+      <h2 id="consentModalTitle">{{ consentTitle }}</h2>
+    </div>
+
+    <div class="pw-modal-body">
+
+      <div class="consent-text">
+        @for (b of consentBlocks; track $index) {
+          @if (b.type === 'heading') { <h3 class="consent-heading">{{ b.text }}</h3> }
+          @if (b.type === 'bullet') { <div class="consent-bullet">{{ b.text }}</div> }
+          @if (b.type === 'para') { <p class="consent-para">{{ b.text }}</p> }
+        }
+      </div>
+
+      <label class="consent-checkbox">
+        <input type="checkbox" [(ngModel)]="consentChecked" />
+        <span>He leído y acepto los términos y el tratamiento de mis datos</span>
+      </label>
+
+      <button type="button" class="pw-submit" [disabled]="!consentChecked || consentLoading" (click)="submitConsent()">
+        <span *ngIf="consentLoading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ consentLoading ? 'Guardando...' : 'Aceptar' }}
+      </button>
+
+    </div>
 
   </div>
 </div>

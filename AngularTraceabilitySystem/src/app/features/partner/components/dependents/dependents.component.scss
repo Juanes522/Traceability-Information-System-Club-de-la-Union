@@ -5,7 +5,7 @@
 }
 
 .page-header {
-  background: #212529;
+  background: #1A1F4D;
   padding: 1.5rem 2rem 1.25rem;
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@
 
   &.active-avatar {
     background: linear-gradient(135deg, #d4a843 0%, var(--color-accent) 100%);
-    color: #212529;
+    color: #1A1F4D;
   }
 }
 
@@ -94,7 +94,7 @@
 .dep-name {
   font-weight: 600;
   font-size: 0.95rem;
-  color: #212529;
+  color: #1A1F4D;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

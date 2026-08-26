@@ -5,7 +5,7 @@
 }
 
 .page-header {
-  background: #212529;
+  background: #1A1F4D;
   padding: 1.5rem 2rem 1.25rem;
   flex-shrink: 0;
 
@@ -56,8 +56,8 @@
   }
 
   &.active {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
   }
 }
@@ -107,7 +107,7 @@
 }
 
 .btn-search {
-  background: #212529;
+  background: #1A1F4D;
   color: #fff;
   border: none;
   border-radius: 7px;
@@ -248,7 +248,7 @@
     td {
       padding: 0.85rem 1rem;
       font-size: 0.875rem;
-      color: #212529;
+      color: #1A1F4D;
       vertical-align: middle;
     }
   }
@@ -259,7 +259,7 @@
   height: 34px;
   border-radius: 50%;
   background: linear-gradient(135deg, #c7a567 0%, #a8863f 100%);
-  color: #212529;
+  color: #1A1F4D;
   font-size: 0.72rem;
   font-weight: 800;
   display: inline-flex;
@@ -365,8 +365,8 @@
   }
 
   &.active {
-    background: #212529;
-    border-color: #212529;
+    background: #1A1F4D;
+    border-color: #1A1F4D;
     color: #fff;
   }
 

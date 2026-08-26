@@ -2,6 +2,7 @@ export interface UserSession {
   token: string;
   role: 'ROLE_PARTNER' | 'ROLE_MANAGER' | 'ROLE_ADMIN';
   needsPasswordChange: boolean;
+  needsConsent: boolean;
 }
 
 export interface PartnerProfile {
@@ -38,6 +39,7 @@ export interface Consumption {
   tip: number;
   consumptionOpening: string;
   consumptionClosing: string | null;
+  shareNumber?: number;
 }
 
 export interface ConsumptionValidation {
@@ -56,6 +58,25 @@ export interface NotificationDTO {
   consumptionId: number;
   environment: string;
   totalAmount: number;
+}
+
+export interface NotificationPage {
+  content: NotificationDTO[];
+  totalElements: number;
+  number: number;
+  size: number;
+}
+
+export interface LoginHistory {
+  timestamp: string;
+  ip: string;
+}
+
+export interface LoginHistoryPage {
+  content: LoginHistory[];
+  totalElements: number;
+  number: number;
+  size: number;
 }
 
 export interface AccessLog {
@@ -135,3 +156,44 @@ export interface ConsumptionPage {
   number: number;
   size: number;
 }
+
+export interface ConsumptionSummary {
+  totalBilled: number; totalConsumption: number; totalIva: number;
+  totalService: number; totalTip: number; chargeCount: number;
+  averagePerAccount: number; tipPercentage: number;
+}
+export interface EnvironmentTotal { environment: string; total: number; count: number; percentage: number; }
+export interface TrendPoint { bucket: string; total: number; count: number; }
+export interface Comparison {
+  currentTotal: number; previousTotal: number; currentCount: number;
+  previousCount: number; variancePercentage: number;
+}
+export interface PeakHeatmapCell { weekday: number; hour: number; total: number; count: number; }
+export interface SecuritySummary {
+  loginFailedCount: number; rateLimitBlockCount: number;
+  accessDeniedCount: number; criticalAlertCount: number; degraded: boolean;
+}
+export interface MetricsWindow { from?: string; to?: string; }
+
+export interface PartnerMetrics {
+  summary: ConsumptionSummary;
+  byEnvironment: EnvironmentTotal[];
+  trend: TrendPoint[];
+  visits: number;
+  lastVisit: string | null;
+}
+
+export interface AccessSummary { presentNow: number; visits: number; uniquePartners: number; avgFrequency: number; }
+export interface EnvironmentOccupancy { environment: string; partners: number; }
+export interface AttendancePoint { bucket: string; count: number; }
+
+export interface MonthlySnapshot {
+  yearMonth: string; totalBilled: number; chargeCount: number;
+  averagePerAccount: number; tipPercentage: number; visits: number; uniquePartners: number;
+}
+
+export interface ProductRank { productId: string; name: string; quantity: number; revenue: number; }
+export interface CategoryMix { category: string; subcategory: string; quantity: number; revenue: number; percentage: number; }
+export interface EnvironmentCategory { environment: string; category: string; quantity: number; revenue: number; }
+
+export interface ConsentPolicy { version: string; title: string; text: string; }

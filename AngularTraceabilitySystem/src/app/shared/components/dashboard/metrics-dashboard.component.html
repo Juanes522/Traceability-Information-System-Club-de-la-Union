@@ -1,0 +1,128 @@
+<div class="dash">
+  <header class="dash-head">
+    <h1 class="dash-title"><i class="bi bi-grid-1x2 me-2"></i>Panel de métricas</h1>
+    <div class="preset-bar">
+      <button type="button" class="preset-btn" (click)="today()">Hoy</button>
+      <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
+      <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
+      <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="load()" /></label>
+      <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="load()" /></label>
+    </div>
+  </header>
+
+  <div *ngIf="rangeError" class="dash-alert range">
+    <i class="bi bi-exclamation-circle"></i> El rango no puede superar 1 año ni empezar después de la fecha final.
+  </div>
+  <div *ngIf="!rangeError && error" class="dash-alert error">
+    <i class="bi bi-exclamation-triangle"></i> {{ error }}
+  </div>
+
+  <div *ngIf="loading" class="loading-wrap"><div class="spinner-border spinner-gold"></div></div>
+
+  <ng-container *ngIf="!loading && !rangeError">
+    <section class="kpi-row" *ngIf="summary">
+      <div class="kpi"><span class="kpi-label">Total facturado</span><span class="kpi-value">{{ formatCurrency(summary.totalBilled) }}</span></div>
+      <div class="kpi"><span class="kpi-label">Cargos</span><span class="kpi-value">{{ summary.chargeCount }}</span></div>
+      <div class="kpi"><span class="kpi-label">Valor promedio por cuenta</span><span class="kpi-value">{{ formatCurrency(summary.averagePerAccount) }}</span></div>
+      <div class="kpi"><span class="kpi-label">Propina</span><span class="kpi-value">{{ summary.tipPercentage | number:'1.0-1' }}%</span></div>
+      <div class="kpi" *ngIf="comparison">
+        <span class="kpi-label">vs mes anterior</span>
+        <span class="kpi-value" [class.up]="comparison.variancePercentage >= 0" [class.down]="comparison.variancePercentage < 0">
+          {{ comparison.variancePercentage >= 0 ? '+' : '' }}{{ comparison.variancePercentage | number:'1.0-1' }}%
+        </span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Ingresos por ambiente</h2>
+      <app-chart [options]="envOptions" height="300px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Tendencia</h2>
+        <div class="gran-toggle">
+          <button type="button" [class.active]="granularity === 'day'" (click)="setGranularity('day')">Día</button>
+          <button type="button" [class.active]="granularity === 'week'" (click)="setGranularity('week')">Semana</button>
+          <button type="button" [class.active]="granularity === 'month'" (click)="setGranularity('month')">Mes</button>
+        </div>
+      </div>
+      <app-chart [options]="trendOptions" height="320px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Horas y días pico</h2>
+      <p class="panel-hint">Cada celda es un día de la semana y una hora; más oscuro significa más consumo.</p>
+      <app-chart [options]="heatmapOptions" height="340px"></app-chart>
+    </section>
+
+    <section class="panel" *ngIf="showSecurity && security">
+      <h2 class="panel-title">Seguridad</h2>
+      <div class="sec-degraded" *ngIf="security.degraded">
+        <i class="bi bi-exclamation-triangle"></i> No se pudieron cargar los datos de seguridad (servicio no disponible).
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><span class="kpi-label">Intentos fallidos</span><span class="kpi-value">{{ security.loginFailedCount }}</span></div>
+        <div class="kpi"><span class="kpi-label">Bloqueos rate-limit</span><span class="kpi-value">{{ security.rateLimitBlockCount }}</span></div>
+        <div class="kpi"><span class="kpi-label">Accesos denegados</span><span class="kpi-value">{{ security.accessDeniedCount }}</span></div>
+        <div class="kpi critical"><span class="kpi-label">Alertas críticas</span><span class="kpi-value">{{ security.criticalAlertCount }}</span></div>
+      </div>
+    </section>
+
+    <section class="panel" *ngIf="accessSummary">
+      <h2 class="panel-title">Accesos y ocupación</h2>
+      <div class="kpi-row">
+        <div class="kpi"><span class="kpi-label">Presentes ahora</span><span class="kpi-value">{{ accessSummary.presentNow }}</span></div>
+        <div class="kpi"><span class="kpi-label">Visitas</span><span class="kpi-value">{{ accessSummary.visits }}</span></div>
+        <div class="kpi"><span class="kpi-label">Socios únicos</span><span class="kpi-value">{{ accessSummary.uniquePartners }}</span></div>
+        <div class="kpi"><span class="kpi-label">Frecuencia media</span><span class="kpi-value">{{ accessSummary.avgFrequency | number:'1.0-1' }}</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Ocupación por ambiente (hoy)</h2>
+      <app-chart [options]="occupancyOptions" height="280px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Curva de afluencia</h2>
+      <app-chart [options]="attendanceOptions" height="300px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">Top productos</h2>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select [(ngModel)]="topEnv" (change)="loadTopProducts()">
+            <option value="">Todos los ambientes</option>
+            <option *ngFor="let a of ambientes" [value]="a">{{ a }}</option>
+          </select>
+          <div class="gran-toggle">
+            <button type="button" [class.active]="topMode === 'revenue'" (click)="setTopMode('revenue')">Ingresos</button>
+            <button type="button" [class.active]="topMode === 'quantity'" (click)="setTopMode('quantity')">Unidades</button>
+          </div>
+        </div>
+      </div>
+      <p class="panel-hint" *ngIf="!hasTopProducts">Aún no hay productos registrados en este rango.</p>
+      <app-chart *ngIf="hasTopProducts" [options]="topProductsOptions" height="340px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Mix por categoría</h2>
+      <p class="panel-hint" *ngIf="!hasCategoryMix">Aún no hay datos de categoría en este rango.</p>
+      <app-chart *ngIf="hasCategoryMix" [options]="categoryMixOptions" height="420px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Consumo por ambiente y categoría</h2>
+      <p class="panel-hint" *ngIf="!hasEnvCategory">Aún no hay datos de ambiente y categoría en este rango.</p>
+      <app-chart *ngIf="hasEnvCategory" [options]="envCategoryOptions" height="340px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Histórico mensual (facturado)</h2>
+      <p class="panel-hint" *ngIf="!hasSnapshots">Aún no hay cierres mensuales registrados.</p>
+      <app-chart *ngIf="hasSnapshots" [options]="snapshotsOptions" height="300px"></app-chart>
+    </section>
+  </ng-container>
+</div>

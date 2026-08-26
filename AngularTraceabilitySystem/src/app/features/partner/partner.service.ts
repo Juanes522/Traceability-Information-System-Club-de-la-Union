@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { PartnerProfile, Consumption, NotificationDTO, ConsumptionPage } from '../../shared/models/index';
+import { PartnerProfile, Consumption, NotificationPage, ConsumptionPage, LoginHistoryPage } from '../../shared/models/index';
 
 @Injectable()
 export class PartnerService {
@@ -19,7 +19,13 @@ export class PartnerService {
     return this.http.get<ConsumptionPage>(`${API_BASE}/personpartner/getconsumptions/me`, { params });
   }
 
-  getNotifications(): Observable<NotificationDTO[]> {
-    return this.http.get<NotificationDTO[]>(`${API_BASE}/personpartner/notifications/me`);
+  getNotifications(page = 0, size = 10): Observable<NotificationPage> {
+    const params = new HttpParams().set('page', String(page)).set('size', String(size));
+    return this.http.get<NotificationPage>(`${API_BASE}/personpartner/notifications/me`, { params });
+  }
+
+  getLoginHistory(page = 0, size = 10): Observable<LoginHistoryPage> {
+    const params = new HttpParams().set('page', String(page)).set('size', String(size));
+    return this.http.get<LoginHistoryPage>(`${API_BASE}/personpartner/my-logins`, { params });
   }
 }

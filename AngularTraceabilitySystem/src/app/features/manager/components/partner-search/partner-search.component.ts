@@ -7,6 +7,7 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PartnerDetailComponent } from '../partner-detail/partner-detail.component';
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
+import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
 
@@ -22,6 +23,7 @@ type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName'
         NgClass,
         PartnerDetailComponent,
         PaginatorComponent,
+        AccionPipe,
     ],
 })
 export class PartnerSearchComponent implements OnInit {

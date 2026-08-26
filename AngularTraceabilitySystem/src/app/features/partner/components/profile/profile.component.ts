@@ -2,6 +2,7 @@
 import { PartnerProfile } from '../../../../shared/models';
 import { PartnerService } from '../../partner.service';
 import { NgIf, NgClass, NgFor } from '@angular/common';
+import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
 
 @Component({
     selector: 'app-partner-profile',
@@ -11,6 +12,7 @@ import { NgIf, NgClass, NgFor } from '@angular/common';
         NgIf,
         NgClass,
         NgFor,
+        AccionPipe,
     ],
 })
 export class ProfileComponent implements OnInit {

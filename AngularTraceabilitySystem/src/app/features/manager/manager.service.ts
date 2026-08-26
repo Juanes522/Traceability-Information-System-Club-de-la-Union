@@ -2,22 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
-import { Consumption, PartnerProfile, ConsumptionPage } from '../../shared/models/index';
-
-export interface ConsumptionCreateRequest {
-  partnerId: number;
-  enviroment: string;
-  account: number;
-  table: string;
-  waiterName: string;
-  isPartner: string;
-  consumptionValue: number;
-  iva: number;
-  service: number;
-  tip: number;
-  consumptionOpening: string; // YYYY-MM-DD
-  consumptionClosing: string | null; // YYYY-MM-DD
-}
+import { PartnerProfile, ConsumptionPage } from '../../shared/models/index';
 
 @Injectable()
 export class ManagerService {
@@ -54,10 +39,6 @@ export class ManagerService {
   }
 
   // ── Consumption management ─────────────────────────────────────────────────
-  registerConsumption(req: ConsumptionCreateRequest): Observable<Consumption> {
-    return this.http.post<Consumption>(`${API_BASE}/partnerconsumption/registerconsumption`, req);
-  }
-
   getConsumptionsByEnvironment(env: string, filters: { from?: string; to?: string; page: number; size: number }): Observable<ConsumptionPage> {
     let params = new HttpParams().set('page', String(filters.page)).set('size', String(filters.size));
     if (filters.from) { params = params.set('from', filters.from); }

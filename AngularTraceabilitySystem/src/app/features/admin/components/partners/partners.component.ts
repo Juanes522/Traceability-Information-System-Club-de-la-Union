@@ -6,9 +6,11 @@ import { PartnerProfile, Consumption } from '../../../../shared/models';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
+import { PartnerMetricsComponent } from '../../../../shared/components/partner-metrics/partner-metrics.component';
+import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
 
 type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName';
-type ActiveTab   = 'profile' | 'consumptions';
+type ActiveTab   = 'profile' | 'consumptions' | 'metrics';
 
 @Component({
     selector: 'app-admin-partners',
@@ -21,6 +23,8 @@ type ActiveTab   = 'profile' | 'consumptions';
         FormsModule,
         NgClass,
         PaginatorComponent,
+        PartnerMetricsComponent,
+        AccionPipe,
     ],
 })
 export class PartnersComponent {
@@ -271,7 +275,7 @@ export class PartnersComponent {
   }
 
   formatCurrency(v: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
   }
 
   totalFor(c: Consumption): number { return c.consumptionValue + c.iva + c.service + c.tip; }

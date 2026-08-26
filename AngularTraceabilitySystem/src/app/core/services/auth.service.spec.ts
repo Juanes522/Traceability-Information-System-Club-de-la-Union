@@ -6,8 +6,8 @@ import { TokenService } from './token.service';
 import { AuthApiService } from './auth-api.service';
 import { UserSession } from '../../shared/models';
 
-const PARTNER_SESSION: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false };
-const FORCE_SESSION:   UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: true  };
+const PARTNER_SESSION: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false, needsConsent: false };
+const FORCE_SESSION:   UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: true, needsConsent: false  };
 
 describe('AuthService', () => {
   let service: AuthService;

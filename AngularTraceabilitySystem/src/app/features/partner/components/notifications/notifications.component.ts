@@ -1,41 +1,56 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NotificationDTO } from '../../../../shared/models';
 import { PartnerService } from '../../partner.service';
 import { NgIf, NgFor } from '@angular/common';
+import { PaginatorComponent } from '../../../../shared/components/paginator/paginator.component';
 
 @Component({
     selector: 'app-partner-notifications',
     templateUrl: './notifications.component.html',
     styleUrls: ['./notifications.component.scss'],
-    imports: [NgIf, NgFor],
+    imports: [NgIf, NgFor, PaginatorComponent],
 })
 export class NotificationsComponent implements OnInit {
   notifications: NotificationDTO[] = [];
   loading = true;
   error = '';
+  currentPage = 1;
+  pageSize = 10;
+  totalElements = 0;
 
   constructor(private partnerService: PartnerService) {}
 
   ngOnInit(): void {
-    this.partnerService.getNotifications().subscribe({
-      next: (list) => {
-        this.notifications = list;
+    this.loadPage();
+  }
+
+  get totalPages(): number { return Math.ceil(this.totalElements / this.pageSize); }
+
+  goToPage(n: number): void {
+    if (n < 1 || n > this.totalPages || n === this.currentPage) return;
+    this.currentPage = n;
+    this.loadPage();
+  }
+
+  loadPage(): void {
+    this.loading = true;
+    this.error = '';
+    this.partnerService.getNotifications(this.currentPage - 1, this.pageSize).subscribe({
+      next: (page) => {
+        this.notifications = page.content;
+        this.totalElements = page.totalElements;
         this.loading = false;
       },
-      error: (err) => {
-        if (err.status === 204) {
-          this.notifications = [];
-        } else {
-          this.error = 'No se pudieron cargar las notificaciones.';
-        }
+      error: () => {
+        this.error = 'No se pudieron cargar las notificaciones.';
         this.loading = false;
       },
     });
   }
 
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency', currency: 'COP', maximumFractionDigits: 0,
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2,
     }).format(amount);
   }
 

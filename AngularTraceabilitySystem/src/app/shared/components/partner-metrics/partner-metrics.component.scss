@@ -1,0 +1,143 @@
+.pm {
+  padding: 1rem 1.5rem 2rem;
+}
+
+.preset-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.preset-btn {
+  border: 1px solid #dee2e6;
+  border-radius: 99px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    background: #1A1F4D;
+    border-color: #1A1F4D;
+    color: #fff;
+  }
+}
+
+.filter-date {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #dee2e6;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  color: #1A1F4D;
+  background: #f8f9fa;
+  outline: none;
+
+  &:focus {
+    border-color: #c7a567;
+    background: #fff;
+  }
+}
+
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.spinner-gold {
+  color: #c7a567;
+}
+
+.pm-error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.kpi {
+  background: #fff;
+  border: 1px solid #e6e2d8;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7076;
+  font-weight: 600;
+}
+
+.kpi-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1A1F4D;
+}
+
+.pm-last {
+  font-size: 0.95rem;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e6e2d8;
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1F4D;
+  margin: 0 0 0.6rem;
+}
+
+.gran-toggle {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.gran-toggle button {
+  border: 1px solid #dee2e6;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  cursor: pointer;
+  border-radius: 6px;
+
+  &.active {
+    background: #1A1F4D;
+    color: #fff;
+    border-color: #1A1F4D;
+  }
+}

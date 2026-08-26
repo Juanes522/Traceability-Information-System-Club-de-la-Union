@@ -23,8 +23,8 @@
       <button type="button" class="preset-btn" (click)="lastWeek()">Última semana</button>
       <button type="button" class="preset-btn" (click)="lastMonth()">Último mes</button>
       <button type="button" class="preset-btn" (click)="allTime()">Todo</button>
-      <input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" />
-      <input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" />
+      <label class="range-field"><span class="range-label">Desde</span><input class="filter-date" type="datetime-local" [(ngModel)]="from" (change)="onWindowEdit()" /></label>
+      <label class="range-field"><span class="range-label">Hasta</span><input class="filter-date" type="datetime-local" [(ngModel)]="to" (change)="onWindowEdit()" /></label>
       <span class="result-count">{{ totalElements }} resultado{{ totalElements !== 1 ? 's' : '' }}</span>
     </div>
     <div class="range-error" *ngIf="rangeError"><i class="bi bi-exclamation-circle"></i> El rango no puede superar 3 meses.</div>

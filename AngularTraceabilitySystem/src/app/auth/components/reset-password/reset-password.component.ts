@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthApiService } from '../../../core/services/auth-api.service';
 import { NgIf, NgClass } from '@angular/common';
+import { strongPasswordValidator, PASSWORD_REQUIREMENTS_TEXT } from '../../../core/validators/password.validator';
 
 @Component({
     selector: 'app-reset-password',
@@ -21,6 +22,7 @@ export class ResetPasswordComponent implements OnInit {
   done = false;
   error = '';
   showPassword = false;
+  readonly passwordHint = PASSWORD_REQUIREMENTS_TEXT;
   private token = '';
 
   constructor(
@@ -30,7 +32,7 @@ export class ResetPasswordComponent implements OnInit {
     private authApi: AuthApiService
   ) {
     this.form = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      newPassword: ['', [Validators.required, strongPasswordValidator()]],
     });
   }
 
