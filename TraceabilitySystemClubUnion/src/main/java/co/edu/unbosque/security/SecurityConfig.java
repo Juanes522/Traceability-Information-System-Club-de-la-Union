@@ -34,6 +34,24 @@ public class SecurityConfig {
 	@Autowired
 	private AuditAccessDeniedHandler auditAccessDeniedHandler;
 
+	@org.springframework.beans.factory.annotation.Value("${app.frontend.url:http://localhost:4200}")
+	private String frontendUrl;
+
+	@org.springframework.beans.factory.annotation.Value("${app.cors.allowed-origins:}")
+	private String extraCorsOrigins;
+
+	private java.util.List<String> corsAllowedOrigins() {
+		java.util.List<String> origins = new java.util.ArrayList<>(
+				Arrays.asList("http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:8000"));
+		if (frontendUrl != null && !frontendUrl.isBlank()) {
+			origins.add(frontendUrl);
+		}
+		if (extraCorsOrigins != null && !extraCorsOrigins.isBlank()) {
+			origins.addAll(Arrays.asList(extraCorsOrigins.split(",")));
+		}
+		return origins;
+	}
+
 	@Bean
 	@SuppressWarnings("deprecation")
 	public PasswordEncoder passwordEncoder() {
@@ -55,8 +73,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors(cors -> cors.configurationSource(request -> {
 			CorsConfiguration config = new CorsConfiguration();
-			config.setAllowedOriginPatterns(
-					Arrays.asList("http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:8000")); 
+			config.setAllowedOriginPatterns(corsAllowedOrigins()); 
 																												
 																												
 																												
