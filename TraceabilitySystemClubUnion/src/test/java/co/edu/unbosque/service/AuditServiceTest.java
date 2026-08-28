@@ -76,6 +76,17 @@ class AuditServiceTest {
     }
 
     @Test
+    void record_usesProvidedTimestamp() {
+        java.time.Instant ts = java.time.Instant.parse("2026-05-15T16:45:00Z");
+        service.record(AuditEventType.CHARGE_REGISTERED, AuditResult.SUCCESS,
+                "123", "10.0.0.1", "cargo", "9", ts);
+
+        ArgumentCaptor<AuditEvent> captor = ArgumentCaptor.forClass(AuditEvent.class);
+        verify(operations).save(captor.capture());
+        assertEquals(ts, captor.getValue().getTimestamp());
+    }
+
+    @Test
     void record_isFailOpen_whenSaveThrows() {
         when(operations.save(any(AuditEvent.class))).thenThrow(new RuntimeException("ES down"));
 

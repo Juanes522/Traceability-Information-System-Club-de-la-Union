@@ -22,10 +22,15 @@ public class AccessService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void registerPresence(PersonPartner partner) {
+		registerPresence(partner, LocalDateTime.now());
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void registerPresence(PersonPartner partner, LocalDateTime admissionTime) {
 		if (accessRepo.findOpenAccessByPartnerId(partner.getPersonId()).isEmpty()) {
 			Access access = new Access();
 			access.setPartner(partner);
-			access.setDateTimeAdmission(LocalDateTime.now());
+			access.setDateTimeAdmission(admissionTime != null ? admissionTime : LocalDateTime.now());
 			accessRepo.save(access);
 		}
 	}

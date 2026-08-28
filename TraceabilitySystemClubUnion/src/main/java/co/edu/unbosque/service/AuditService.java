@@ -23,9 +23,15 @@ public class AuditService {
 	@Async
 	public void record(String eventType, String result, String username, String ipAddress,
 			String detail, String targetId) {
+		record(eventType, result, username, ipAddress, detail, targetId, Instant.now());
+	}
+
+	@Async
+	public void record(String eventType, String result, String username, String ipAddress,
+			String detail, String targetId, Instant timestamp) {
 		try {
 			AuditEvent event = new AuditEvent();
-			event.setTimestamp(Instant.now());
+			event.setTimestamp(timestamp != null ? timestamp : Instant.now());
 			event.setEventType(eventType);
 			event.setResult(result);
 			event.setUsername(username);
