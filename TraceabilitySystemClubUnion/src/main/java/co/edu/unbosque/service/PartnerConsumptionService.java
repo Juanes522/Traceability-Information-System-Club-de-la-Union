@@ -94,7 +94,7 @@ public class PartnerConsumptionService {
         PartnerConsumption saved = consumptionRepo.save(consumption);
 
         try {
-            accessService.registerPresence(partner);
+            accessService.registerPresence(partner, opening);
         } catch (Exception e) {
             System.err.println("Presence registration failed: " + e.getMessage());
         }
@@ -111,7 +111,7 @@ public class PartnerConsumptionService {
         notification.setNotificationType("CHARGE_NOTIFICATION");
         notification.setTitle(title);
         notification.setBody(body);
-        notification.setGenerationDate(LocalDateTime.now());
+        notification.setGenerationDate(opening);
         notification.setState('S');
         notRepo.save(notification);
 
@@ -121,7 +121,8 @@ public class PartnerConsumptionService {
         auditService.record(AuditEventType.CHARGE_REGISTERED, AuditResult.SUCCESS,
                 partner.getIdentification(), HttpRequestUtils.currentClientIp(),
                 String.format("Cargo de $%.2f en %s", total, req.getEnviroment()),
-                String.valueOf(saved.getConsumptionId()));
+                String.valueOf(saved.getConsumptionId()),
+                opening.atZone(java.time.ZoneId.systemDefault()).toInstant());
 
         return saved;
     }
