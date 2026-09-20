@@ -13,11 +13,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import co.edu.unbosque.dto.ConsumptionCreateRequest;
 import co.edu.unbosque.model.PartnerConsumption;
+import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.service.PartnerConsumptionService;
+import co.edu.unbosque.service.PersonPartnerService;
 
 import jakarta.validation.Valid;
 
@@ -27,6 +33,9 @@ public class PartnerConsumptionController {
 
 	@Autowired
 	private PartnerConsumptionService consumptionServ;
+
+	@Autowired
+	private PersonPartnerService personPartnerService;
 
 	public PartnerConsumptionController() {
 	}
@@ -44,6 +53,7 @@ public class PartnerConsumptionController {
 		}
 	}
 
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/by-environment/{env}")
 	public ResponseEntity<?> getByEnvironment(
 			@PathVariable String env,
@@ -62,11 +72,32 @@ public class PartnerConsumptionController {
 
 	@GetMapping("/by-partner/{partnerId}")
 	public ResponseEntity<List<PartnerConsumption>> getByPartner(@PathVariable Long partnerId) {
+		if (!canAccessPartner(partnerId)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		List<PartnerConsumption> list = consumptionServ.getByPartnerId(partnerId);
 		if (list == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		if (list.isEmpty())
 			return new ResponseEntity<>(list, HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	private boolean canAccessPartner(Long partnerId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !auth.isAuthenticated()) {
+			return false;
+		}
+		boolean privileged = auth.getAuthorities().stream()
+				.anyMatch(a -> "ROLE_MANAGER".equals(a.getAuthority()) || "ROLE_ADMIN".equals(a.getAuthority()));
+		if (privileged) {
+			return true;
+		}
+		if (!(auth.getPrincipal() instanceof UserDetails)) {
+			return false;
+		}
+		String identification = ((UserDetails) auth.getPrincipal()).getUsername();
+		PersonPartner me = personPartnerService.getByIdentification(identification);
+		return me != null && partnerId.equals(me.getPersonId());
 	}
 }
