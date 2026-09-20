@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Filtro de exclusiones de SpotBugs / FindSecBugs.
+
+	Se deja intencionalmente vacio para que el PRIMER reporte muestre todos los
+	hallazgos y puedan triarse. Una vez revisados, agrega aqui unicamente los
+	falsos positivos justificados (por ejemplo, exposicion de campos en entidades
+	JPA / DTO, que es esperada), documentando la razon.
+
+	Ejemplo (comentado) para silenciar la exposicion de referencias mutables en
+	las entidades y DTO, un hallazgo tipico y de bajo riesgo en este contexto:
+
+	<Match>
+		<Or>
+			<Package name="~co\.edu\.unbosque\.model.*"/>
+			<Package name="~co\.edu\.unbosque\.dto.*"/>
+		</Or>
+		<Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+	</Match>
+-->
+<FindBugsFilter>
+</FindBugsFilter>
