@@ -33,6 +33,7 @@ class AuthorizationRulesSecurityTest {
 	private static final String ADMIN_ONLY = "/audit";
 	private static final String MANAGER_OR_ADMIN = "/personpartner/getall";
 	private static final String AUTHENTICATED_ONLY = "/personpartner/me";
+	private static final String BY_ENVIRONMENT = "/partnerconsumption/by-environment/Bar";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -94,6 +95,12 @@ class AuthorizationRulesSecurityTest {
 				.andExpect(accessGranted());
 	}
 
+	@Test
+	void partner_isForbiddenOnByEnvironmentEndpoint() throws Exception {
+		mockMvc.perform(get(BY_ENVIRONMENT).with(user("partner").roles("PARTNER")))
+				.andExpect(accessDenied());
+	}
+
 	// ---------- Rol MANAGER ----------
 
 	@Test
@@ -106,6 +113,12 @@ class AuthorizationRulesSecurityTest {
 	void manager_isForbiddenOnAdminEndpoint() throws Exception {
 		mockMvc.perform(get(ADMIN_ONLY).with(user("manager").roles("MANAGER")))
 				.andExpect(accessDenied());
+	}
+
+	@Test
+	void manager_isAllowedOnByEnvironmentEndpoint() throws Exception {
+		mockMvc.perform(get(BY_ENVIRONMENT).with(user("manager").roles("MANAGER")))
+				.andExpect(accessGranted());
 	}
 
 	// ---------- Rol ADMIN ----------
