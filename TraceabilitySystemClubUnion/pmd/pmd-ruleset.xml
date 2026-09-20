@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Traceability Static Analysis"
+	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+	<description>
+		Reglas de analisis estatico (PMD 7) para el backend del Sistema de Trazabilidad.
+		Se priorizan categorias con valor tecnico (errores probables, buenas practicas,
+		rendimiento y concurrencia) y se omite deliberadamente la categoria de estilo
+		(codestyle), cuyo objetivo coincide con Checkstyle y solo aportaria ruido.
+	</description>
+
+	<!-- Errores probables en tiempo de ejecucion -->
+	<rule ref="category/java/errorprone.xml"/>
+
+	<!-- Buenas practicas de programacion -->
+	<rule ref="category/java/bestpractices.xml"/>
+
+	<!-- Rendimiento -->
+	<rule ref="category/java/performance.xml"/>
+
+	<!-- Concurrencia / uso de hilos -->
+	<rule ref="category/java/multithreading.xml"/>
+
+</ruleset>

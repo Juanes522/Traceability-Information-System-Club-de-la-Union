@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> 
 	</parent>
 	<groupId>co.edu.unbosque</groupId>
 	<artifactId>TraceabilitySystemClubUnion</artifactId>
@@ -29,6 +29,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<!-- Clave del NVD para OWASP Dependency-Check; sobrescribir con -Dnvd.api.key=... -->
+		<nvd.api.key></nvd.api.key>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -69,6 +71,11 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -152,7 +159,107 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- ================= Pruebas estaticas (analisis estatico) ================= -->
+
+			<!-- SpotBugs + FindSecBugs: deteccion de bugs y patrones de vulnerabilidad -->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.8.6.6</version>
+				<configuration>
+					<!-- Analisis mas exhaustivo y umbral bajo para no perder hallazgos -->
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<!-- No romper el build por defecto: este commit solo genera el reporte -->
+					<failOnError>false</failOnError>
+					<includeTests>false</includeTests>
+					<xmlOutput>true</xmlOutput>
+					<htmlOutput>true</htmlOutput>
+					<excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+					<plugins>
+						<plugin>
+							<groupId>com.h3xstream.findsecbugs</groupId>
+							<artifactId>findsecbugs-plugin</artifactId>
+							<version>1.13.0</version>
+						</plugin>
+					</plugins>
+				</configuration>
+			</plugin>
+
+			<!-- PMD: reglas de errores comunes, buenas practicas, rendimiento y concurrencia -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.26.0</version>
+				<configuration>
+					<targetJdk>21</targetJdk>
+					<!-- No romper el build por defecto: este commit solo genera el reporte -->
+					<failOnViolation>false</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+					<includeTests>false</includeTests>
+					<linkXRef>false</linkXRef>
+					<rulesets>
+						<ruleset>pmd/pmd-ruleset.xml</ruleset>
+					</rulesets>
+				</configuration>
+			</plugin>
+
+			<!-- ================= Pruebas de seguridad (SCA) ================= -->
+			<!-- OWASP Dependency-Check: dependencias con vulnerabilidades conocidas (CVE/NVD) -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>10.0.4</version>
+				<configuration>
+					<!-- Reportes HTML + JSON en target/ -->
+					<formats>
+						<format>HTML</format>
+						<format>JSON</format>
+					</formats>
+					<!-- 11 = nunca rompe el build; este commit solo genera el reporte -->
+					<failBuildOnCVSS>11</failBuildOnCVSS>
+					<!-- Clave del NVD para acelerar la descarga (pasar con -Dnvd.api.key=... o dejar vacia) -->
+					<nvdApiKey>${nvd.api.key}</nvdApiKey>
+					<ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<!-- Reportes HTML navegables generados con: ./mvnw site -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.8.6.6</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+					<plugins>
+						<plugin>
+							<groupId>com.h3xstream.findsecbugs</groupId>
+							<artifactId>findsecbugs-plugin</artifactId>
+							<version>1.13.0</version>
+						</plugin>
+					</plugins>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.26.0</version>
+				<configuration>
+					<targetJdk>21</targetJdk>
+					<linkXRef>false</linkXRef>
+					<rulesets>
+						<ruleset>pmd/pmd-ruleset.xml</ruleset>
+					</rulesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>
