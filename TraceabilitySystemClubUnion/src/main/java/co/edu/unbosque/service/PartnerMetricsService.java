@@ -21,6 +21,23 @@ import co.edu.unbosque.repository.AccessRepository;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
 @Service
+/**
+ * Métricas individuales de un socio: su consumo, sus ambientes, su tendencia y sus visitas.
+ *
+ * <p>Sirve tanto el panel del propio socio ({@code /metrics/partner/me}) como su consulta por parte de un gestor. Es el
+ * único servicio de analítica cuyo destinatario puede ser el socio mismo.
+ *
+ * <p><strong>Se aparta de la estrategia del resto de las métricas.</strong> Mientras
+ * {@link ConsumptionMetricsService} agrega en SQL, este servicio <strong>hidrata todas las entidades del rango y
+ * agrega en memoria</strong>. Funciona porque el volumen de un socio individual es mucho menor que el global, pero la
+ * inconsistencia es real: no usa proyección, no impone tope, y reimplementa en Java las tres agregaciones que su
+ * equivalente global resuelve en la base.
+ *
+ * <p>Comparte con los otros dos servicios de métricas tres métodos privados de agrupación temporal, duplicados
+ * literalmente, y una cuarta copia de la fórmula del total del consumo.
+ *
+ * @see co.edu.unbosque.dto.PartnerMetricsDTO
+ */
 public class PartnerMetricsService {
 
 	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -33,6 +50,27 @@ public class PartnerMetricsService {
 		this.accessRepo = accessRepo;
 	}
 
+	/**
+	 * Calcula el conjunto completo de métricas de un socio en un rango.
+	 *
+	 * <p>Compone cuatro bloques: el resumen de su facturación, su distribución por ambiente, su serie temporal y sus
+	 * visitas.
+	 *
+	 * <p>Los tres primeros se calculan <strong>en memoria</strong> sobre las entidades del rango; los ambientes se
+	 * ordenan de mayor a menor consumo y los consumos sin ambiente se agrupan bajo una etiqueta genérica.
+	 *
+	 * <p><strong>Advertencia sobre la última visita.</strong> A diferencia de todos los demás campos del DTO, la fecha
+	 * de última visita <strong>ignora el rango solicitado</strong>: es la última visita registrada del socio, que puede
+	 * ser muy anterior a la ventana consultada. Cuando el socio nunca ha visitado el club se informa como cadena vacía,
+	 * no como nulo.
+	 *
+	 * @param personId    clave primaria del socio
+	 * @param from        inicio del rango, inclusivo
+	 * @param to          fin del rango, inclusivo
+	 * @param granularity {@code day}, {@code week} o {@code month} para la serie temporal
+	 * @return las métricas del socio; con valores en cero si no tuvo actividad en el rango
+	 * @throws IllegalArgumentException si la granularidad no es una de las tres admitidas
+	 */
 	public PartnerMetricsDTO forPartner(Long personId, LocalDateTime from, LocalDateTime to, String granularity) {
 		validateGranularity(granularity);
 		List<PartnerConsumption> rows = repository.findByPartnerPersonIdAndConsumptionOpeningBetween(personId, from, to);

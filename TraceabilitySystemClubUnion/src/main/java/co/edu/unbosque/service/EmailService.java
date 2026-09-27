@@ -14,6 +14,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Service
+/**
+ * Envío de los dos correos transaccionales del sistema: recuperación de contraseña y aviso de consumo.
+ *
+ * <p>Usa SMTP sobre Gmail con STARTTLS obligatorio. El remitente se toma de {@code spring.mail.username} y la
+ * contraseña de la variable de entorno {@code MAIL_PASSWORD}.
+ *
+ * <p>Los dos métodos tienen <strong>políticas opuestas y deliberadas</strong>, que conviene no unificar sin pensarlo:
+ *
+ * <table border="1">
+ *   <caption>Diferencias entre los dos envíos</caption>
+ *   <tr><th></th><th>Recuperación de contraseña</th><th>Aviso de consumo</th></tr>
+ *   <tr><td>Ejecución</td><td><strong>sincrónica</strong></td><td>{@code @Async}</td></tr>
+ *   <tr><td>Errores</td><td>propaga la excepción</td><td>los captura y descarta</td></tr>
+ *   <tr><td>Razón</td><td>Si el correo no sale, el usuario no puede recuperar su cuenta: debe enterarse</td>
+ *       <td>El cargo ya está registrado; el aviso es accesorio y no debe hacer fallar la operación</td></tr>
+ * </table>
+ *
+ * <p>La contrapartida del primero es que {@code POST /auth/forgot-password} <strong>bloquea la petición contra el
+ * servidor SMTP</strong>, latencia de red incluida.
+ *
+ * <p>Las plantillas HTML se componen por concatenación en el propio código, sin motor de plantillas.
+ */
 public class EmailService {
 
 	private final JavaMailSender mailSender;
@@ -28,6 +50,25 @@ public class EmailService {
 		this.mailSender = mailSender;
 	}
 
+	/**
+	 * Envía el correo con el enlace de restablecimiento de contraseña.
+	 *
+	 * <p><strong>No es {@code @Async}</strong> y <strong>propaga sus excepciones</strong>, a diferencia del aviso de
+	 * consumo. Es intencional: si el envío falla, el usuario debe saberlo en lugar de quedarse esperando un correo
+	 * que nunca llegará.
+	 *
+	 * <p>El enlace se construye sobre {@code app.frontend.url}, propiedad que por tanto debe apuntar al frontend real
+	 * del despliegue: si conserva el valor de desarrollo, los enlaces enviados a usuarios reales serán inservibles.
+	 *
+	 * <p>El cuerpo incrusta el texto «Este enlace es válido por 1 hora». Ese plazo está <strong>duplicado</strong>:
+	 * quien lo calcula de verdad es {@link co.edu.unbosque.controller.AuthController}, de modo que cambiarlo allí sin
+	 * actualizar esta plantilla produciría un correo que miente.
+	 *
+	 * @param toEmail          dirección de destino
+	 * @param resetToken       token de un solo uso que se incluye en el enlace
+	 * @param partnerFirstName nombre del socio, para el saludo
+	 * @throws MessagingException si el mensaje no se puede construir o enviar
+	 */
 	public void sendPasswordResetEmail(String toEmail, String resetToken, String partnerFirstName)
 			throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
@@ -88,6 +129,20 @@ public class EmailService {
 		    """).formatted(safeName, safeLink, safeLink, safeLink);
 	}
 
+	/**
+	 * Envía al socio el desglose del cargo que se acaba de registrar.
+	 *
+	 * <p>Se ejecuta de forma asíncrona y <strong>captura toda excepción</strong>, de modo que un fallo de correo nunca
+	 * hace fallar el registro del consumo. El precio es que esos fallos son invisibles salvo por una línea en
+	 * {@code System.err}.
+	 *
+	 * <p><strong>Solo notifica a la primera dirección del arreglo.</strong> Si el socio tiene varias registradas, las
+	 * demás no reciben nada; y si la primera está en blanco, el método retorna sin enviar a ninguna.
+	 *
+	 * @param partner     socio destinatario, del que se toma la primera dirección de correo
+	 * @param consumption consumo registrado, del que se toma el desglose
+	 * @param total       importe total ya calculado por el llamante, para no repetir la fórmula aquí
+	 */
 	@Async
 	public void sendConsumptionNotificationEmail(PersonPartner partner,
 	                                              PartnerConsumption consumption,
@@ -186,6 +241,17 @@ public class EmailService {
 		return String.format(Locale.US, "$%,.2f", value);
 	}
 
+	/**
+	 * Escapa los caracteres de marcado en un valor antes de incrustarlo en el HTML del correo.
+	 *
+	 * <p>Cubre {@code &}, {@code <} y {@code >}, es decir el contexto de <em>contenido</em> de un elemento.
+	 * <strong>No escapa comillas</strong>, de modo que no es seguro para un contexto de atributo. Importa porque el
+	 * enlace de restablecimiento se interpola dentro de un atributo {@code href}: hoy es inocuo porque ese valor es un
+	 * UUID generado por el servidor, pero la protección no la aporta esta función.
+	 *
+	 * @param text valor a escapar
+	 * @return el valor con los caracteres de marcado sustituidos, o cadena vacía si era nulo
+	 */
 	private String escapeHtml(String text) {
 		if (text == null)
 			return "";
