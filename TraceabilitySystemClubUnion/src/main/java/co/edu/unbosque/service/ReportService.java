@@ -27,6 +27,41 @@ import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
 @Service
+/**
+ * Genera los cuatro reportes PDF del sistema.
+ *
+ * <p>Cada método público compone un documento completo y lo devuelve como arreglo de bytes. La mecánica de dibujo la
+ * aporta {@link PdfSupport}; este servicio decide <strong>qué</strong> contiene cada reporte y de dónde salen los datos.
+ *
+ * <p>Es el servicio con más colaboradores de lectura del sistema: combina consultas directas al repositorio de consumos
+ * con métricas ya calculadas por {@link ConsumptionMetricsService} y {@link ProductMetricsService}, y —en el reporte de
+ * seguridad— con la bitácora de {@link AuditQueryService}.
+ *
+ * <p>Los cuatro reportes:
+ *
+ * <table border="1">
+ *   <caption>Reportes disponibles</caption>
+ *   <tr><th>Método</th><th>Contenido</th><th>Rol</th></tr>
+ *   <tr><td>{@link #consumptionsPdf}</td><td>Facturación del periodo, con detalle y analítica de producto</td>
+ *       <td>MANAGER, ADMIN</td></tr>
+ *   <tr><td>{@link #incomeByEnvironmentPdf}</td><td>Ingresos por ambiente</td><td>MANAGER, ADMIN</td></tr>
+ *   <tr><td>{@link #partnerStatementPdf}</td><td>Estado de cuenta individual</td><td>MANAGER, ADMIN</td></tr>
+ *   <tr><td>{@link #securityPdf}</td><td>Fallos de autenticación y eventos críticos</td><td><strong>ADMIN</strong></td></tr>
+ * </table>
+ *
+ * <p>Consideraciones técnicas comunes a todos ellos:
+ *
+ * <ul>
+ *   <li><strong>La consulta no está acotada aunque la salida sí.</strong> Las tablas de detalle muestran 40 filas, pero
+ *       la consulta recupera todos los consumos del periodo —hasta 366 días— antes de recortar.</li>
+ *   <li>Los importes se formatean con la configuración regional de Estados Unidos. El resultado es correcto porque
+ *       Ecuador usa el dólar estadounidense, pero la elección es incidental, no una decisión sobre la moneda del club.</li>
+ *   <li>El formateador de moneda es un campo compartido de un bean singleton, y su tipo <strong>no es seguro para uso
+ *       concurrente</strong>: dos descargas simultáneas pueden interferir entre sí.</li>
+ * </ul>
+ *
+ * @see PdfSupport
+ */
 public class ReportService {
 
 	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -49,6 +84,21 @@ public class ReportService {
 		this.usd.setMaximumFractionDigits(2);
 	}
 
+	/**
+	 * Genera el reporte de consumos del periodo, opcionalmente restringido a un ambiente.
+	 *
+	 * <p>Es el reporte más completo: indicadores de facturación, gráfica de barras por ambiente, gráfica de línea de la
+	 * tendencia diaria, tabla de detalle y las tres secciones de analítica de producto.
+	 *
+	 * <p>La tabla de detalle muestra los <strong>40 consumos más recientes</strong> del periodo, ordenados de forma
+	 * descendente. El resto de las secciones sí consideran el periodo completo, de modo que los totales no se limitan a
+	 * esas 40 filas.
+	 *
+	 * @param from        inicio del periodo, inclusivo
+	 * @param to          fin del periodo, inclusivo
+	 * @param environment nombre exacto del ambiente, o {@code null}/vacío para incluir todos
+	 * @return el PDF completo
+	 */
 	public byte[] consumptionsPdf(LocalDateTime from, LocalDateTime to, String environment) {
 		List<PartnerConsumption> rows = (environment != null && !environment.isBlank())
 				? consumptionRepo.findByEnviromentAndConsumptionOpeningBetween(environment, from, to)
@@ -83,6 +133,16 @@ public class ReportService {
 		return doc.build();
 	}
 
+	/**
+	 * Genera el reporte de ingresos por ambiente.
+	 *
+	 * <p>A diferencia de {@link #consumptionsPdf}, no consulta el repositorio: parte de las métricas ya agregadas por
+	 * {@link ConsumptionMetricsService}, de modo que sus cifras coinciden por construcción con las del tablero.
+	 *
+	 * @param from inicio del periodo, inclusivo
+	 * @param to   fin del periodo, inclusivo
+	 * @return el PDF completo
+	 */
 	public byte[] incomeByEnvironmentPdf(LocalDateTime from, LocalDateTime to) {
 		List<EnvironmentTotalDTO> env = consumptionMetrics.byEnvironment(from, to);
 		PdfSupport doc = new PdfSupport("Ingresos por ambiente", from, to);
@@ -115,6 +175,22 @@ public class ReportService {
 		return doc.build();
 	}
 
+	/**
+	 * Genera el estado de cuenta de un socio.
+	 *
+	 * <p>Incluye su identificación y número de acción en el encabezado, sus indicadores de consumo, su distribución por
+	 * ambiente, un detalle de 40 filas y sus diez productos más consumidos.
+	 *
+	 * <p><strong>El documento contiene datos personales descifrados</strong> —el nombre y la cédula del socio—, de modo
+	 * que el archivo generado hereda la sensibilidad de esa información y no debería tratarse como un reporte
+	 * cualquiera.
+	 *
+	 * @param identification cédula del socio
+	 * @param from           inicio del periodo, inclusivo
+	 * @param to             fin del periodo, inclusivo
+	 * @return el PDF, o <strong>{@code null} si el socio no existe</strong>. El controlador traduce ese nulo a una
+	 *         respuesta 404
+	 */
 	public byte[] partnerStatementPdf(String identification, LocalDateTime from, LocalDateTime to) {
 		PersonPartner p = partnerService.getByIdentification(identification);
 		if (p == null) {
@@ -151,6 +227,24 @@ public class ReportService {
 		return doc.build();
 	}
 
+	/**
+	 * Genera el reporte de seguridad del periodo.
+	 *
+	 * <p>Es el único reporte que <strong>no consulta la base relacional</strong>: sus datos provienen íntegramente de la
+	 * bitácora de auditoría en Elasticsearch. Presenta los intentos fallidos agrupados por usuario —con gráfica de los
+	 * quince primeros— y una tabla de eventos críticos.
+	 *
+	 * <p>Hereda los topes de {@link AuditQueryService}: los fallos por usuario se calculan sobre un máximo de 5 000
+	 * eventos y la tabla de eventos críticos se limita a 100 filas. En un periodo con muchos incidentes el reporte
+	 * <strong>subestima sin indicarlo</strong>.
+	 *
+	 * <p>A diferencia del resto, requiere rol {@code ADMIN}, y si Elasticsearch no está disponible la excepción propaga
+	 * en lugar de degradar.
+	 *
+	 * @param from inicio del periodo, inclusivo
+	 * @param to   fin del periodo, inclusivo
+	 * @return el PDF completo
+	 */
 	public byte[] securityPdf(LocalDateTime from, LocalDateTime to) {
 		Instant fromI = from.atZone(ZoneId.systemDefault()).toInstant();
 		Instant toI = to.atZone(ZoneId.systemDefault()).toInstant();

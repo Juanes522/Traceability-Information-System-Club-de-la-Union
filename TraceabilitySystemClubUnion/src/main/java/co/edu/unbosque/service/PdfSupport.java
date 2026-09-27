@@ -33,6 +33,32 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+/**
+ * Constructor de documentos PDF con la identidad visual del club.
+ *
+ * <p>Encapsula OpenPDF y JFreeChart detrás de un puñado de operaciones de alto nivel —encabezado, párrafo, tabla,
+ * indicadores, gráfica— para que {@link ReportService} decida el contenido sin ocupar sitio en el detalle del dibujo.
+ *
+ * <p><strong>No es un bean de Spring.</strong> Se instancia una vez por reporte, y esa decisión es necesaria: el objeto
+ * mantiene el estado del documento en construcción, de modo que compartirlo entre peticiones lo corrompería.
+ *
+ * <p>Particularidades del ciclo de vida que conviene conocer antes de usarla:
+ *
+ * <ul>
+ *   <li><strong>El constructor ya realiza entrada/salida:</strong> abre el documento y escribe el encabezado de marca.
+ *       No es un constructor inerte.</li>
+ *   <li><strong>El objeto es de un solo uso.</strong> {@link #build()} cierra el documento; después no se puede añadir
+ *       nada más.</li>
+ *   <li><strong>Requiere una JVM capaz de operar sin entorno gráfico.</strong> Las gráficas se rasterizan con las
+ *       bibliotecas de imagen y tipografía de AWT antes de incrustarse, lo que en un servidor sin pantalla exige el
+ *       modo <em>headless</em>.</li>
+ * </ul>
+ *
+ * <p>La paleta y la tipografía están fijadas en la clase: azul de marca para los títulos, dorado para los totales, y
+ * un sombreado alterno en las filas de las tablas.
+ *
+ * @see ReportService
+ */
 public class PdfSupport {
 
 	private static final Color BRAND = new Color(0x1A, 0x1F, 0x4D);
@@ -42,6 +68,19 @@ public class PdfSupport {
 	private final Document document;
 	private final ByteArrayOutputStream out;
 
+	/**
+	 * Abre un documento nuevo y escribe el encabezado de marca.
+	 *
+	 * <p>Escribe el nombre del club, el título del reporte y una línea con el periodo cubierto y la fecha de generación.
+	 * Esa línea de metadatos importa: sin ella un PDF descargado pierde el contexto de a qué periodo corresponde.
+	 *
+	 * <p><strong>Realiza entrada/salida de inmediato</strong>, de modo que un fallo al crear el documento se manifiesta
+	 * aquí y no en {@link #build()}.
+	 *
+	 * @param reportTitle título del reporte, que aparece bajo el nombre del club
+	 * @param from        inicio del periodo cubierto, para la línea de metadatos
+	 * @param to          fin del periodo cubierto
+	 */
 	public PdfSupport(String reportTitle, LocalDateTime from, LocalDateTime to) {
 		this.document = new Document(PageSize.A4, 40, 40, 54, 40);
 		this.out = new ByteArrayOutputStream();
@@ -74,6 +113,16 @@ public class PdfSupport {
 		document.add(p);
 	}
 
+	/**
+	 * Añade una tabla con encabezados y sombreado alterno de filas.
+	 *
+	 * <p>Ante una lista vacía <strong>no omite la tabla</strong>: dibuja una celda que indica la ausencia de datos en el
+	 * periodo. Es una decisión acertada para un reporte, donde una sección que desaparece se confunde con un error de
+	 * generación.
+	 *
+	 * @param headers títulos de las columnas
+	 * @param rows    filas, cada una con tantos elementos como encabezados
+	 */
 	public void table(String[] headers, List<String[]> rows) {
 		PdfPTable table = new PdfPTable(headers.length);
 		table.setWidthPercentage(100);
@@ -116,6 +165,17 @@ public class PdfSupport {
 		document.add(p);
 	}
 
+	/**
+	 * Añade una fila de indicadores, cada uno con su etiqueta y su valor destacado.
+	 *
+	 * <p>Distribuye los indicadores en columnas sin bordes, a lo ancho de la página.
+	 *
+	 * <p><strong>No admite una lista vacía:</strong> construir una tabla de cero columnas falla. Todos los puntos de
+	 * llamada actuales pasan entre dos y tres indicadores, así que la situación no se da, pero conviene saberlo al
+	 * añadir un reporte nuevo.
+	 *
+	 * @param pairs pares de etiqueta y valor, ya formateados
+	 */
 	public void kpis(List<String[]> pairs) {
 		PdfPTable table = new PdfPTable(pairs.size());
 		table.setWidthPercentage(100);
@@ -198,6 +258,14 @@ public class PdfSupport {
 		}
 	}
 
+	/**
+	 * Cierra el documento y devuelve su contenido.
+	 *
+	 * <p><strong>Termina la vida útil del objeto:</strong> tras esta llamada no se puede añadir más contenido. Debe
+	 * invocarse exactamente una vez, al final de la composición.
+	 *
+	 * @return el PDF completo, listo para enviarse como respuesta HTTP
+	 */
 	public byte[] build() {
 		document.close();
 		return out.toByteArray();
