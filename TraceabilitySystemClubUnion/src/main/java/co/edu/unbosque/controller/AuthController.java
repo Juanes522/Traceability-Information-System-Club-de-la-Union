@@ -100,6 +100,23 @@ public class AuthController {
 				|| !CURRENT_CONSENT_VERSION.equals(p.getConsentVersion());
 	}
 
+	/**
+	 * Crea el controlador con sus diez colaboradores.
+	 *
+	 * <p>Es el controlador con mas dependencias del sistema, porque concentra todo el ciclo de vida de la credencial:
+	 * autenticar, emitir y revocar el token, cambiar y recuperar la contrasena, y registrar el consentimiento.
+	 *
+	 * @param authenticationManager gestor de autenticacion de Spring Security
+	 * @param userDetailsService    resolucion del usuario a partir de su identificacion
+	 * @param jwtUtil               emision y verificacion de los tokens
+	 * @param personPartnerService  acceso a los datos del socio
+	 * @param passwordEncoder       codificador de contrasenas, con su rampa de compatibilidad
+	 * @param tokenRepo             tokens de recuperacion de contrasena
+	 * @param emailService          envio de los correos transaccionales
+	 * @param rateLimitService      cubetas de limitacion de intentos
+	 * @param tokenBlacklistService lista negra que hace efectiva la revocacion
+	 * @param auditService          registro de los eventos de seguridad
+	 */
 	public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService,
 			JwtUtil jwtUtil, PersonPartnerService personPartnerService, PasswordEncoder passwordEncoder,
 			PasswordResetTokenRepository tokenRepo, EmailService emailService, RateLimitService rateLimitService,
@@ -284,7 +301,7 @@ public class AuthController {
 	 * bitácora un cierre voluntario del automático por inactividad que aplica el cliente.
 	 *
 	 * @param request petición, de la que se lee la cabecera {@code Authorization}
-	 * @param reason  motivo opcional del cierre; el valor {@code inactividad} se refleja en la bitácora
+	 * @param reason motivo opcional del cierre; el valor {@code inactividad} se refleja en la bitácora
 	 * @return {@code 200} con un mensaje de confirmación, siempre
 	 */
 	@PostMapping("/logout")

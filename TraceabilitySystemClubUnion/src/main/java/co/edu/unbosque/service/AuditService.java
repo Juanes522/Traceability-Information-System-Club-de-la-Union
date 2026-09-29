@@ -38,6 +38,11 @@ public class AuditService {
 
 	private final ElasticsearchOperations operations;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param operations el valor de operations
+	 */
 	public AuditService(ElasticsearchOperations operations) {
 		this.operations = operations;
 	}
@@ -46,11 +51,11 @@ public class AuditService {
 	 * Registra un evento con la marca de tiempo actual.
 	 *
 	 * @param eventType tipo de evento, de {@link AuditEventType}
-	 * @param result    desenlace, de {@link AuditResult}
-	 * @param username  sujeto del evento, habitualmente la identificación del socio <strong>en claro</strong>
+	 * @param result desenlace, de {@link AuditResult}
+	 * @param username sujeto del evento, habitualmente la identificación del socio <strong>en claro</strong>
 	 * @param ipAddress IP del cliente, resuelta por el llamante
-	 * @param detail    descripción legible del evento
-	 * @param targetId  identificador del objeto afectado, o {@code null}
+	 * @param detail descripción legible del evento
+	 * @param targetId identificador del objeto afectado, o {@code null}
 	 */
 	@Async
 	public void record(String eventType, String result, String username, String ipAddress,
@@ -73,11 +78,11 @@ public class AuditService {
 	 * consultarla aquí devolvería siempre {@code null}. Todos los puntos de llamada lo hacen correctamente.
 	 *
 	 * @param eventType tipo de evento, de {@link AuditEventType}
-	 * @param result    desenlace, de {@link AuditResult}
-	 * @param username  sujeto del evento
+	 * @param result desenlace, de {@link AuditResult}
+	 * @param username sujeto del evento
 	 * @param ipAddress IP del cliente, resuelta por el llamante
-	 * @param detail    descripción legible del evento
-	 * @param targetId  identificador del objeto afectado, o {@code null}
+	 * @param detail descripción legible del evento
+	 * @param targetId identificador del objeto afectado, o {@code null}
 	 * @param timestamp instante a registrar; si es {@code null} se usa el actual
 	 */
 	@Async
@@ -112,7 +117,7 @@ public class AuditService {
 	 * reiterado, no el fallo aislado, lo que se considera crítico.
 	 *
 	 * @param eventType tipo de evento
-	 * @param result    desenlace
+	 * @param result desenlace
 	 * @return la severidad derivada
 	 */
 	private String deriveSeverity(String eventType, String result) {

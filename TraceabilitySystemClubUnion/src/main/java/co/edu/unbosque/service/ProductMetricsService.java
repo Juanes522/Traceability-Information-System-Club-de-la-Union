@@ -12,7 +12,6 @@ import co.edu.unbosque.dto.ProductDetailDTO;
 import co.edu.unbosque.dto.ProductRankDTO;
 import co.edu.unbosque.repository.ConsumptionItemRepository;
 
-@Service
 /**
  * Analítica de productos: rankings, mezcla por categoría y cruce con ambientes.
  *
@@ -27,10 +26,16 @@ import co.edu.unbosque.repository.ConsumptionItemRepository;
  * <p>Sin catálogo de productos detrás, la agrupación se hace por el texto tal como se registró: dos grafías del mismo
  * producto producen dos filas distintas en los rankings.
  */
+@Service
 public class ProductMetricsService {
 
 	private final ConsumptionItemRepository repo;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param repo el valor de repo
+	 */
 	public ProductMetricsService(ConsumptionItemRepository repo) {
 		this.repo = repo;
 	}
@@ -40,8 +45,8 @@ public class ProductMetricsService {
 	 *
 	 * <p>Es la variante que consume {@link ReportService} para la sección de productos más vendidos.
 	 *
-	 * @param from  inicio del rango, inclusivo
-	 * @param to    fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param limit número máximo de productos; con cero o negativo devuelve una lista vacía
 	 * @return los productos con más ingresos, en orden descendente
 	 */
@@ -54,10 +59,10 @@ public class ProductMetricsService {
 	 *
 	 * <p>Sobrecarga que delega en la variante de cinco argumentos fijando el orden por ingresos.
 	 *
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param environment nombre exacto del ambiente
-	 * @param limit       número máximo de productos
+	 * @param limit número máximo de productos
 	 * @return los productos con más ingresos en ese ambiente
 	 */
 	public List<ProductRankDTO> top(LocalDateTime from, LocalDateTime to, String environment, int limit) {
@@ -73,11 +78,11 @@ public class ProductMetricsService {
 	 * <p><strong>Cualquier valor de {@code sort} distinto de {@code quantity} se interpreta silenciosamente como orden
 	 * por ingresos</strong>, incluido un valor mal escrito: no hay validación ni error.
 	 *
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param environment nombre exacto del ambiente, o {@code null}/vacío para no filtrar
-	 * @param sort        {@code quantity} para ordenar por unidades vendidas; cualquier otro valor ordena por ingresos
-	 * @param limit       número máximo de productos. <strong>El controlador no impone cota superior</strong>
+	 * @param sort {@code quantity} para ordenar por unidades vendidas; cualquier otro valor ordena por ingresos
+	 * @param limit número máximo de productos. <strong>El controlador no impone cota superior</strong>
 	 * @return los productos, en el orden solicitado
 	 */
 	public List<ProductRankDTO> top(LocalDateTime from, LocalDateTime to, String environment, String sort, int limit) {
@@ -99,9 +104,9 @@ public class ProductMetricsService {
 	 * <p>Sirve tanto el panel del propio socio como la sección de productos de su estado de cuenta en PDF.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
-	 * @param limit    número máximo de productos
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
+	 * @param limit número máximo de productos
 	 * @return los productos que más consumió, en orden descendente de importe
 	 */
 	public List<ProductRankDTO> topByPartner(Long personId, LocalDateTime from, LocalDateTime to, int limit) {
@@ -116,7 +121,7 @@ public class ProductMetricsService {
 	 * <p>No se recorta: devuelve todas las combinaciones de categoría y subcategoría del periodo.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return la mezcla por categoría, ordenada por ingresos descendentes
 	 */
 	public List<CategoryMixDTO> categoryMix(LocalDateTime from, LocalDateTime to) {
@@ -144,7 +149,7 @@ public class ProductMetricsService {
 	 * <p>Ningún endpoint la expone.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return el detalle por producto, agrupado por sección
 	 */
 	public List<ProductDetailDTO> productDetail(LocalDateTime from, LocalDateTime to) {
@@ -163,7 +168,7 @@ public class ProductMetricsService {
 	 * un bar donde predomina la bebida de un restaurante donde predomina la comida.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return un elemento por par ambiente/categoría, ordenados por ingresos descendentes
 	 */
 	public List<EnvironmentCategoryDTO> byEnvironmentCategory(LocalDateTime from, LocalDateTime to) {

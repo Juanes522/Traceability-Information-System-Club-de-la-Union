@@ -20,34 +20,74 @@ public class AccessSummaryDTO {
 	private long uniquePartners;
 	private double avgFrequency;
 
+	/**
+	 * Devuelve el número de socios presentes en este momento, con independencia del periodo consultado.
+	 *
+	 * @return el número de socios presentes en este momento, con independencia del periodo consultado
+	 */
 	public long getPresentNow() {
 		return presentNow;
 	}
 
+	/**
+	 * Establece el número de socios presentes en este momento, con independencia del periodo consultado.
+	 *
+	 * @param v el número de socios presentes en este momento, con independencia del periodo consultado
+	 */
 	public void setPresentNow(long v) {
 		this.presentNow = v;
 	}
 
+	/**
+	 * Devuelve el número de visitas.
+	 *
+	 * @return el número de visitas
+	 */
 	public long getVisits() {
 		return visits;
 	}
 
+	/**
+	 * Establece el número de visitas.
+	 *
+	 * @param v el número de visitas
+	 */
 	public void setVisits(long v) {
 		this.visits = v;
 	}
 
+	/**
+	 * Devuelve el número de socios distintos del periodo.
+	 *
+	 * @return el número de socios distintos del periodo
+	 */
 	public long getUniquePartners() {
 		return uniquePartners;
 	}
 
+	/**
+	 * Establece el número de socios distintos del periodo.
+	 *
+	 * @param v el número de socios distintos del periodo
+	 */
 	public void setUniquePartners(long v) {
 		this.uniquePartners = v;
 	}
 
+	/**
+	 * Devuelve la frecuencia media de visita por socio.
+	 *
+	 * @return la frecuencia media de visita por socio
+	 */
 	public double getAvgFrequency() {
 		return avgFrequency;
 	}
 
+	/**
+	 * Establece la frecuencia media de visita por socio.
+	 *
+	 * @param v la frecuencia media de visita por socio
+	 */
 	public void setAvgFrequency(double v) {
 		this.avgFrequency = v;
 	}

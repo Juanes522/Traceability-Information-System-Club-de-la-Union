@@ -15,7 +15,6 @@ import co.edu.unbosque.model.MonthlySnapshot;
 import co.edu.unbosque.repository.MonthlySnapshotRepository;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
-@Service
 /**
  * Calcula y mantiene los resúmenes mensuales de facturación y afluencia.
  *
@@ -31,6 +30,7 @@ import co.edu.unbosque.repository.PartnerConsumptionRepository;
  * @see co.edu.unbosque.model.MonthlySnapshot
  * @see co.edu.unbosque.config.SnapshotBackfillRunner
  */
+@Service
 public class SnapshotService {
 
 	private final ConsumptionMetricsService consumptionMetrics;
@@ -38,6 +38,14 @@ public class SnapshotService {
 	private final MonthlySnapshotRepository snapshotRepo;
 	private final PartnerConsumptionRepository consumptionRepo;
 
+	/**
+	 * Crea el servicio de resumenes mensuales.
+	 *
+	 * @param consumptionMetrics metricas de facturacion que componen el resumen
+	 * @param accessMetrics      metricas de afluencia que completan el resumen
+	 * @param snapshotRepo       repositorio de resumenes, donde se hace el guardado con actualizacion
+	 * @param consumptionRepo    repositorio de consumos, del que se obtiene el mes mas antiguo para el relleno
+	 */
 	public SnapshotService(ConsumptionMetricsService consumptionMetrics, AccessMetricsService accessMetrics,
 			MonthlySnapshotRepository snapshotRepo, PartnerConsumptionRepository consumptionRepo) {
 		this.consumptionMetrics = consumptionMetrics;

@@ -16,8 +16,6 @@ import co.edu.unbosque.service.PushNotificationService;
 
 import jakarta.validation.Valid;
 
-@RestController
-@RequestMapping("/push")
 /**
  * Endpoints de gestión de las suscripciones Web Push de los navegadores.
  *
@@ -30,12 +28,24 @@ import jakarta.validation.Valid;
  * @see co.edu.unbosque.service.PushNotificationService
  * @see co.edu.unbosque.model.PushSubscription
  */
+@RestController
+@RequestMapping("/push")
 public class PushSubscriptionController {
 
 	private final PushSubscriptionRepository subRepo;
 	private final PersonPartnerService partnerServ;
 	private final PushNotificationService pushService;
 
+	/**
+	 * Crea el controlador con el repositorio de suscripciones y el servicio de socios.
+	 *
+	 * <p>Nótese que recibe un <strong>repositorio</strong> y no un servicio: es el unico controlador del sistema que persiste
+	 * directamente, saltandose la capa de servicio.
+	 *
+	 * @param subRepo     repositorio de suscripciones push
+	 * @param partnerServ acceso a los datos del socio, para asociar la suscripcion
+	 * @param pushService servicio de entrega, del que se obtiene la clave publica
+	 */
 	public PushSubscriptionController(PushSubscriptionRepository subRepo, PersonPartnerService partnerServ,
 			PushNotificationService pushService) {
 		this.subRepo = subRepo;

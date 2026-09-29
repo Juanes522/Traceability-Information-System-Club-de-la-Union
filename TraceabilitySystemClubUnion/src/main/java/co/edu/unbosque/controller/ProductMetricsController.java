@@ -21,8 +21,6 @@ import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.service.PersonPartnerService;
 import co.edu.unbosque.service.ProductMetricsService;
 
-@RestController
-@RequestMapping("/metrics/products")
 /**
  * Endpoints de analítica de productos: rankings, mezcla por categoría y cruce con ambientes.
  *
@@ -37,6 +35,8 @@ import co.edu.unbosque.service.ProductMetricsService;
  *
  * @see co.edu.unbosque.service.ProductMetricsService
  */
+@RestController
+@RequestMapping("/metrics/products")
 public class ProductMetricsController {
 
 	private static final long MAX_RANGE_DAYS = 366;
@@ -44,12 +44,17 @@ public class ProductMetricsController {
 	private final ProductMetricsService metrics;
 	private final PersonPartnerService partnerService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param metrics el valor de metrics
+	 * @param partnerService el valor de partner service
+	 */
 	public ProductMetricsController(ProductMetricsService metrics, PersonPartnerService partnerService) {
 		this.metrics = metrics;
 		this.partnerService = partnerService;
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve el ranking de productos del periodo.
 	 *
@@ -60,13 +65,14 @@ public class ProductMetricsController {
 	 * superior</strong>: el recorte ocurre en memoria después de que la base haya materializado todos los grupos, de modo
 	 * que un valor alto no abarata la consulta.
 	 *
-	 * @param from        inicio del periodo; si se omite, 30 días atrás
-	 * @param to          fin del periodo; si se omite, ahora
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
 	 * @param environment nombre exacto del ambiente, o vacío para no filtrar
-	 * @param sort        {@code quantity} para ordenar por unidades; cualquier otro valor ordena por ingresos
-	 * @param limit       número máximo de productos a devolver
+	 * @param sort {@code quantity} para ordenar por unidades; cualquier otro valor ordena por ingresos
+	 * @param limit número máximo de productos a devolver
 	 * @return {@code 200} con el ranking, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/top")
 	public ResponseEntity<?> top(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -81,7 +87,6 @@ public class ProductMetricsController {
 		return ResponseEntity.ok(metrics.top(r[0], r[1], environment, sort, limit));
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve la distribución de ingresos por categoría y subcategoría, con su peso porcentual.
 	 *
@@ -89,9 +94,10 @@ public class ProductMetricsController {
 	 * devuelve todas las combinaciones presentes en el periodo.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con la mezcla ordenada por ingresos, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/category-mix")
 	public ResponseEntity<?> categoryMix(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -103,7 +109,6 @@ public class ProductMetricsController {
 		return ResponseEntity.ok(metrics.categoryMix(r[0], r[1]));
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve el cruce de ambiente con categoría de producto.
 	 *
@@ -111,9 +116,10 @@ public class ProductMetricsController {
 	 * dimensión del consumo con una del producto, algo que ninguna otra métrica hace.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con un elemento por par ambiente/categoría, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/by-environment")
 	public ResponseEntity<?> byEnvironment(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -125,7 +131,6 @@ public class ProductMetricsController {
 		return ResponseEntity.ok(metrics.byEnvironmentCategory(r[0], r[1]));
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve el ranking de productos de un socio indicado por su identificación.
 	 *
@@ -133,11 +138,12 @@ public class ProductMetricsController {
 	 * {@code @PreAuthorize} de rol.
 	 *
 	 * @param identification cédula del socio a consultar
-	 * @param from           inicio del periodo; si se omite, 30 días atrás
-	 * @param to             fin del periodo; si se omite, ahora
-	 * @param limit          número máximo de productos
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
+	 * @param limit número máximo de productos
 	 * @return {@code 200} con el ranking del socio; {@code 400} si el rango es inválido; {@code 404} si el socio no existe
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/partner/{identification}")
 	public ResponseEntity<?> partner(
 			@PathVariable String identification,
@@ -153,8 +159,8 @@ public class ProductMetricsController {
 	 * <p>Patrón {@code /me}: la identidad se resuelve del contexto de seguridad y no se acepta ningún identificador, de modo
 	 * que el acceso es seguro sin guarda de rol.
 	 *
-	 * @param from  inicio del periodo; si se omite, 30 días atrás
-	 * @param to    fin del periodo; si se omite, ahora
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
 	 * @param limit número máximo de productos
 	 * @return {@code 200} con el ranking propio; {@code 400} si el rango es inválido; {@code 401} sin sesión; {@code 404} si
 	 *         el socio no existe
@@ -189,7 +195,7 @@ public class ProductMetricsController {
 	 * fin igual a ahora, inicio 30 días antes, tope de 366 días.
 	 *
 	 * @param from inicio solicitado, o {@code null}
-	 * @param to   fin solicitado, o {@code null}
+	 * @param to fin solicitado, o {@code null}
 	 * @return un arreglo con el inicio y el fin normalizados, o {@code null} si el rango no es aceptable
 	 */
 	private LocalDateTime[] resolve(LocalDateTime from, LocalDateTime to) {

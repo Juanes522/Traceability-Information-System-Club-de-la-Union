@@ -13,7 +13,6 @@ import jakarta.mail.internet.MimeMessage;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-@Service
 /**
  * Envío de los dos correos transaccionales del sistema: recuperación de contraseña y aviso de consumo.
  *
@@ -36,6 +35,7 @@ import java.util.Locale;
  *
  * <p>Las plantillas HTML se componen por concatenación en el propio código, sin motor de plantillas.
  */
+@Service
 public class EmailService {
 
 	private final JavaMailSender mailSender;
@@ -46,6 +46,11 @@ public class EmailService {
 	@Value("${app.frontend.url}")
 	private String frontendUrl;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param mailSender el valor de mail sender
+	 */
 	public EmailService(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
@@ -64,8 +69,8 @@ public class EmailService {
 	 * quien lo calcula de verdad es {@link co.edu.unbosque.controller.AuthController}, de modo que cambiarlo allí sin
 	 * actualizar esta plantilla produciría un correo que miente.
 	 *
-	 * @param toEmail          dirección de destino
-	 * @param resetToken       token de un solo uso que se incluye en el enlace
+	 * @param toEmail dirección de destino
+	 * @param resetToken token de un solo uso que se incluye en el enlace
 	 * @param partnerFirstName nombre del socio, para el saludo
 	 * @throws MessagingException si el mensaje no se puede construir o enviar
 	 */
@@ -139,9 +144,9 @@ public class EmailService {
 	 * <p><strong>Solo notifica a la primera dirección del arreglo.</strong> Si el socio tiene varias registradas, las
 	 * demás no reciben nada; y si la primera está en blanco, el método retorna sin enviar a ninguna.
 	 *
-	 * @param partner     socio destinatario, del que se toma la primera dirección de correo
+	 * @param partner socio destinatario, del que se toma la primera dirección de correo
 	 * @param consumption consumo registrado, del que se toma el desglose
-	 * @param total       importe total ya calculado por el llamante, para no repetir la fórmula aquí
+	 * @param total importe total ya calculado por el llamante, para no repetir la fórmula aquí
 	 */
 	@Async
 	public void sendConsumptionNotificationEmail(PersonPartner partner,

@@ -26,7 +26,6 @@ import co.edu.unbosque.model.PartnerConsumption;
 import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
-@Service
 /**
  * Genera los cuatro reportes PDF del sistema.
  *
@@ -62,6 +61,7 @@ import co.edu.unbosque.repository.PartnerConsumptionRepository;
  *
  * @see PdfSupport
  */
+@Service
 public class ReportService {
 
 	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -73,6 +73,18 @@ public class ReportService {
 	private final AuditQueryService auditQuery;
 	private final ProductMetricsService productMetrics;
 
+	/**
+	 * Crea el servicio de reportes con sus cinco fuentes de datos.
+	 *
+	 * <p>Inicializa tambien el formateador de moneda. Ese formateador es un campo compartido de un bean unico y su tipo no es
+	 * seguro para uso concurrente, de modo que dos descargas simultaneas pueden interferir entre si.
+	 *
+	 * @param consumptionRepo    repositorio de consumos, para las tablas de detalle
+	 * @param partnerService     acceso al socio del estado de cuenta
+	 * @param consumptionMetrics metricas ya agregadas de facturacion
+	 * @param auditQuery         bitacora de auditoria, para el reporte de seguridad
+	 * @param productMetrics     analitica de productos
+	 */
 	public ReportService(PartnerConsumptionRepository consumptionRepo, PersonPartnerService partnerService,
 			ConsumptionMetricsService consumptionMetrics, AuditQueryService auditQuery,
 			ProductMetricsService productMetrics) {
@@ -94,8 +106,8 @@ public class ReportService {
 	 * descendente. El resto de las secciones sí consideran el periodo completo, de modo que los totales no se limitan a
 	 * esas 40 filas.
 	 *
-	 * @param from        inicio del periodo, inclusivo
-	 * @param to          fin del periodo, inclusivo
+	 * @param from inicio del periodo, inclusivo
+	 * @param to fin del periodo, inclusivo
 	 * @param environment nombre exacto del ambiente, o {@code null}/vacío para incluir todos
 	 * @return el PDF completo
 	 */
@@ -140,7 +152,7 @@ public class ReportService {
 	 * {@link ConsumptionMetricsService}, de modo que sus cifras coinciden por construcción con las del tablero.
 	 *
 	 * @param from inicio del periodo, inclusivo
-	 * @param to   fin del periodo, inclusivo
+	 * @param to fin del periodo, inclusivo
 	 * @return el PDF completo
 	 */
 	public byte[] incomeByEnvironmentPdf(LocalDateTime from, LocalDateTime to) {
@@ -186,8 +198,8 @@ public class ReportService {
 	 * cualquiera.
 	 *
 	 * @param identification cédula del socio
-	 * @param from           inicio del periodo, inclusivo
-	 * @param to             fin del periodo, inclusivo
+	 * @param from inicio del periodo, inclusivo
+	 * @param to fin del periodo, inclusivo
 	 * @return el PDF, o <strong>{@code null} si el socio no existe</strong>. El controlador traduce ese nulo a una
 	 *         respuesta 404
 	 */
@@ -242,7 +254,7 @@ public class ReportService {
 	 * en lugar de degradar.
 	 *
 	 * @param from inicio del periodo, inclusivo
-	 * @param to   fin del periodo, inclusivo
+	 * @param to fin del periodo, inclusivo
 	 * @return el PDF completo
 	 */
 	public byte[] securityPdf(LocalDateTime from, LocalDateTime to) {

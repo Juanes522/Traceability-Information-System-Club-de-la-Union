@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.unbosque.model.RevokedToken;
 
-@Repository
 /**
  * Acceso a la lista negra de JWT revocados.
  */
+@Repository
 public interface RevokedTokenRepository extends JpaRepository<RevokedToken, Long> {
 
 	/**

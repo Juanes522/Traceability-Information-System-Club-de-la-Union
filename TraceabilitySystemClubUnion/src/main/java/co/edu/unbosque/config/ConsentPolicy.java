@@ -28,10 +28,19 @@ package co.edu.unbosque.config;
  */
 public final class ConsentPolicy {
 
+	/**
+	 * Constante VERSION.
+	 */
 	public static final String VERSION = "1.0";
 
+	/**
+	 * Constante TITLE.
+	 */
 	public static final String TITLE = "Términos y Autorización para el tratamiento de datos personales";
 
+	/**
+	 * Constante TEXT.
+	 */
 	public static final String TEXT = """
 			Al continuar y aceptar estos términos, usted declara haber recibido información clara, previa y suficiente sobre el tratamiento de sus datos personales y manifiesta de forma libre, específica, informada e inequívoca su consentimiento para que el Club de la Unión trate sus datos personales de conformidad con la Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP) y demás normativa aplicable.
 

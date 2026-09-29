@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.service.ConsumptionMetricsService;
 import co.edu.unbosque.service.SecurityMetricsService;
 
-@RestController
-@RequestMapping("/metrics")
 /**
  * Endpoints de métricas de facturación y del panel de seguridad.
  *
@@ -35,6 +33,8 @@ import co.edu.unbosque.service.SecurityMetricsService;
  * @see co.edu.unbosque.service.ConsumptionMetricsService
  * @see co.edu.unbosque.service.SecurityMetricsService
  */
+@RestController
+@RequestMapping("/metrics")
 public class MetricsController {
 
 	private static final long MAX_RANGE_DAYS = 366;
@@ -42,6 +42,12 @@ public class MetricsController {
 	private final ConsumptionMetricsService consumptionMetrics;
 	private final SecurityMetricsService securityMetrics;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param consumptionMetrics el valor de consumption metrics
+	 * @param securityMetrics el valor de security metrics
+	 */
 	public MetricsController(ConsumptionMetricsService consumptionMetrics, SecurityMetricsService securityMetrics) {
 		this.consumptionMetrics = consumptionMetrics;
 		this.securityMetrics = securityMetrics;
@@ -51,7 +57,7 @@ public class MetricsController {
 	 * Devuelve los indicadores globales de facturación del periodo.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con los indicadores, o {@code 400} si el rango está invertido o excede 366 días
 	 */
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
@@ -70,7 +76,7 @@ public class MetricsController {
 	 * Devuelve la facturación distribuida por ambiente, con su peso porcentual.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con un elemento por ambiente, ordenados de mayor a menor, o {@code 400} si el rango es inválido
 	 */
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
@@ -91,8 +97,8 @@ public class MetricsController {
 	 * <p>La serie no tiene huecos: los periodos sin actividad se devuelven en cero, de modo que el cliente puede dibujar
 	 * una línea continua sin interpolar.
 	 *
-	 * @param from        inicio del periodo; si se omite, 30 días atrás
-	 * @param to          fin del periodo; si se omite, ahora
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
 	 * @param granularity {@code day}, {@code week} o {@code month}
 	 * @return {@code 200} con la serie, o {@code 400} con un mensaje si el rango es inválido o la granularidad no se
 	 *         reconoce
@@ -145,7 +151,7 @@ public class MetricsController {
 	 * lugar de agregarlas por separado.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con las dos series, o {@code 400} si el rango es inválido
 	 */
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
@@ -168,7 +174,7 @@ public class MetricsController {
 	 * cero.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con las celdas no vacías, o {@code 400} si el rango es inválido
 	 */
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
@@ -195,7 +201,7 @@ public class MetricsController {
 	 * contadores en cero podrían interpretarse como ausencia de incidentes cuando en realidad significan ausencia de datos.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con los contadores, posiblemente degradados, o {@code 400} si el rango es inválido
 	 */
 	@PreAuthorize("hasRole('ADMIN')")
@@ -219,7 +225,7 @@ public class MetricsController {
 	 * <p>Existe una copia casi idéntica de este método en cuatro controladores más.
 	 *
 	 * @param from inicio solicitado, o {@code null} para usar el valor por defecto
-	 * @param to   fin solicitado, o {@code null} para usar el valor por defecto
+	 * @param to fin solicitado, o {@code null} para usar el valor por defecto
 	 * @return un arreglo con el inicio y el fin normalizados, o {@code null} si el rango no es aceptable
 	 */
 	private LocalDateTime[] resolve(LocalDateTime from, LocalDateTime to) {

@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.unbosque.model.PushSubscription;
 
-@Repository
 /**
  * Acceso a las suscripciones Web Push.
  *
  * <p>Es el único repositorio que un controlador inyecta y usa directamente:
  * {@link co.edu.unbosque.controller.PushSubscriptionController} persiste sin pasar por ningún servicio.
  */
+@Repository
 public interface PushSubscriptionRepository extends JpaRepository<PushSubscription, Long> {
 
 	/**

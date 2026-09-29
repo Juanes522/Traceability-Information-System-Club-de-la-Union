@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.service.SnapshotService;
 
-@RestController
-@RequestMapping("/metrics/snapshots")
 /**
  * Endpoint de consulta de los resúmenes mensuales precalculados.
  *
@@ -22,15 +20,21 @@ import co.edu.unbosque.service.SnapshotService;
  * @see co.edu.unbosque.service.SnapshotService
  * @see co.edu.unbosque.model.MonthlySnapshot
  */
+@RestController
+@RequestMapping("/metrics/snapshots")
 public class SnapshotController {
 
 	private final SnapshotService snapshotService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param snapshotService el valor de snapshot service
+	 */
 	public SnapshotController(SnapshotService snapshotService) {
 		this.snapshotService = snapshotService;
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve la serie histórica completa de resúmenes mensuales, en orden cronológico.
 	 *
@@ -42,6 +46,7 @@ public class SnapshotController {
 	 *
 	 * @return {@code 200} con todos los resúmenes, del mes más antiguo al más reciente
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> snapshots() {
 		return ResponseEntity.ok(snapshotService.list());

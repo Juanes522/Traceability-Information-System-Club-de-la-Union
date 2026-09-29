@@ -37,6 +37,9 @@ public class PersonPartnerService {
 	@Autowired
 	private PersonPartnerRepository partnerRepo;
 
+	/**
+	 * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+	 */
 	public PersonPartnerService() {
 	}
 

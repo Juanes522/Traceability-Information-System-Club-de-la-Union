@@ -21,8 +21,6 @@ import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.service.PartnerMetricsService;
 import co.edu.unbosque.service.PersonPartnerService;
 
-@RestController
-@RequestMapping("/metrics/partner")
 /**
  * Endpoints de métricas individuales de un socio.
  *
@@ -38,6 +36,8 @@ import co.edu.unbosque.service.PersonPartnerService;
  *
  * @see co.edu.unbosque.service.PartnerMetricsService
  */
+@RestController
+@RequestMapping("/metrics/partner")
 public class PartnerMetricsController {
 
 	private static final long MAX_RANGE_DAYS = 366;
@@ -45,6 +45,12 @@ public class PartnerMetricsController {
 	private final PartnerMetricsService metrics;
 	private final PersonPartnerService partnerService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param metrics el valor de metrics
+	 * @param partnerService el valor de partner service
+	 */
 	public PartnerMetricsController(PartnerMetricsService metrics, PersonPartnerService partnerService) {
 		this.metrics = metrics;
 		this.partnerService = partnerService;
@@ -59,8 +65,8 @@ public class PartnerMetricsController {
 	 * <p>Nótese que la fecha de última visita del resultado <strong>ignora el rango solicitado</strong>, a diferencia del
 	 * resto de los campos.
 	 *
-	 * @param from        inicio del periodo; si se omite, 30 días atrás
-	 * @param to          fin del periodo; si se omite, ahora
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
 	 * @param granularity {@code day}, {@code week} o {@code month} para la serie temporal
 	 * @return {@code 200} con las métricas propias; {@code 400} si el rango o la granularidad son inválidos; {@code 401} sin
 	 *         sesión; {@code 404} si el socio no existe
@@ -78,7 +84,6 @@ public class PartnerMetricsController {
 		return build(identification, from, to, granularity);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve las métricas de un socio indicado por su identificación.
 	 *
@@ -86,12 +91,13 @@ public class PartnerMetricsController {
 	 * {@code @PreAuthorize} de rol.
 	 *
 	 * @param identification cédula del socio a consultar
-	 * @param from           inicio del periodo; si se omite, 30 días atrás
-	 * @param to             fin del periodo; si se omite, ahora
-	 * @param granularity    {@code day}, {@code week} o {@code month}
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
+	 * @param granularity {@code day}, {@code week} o {@code month}
 	 * @return {@code 200} con las métricas; {@code 400} si el rango o la granularidad son inválidos; {@code 404} si el socio
 	 *         no existe
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/{identification}")
 	public ResponseEntity<?> byIdentification(
 			@PathVariable String identification,

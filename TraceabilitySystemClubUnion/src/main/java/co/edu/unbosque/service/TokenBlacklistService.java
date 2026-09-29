@@ -27,6 +27,11 @@ public class TokenBlacklistService {
 
     private final RevokedTokenRepository repository;
 
+    /**
+     * Crea una instancia con sus valores.
+     *
+     * @param repository el valor de repository
+     */
     public TokenBlacklistService(RevokedTokenRepository repository) {
         this.repository = repository;
     }
@@ -34,7 +39,7 @@ public class TokenBlacklistService {
     /**
      * Revoca un token sin registrar a su propietario.
      *
-     * @param jti        identificador del token
+     * @param jti identificador del token
      * @param expiryDate expiración original del token
      */
     public void revoke(String jti, LocalDateTime expiryDate) {
@@ -53,9 +58,9 @@ public class TokenBlacklistService {
      * <p>Un {@code jti} nulo se ignora en silencio: el cierre de sesión nunca debe fallar por recibir un token
      * ilegible, y de hecho ese endpoint responde 200 en cualquier circunstancia.
      *
-     * @param jti        identificador del token; si es {@code null} no se hace nada
+     * @param jti identificador del token; si es {@code null} no se hace nada
      * @param expiryDate expiración original, que determina cuándo podrá depurarse el registro
-     * @param person     propietario del token, o {@code null} si no se pudo resolver
+     * @param person propietario del token, o {@code null} si no se pudo resolver
      */
     public void revoke(String jti, LocalDateTime expiryDate, PersonPartner person) {
         if (jti == null || repository.existsByJti(jti)) {

@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
-@Configuration
 /**
  * Expone el constructor de cliente HTTP que usa la sincronización de socios.
  *
@@ -19,8 +18,17 @@ import org.springframework.web.client.RestClient;
  *
  * @see co.edu.unbosque.service.PartnerSyncService
  */
+@Configuration
 public class RestClientConfig {
 
+	/**
+	 * Expone el constructor de cliente HTTP.
+	 *
+	 * <p>Devuelve un constructor <strong>sin configurar</strong>, que sustituye al que Spring Boot autoconfigura. Su unico
+	 * consumidor, la sincronizacion de socios, queda por tanto sin tiempo de espera de conexion ni de lectura.
+	 *
+	 * @return el constructor de cliente HTTP que se inyectara donde se requiera
+	 */
 	@Bean
 	public RestClient.Builder restClientBuilder() {
 		return RestClient.builder();

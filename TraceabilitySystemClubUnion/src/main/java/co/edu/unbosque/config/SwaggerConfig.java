@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
 /**
  * Configura el esquema de seguridad de la documentación OpenAPI.
  *
@@ -22,8 +21,19 @@ import org.springframework.context.annotation.Configuration;
  * configuración de seguridad la declara abierta sin guarda de perfil: toda la superficie de la API y todos los esquemas de
  * DTO son legibles sin autenticarse.
  */
+@Configuration
 public class SwaggerConfig {
 
+    /**
+     * Declara el esquema de seguridad de tipo portador para la documentación OpenAPI.
+     *
+     * <p>Registrarlo globalmente es lo que permite a la interfaz de Swagger ofrecer un campo donde pegar el token y enviarlo
+     * en todas las pruebas interactivas; sin él, solo se podrían probar los endpoints publicos.
+     *
+     * <p>No se declara bloque de información, de modo que el documento generado carece de título, versión y descripción.
+     *
+     * @return la definición OpenAPI con el esquema de seguridad aplicado a toda la API
+     */
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";

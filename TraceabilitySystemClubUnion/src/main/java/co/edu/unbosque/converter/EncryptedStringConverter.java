@@ -31,6 +31,8 @@ public class EncryptedStringConverter implements AttributeConverter<String, Stri
 	private final AesGcmEncryptionService encryptionService;
 
 	/**
+	 * Crea el conversor con el servicio de cifrado.
+	 *
 	 * @param encryptionService servicio de cifrado AES-256-GCM. Al recibirse por constructor, este
 	 *                          conversor solo puede crearlo Spring, no Hibernate por reflexión
 	 */

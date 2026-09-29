@@ -14,13 +14,26 @@ public class ForgotPasswordRequest {
 	@Email
 	private String email;
 
+	/**
+	 * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+	 */
 	public ForgotPasswordRequest() {
 	}
 
+	/**
+	 * Devuelve las direcciones de correo del socio, cifradas en reposo.
+	 *
+	 * @return las direcciones de correo del socio, cifradas en reposo
+	 */
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * Establece las direcciones de correo del socio, cifradas en reposo.
+	 *
+	 * @param email las direcciones de correo del socio, cifradas en reposo
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}

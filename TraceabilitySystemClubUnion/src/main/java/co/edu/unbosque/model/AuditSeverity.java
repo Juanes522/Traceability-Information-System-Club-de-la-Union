@@ -20,8 +20,17 @@ package co.edu.unbosque.model;
  */
 public final class AuditSeverity {
 
+	/**
+	 * Evento informativo, sin implicación de seguridad.
+	 */
 	public static final String INFO = "INFO";
+	/**
+	 * Evento que merece atención. Se asigna a cualquier evento con desenlace de fallo.
+	 */
 	public static final String WARNING = "WARNING";
+	/**
+	 * Evento de seguridad grave. Alimenta el contador de alertas del panel de administración.
+	 */
 	public static final String CRITICAL = "CRITICAL";
 
 	private AuditSeverity() {

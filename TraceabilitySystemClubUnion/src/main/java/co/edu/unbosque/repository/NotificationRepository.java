@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.unbosque.model.Notification;
 
-@Repository
 /**
  * Acceso a los avisos generados por los consumos.
  *
@@ -18,6 +17,7 @@ import co.edu.unbosque.model.Notification;
  * ({@code notification → consumption → partner → identification}) que Spring Data expresa concatenando
  * los nombres de propiedad.
  */
+@Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
 	/**
@@ -56,7 +56,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	 * para recalcular su importe, lo que produce una consulta adicional por fila de la página.
 	 *
 	 * @param identification identificación del socio, en claro
-	 * @param pageable       página solicitada
+	 * @param pageable página solicitada
 	 * @return página de avisos
 	 */
 	Page<Notification> findByConsumptionPartnerIdentificationOrderByGenerationDateDesc(

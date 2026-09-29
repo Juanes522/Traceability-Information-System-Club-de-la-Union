@@ -20,7 +20,6 @@ import co.edu.unbosque.model.PartnerConsumption;
 import co.edu.unbosque.repository.AccessRepository;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
-@Service
 /**
  * Métricas individuales de un socio: su consumo, sus ambientes, su tendencia y sus visitas.
  *
@@ -38,6 +37,7 @@ import co.edu.unbosque.repository.PartnerConsumptionRepository;
  *
  * @see co.edu.unbosque.dto.PartnerMetricsDTO
  */
+@Service
 public class PartnerMetricsService {
 
 	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -45,6 +45,12 @@ public class PartnerMetricsService {
 	private final PartnerConsumptionRepository repository;
 	private final AccessRepository accessRepo;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param repository el valor de repository
+	 * @param accessRepo el valor de access repo
+	 */
 	public PartnerMetricsService(PartnerConsumptionRepository repository, AccessRepository accessRepo) {
 		this.repository = repository;
 		this.accessRepo = accessRepo;
@@ -64,9 +70,9 @@ public class PartnerMetricsService {
 	 * ser muy anterior a la ventana consultada. Cuando el socio nunca ha visitado el club se informa como cadena vacía,
 	 * no como nulo.
 	 *
-	 * @param personId    clave primaria del socio
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param personId clave primaria del socio
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param granularity {@code day}, {@code week} o {@code month} para la serie temporal
 	 * @return las métricas del socio; con valores en cero si no tuvo actividad en el rango
 	 * @throws IllegalArgumentException si la granularidad no es una de las tres admitidas

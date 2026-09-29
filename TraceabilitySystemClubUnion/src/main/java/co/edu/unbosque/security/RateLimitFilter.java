@@ -43,8 +43,10 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	private final Set<String> trustedProxies;
 
 	/**
+	 * Crea el filtro con el servicio de cubetas y la lista de proxies de confianza.
+	 *
 	 * @param rateLimitService servicio que administra las cubetas
-	 * @param trustedProxies   lista de proxies de confianza separada por comas, de
+	 * @param trustedProxies lista de proxies de confianza separada por comas, de
 	 *                         {@code ratelimit.trusted-proxies}. <strong>Está vacía por defecto</strong>, con
 	 *                         la consecuencia descrita en {@link #doFilterInternal}. Los valores se recortan
 	 *                         con {@code trim()}, a diferencia de lo que hace
@@ -92,8 +94,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	 * <strong>texto plano</strong>: son dos formatos distintos para el mismo error, y el frontend, que lee
 	 * {@code error.message}, solo interpreta correctamente el de este filtro.
 	 *
-	 * @param request     petición a un endpoint de autenticación
-	 * @param response    respuesta; se escribe aquí si la cubeta está agotada
+	 * @param request petición a un endpoint de autenticación
+	 * @param response respuesta; se escribe aquí si la cubeta está agotada
 	 * @param filterChain cadena, que solo se continúa si quedaba cupo
 	 * @throws ServletException si falla un filtro posterior
 	 * @throws IOException      si falla la escritura de la respuesta

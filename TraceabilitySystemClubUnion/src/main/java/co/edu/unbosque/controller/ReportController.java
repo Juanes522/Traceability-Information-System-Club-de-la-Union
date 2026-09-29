@@ -21,8 +21,6 @@ import co.edu.unbosque.model.PersonPartner;
 import co.edu.unbosque.service.PersonPartnerService;
 import co.edu.unbosque.service.ReportService;
 
-@RestController
-@RequestMapping("/reports")
 /**
  * Endpoints de descarga de reportes en PDF.
  *
@@ -37,6 +35,8 @@ import co.edu.unbosque.service.ReportService;
  *
  * @see co.edu.unbosque.service.ReportService
  */
+@RestController
+@RequestMapping("/reports")
 public class ReportController {
 
 	private static final long MAX_RANGE_DAYS = 366;
@@ -44,23 +44,29 @@ public class ReportController {
 	private final ReportService reports;
 	private final PersonPartnerService partnerService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param reports el valor de reports
+	 * @param partnerService el valor de partner service
+	 */
 	public ReportController(ReportService reports, PersonPartnerService partnerService) {
 		this.reports = reports;
 		this.partnerService = partnerService;
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Descarga el reporte de consumos del periodo, opcionalmente restringido a un ambiente.
 	 *
 	 * <p>Es el reporte más completo: indicadores, gráficas por ambiente y por día, detalle de los consumos más recientes y
 	 * tres secciones de analítica de producto.
 	 *
-	 * @param from        inicio del periodo, obligatorio
-	 * @param to          fin del periodo, obligatorio
+	 * @param from inicio del periodo, obligatorio
+	 * @param to fin del periodo, obligatorio
 	 * @param environment nombre exacto del ambiente, o vacío para incluir todos
 	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango está invertido o excede 366 días
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/consumptions")
 	public ResponseEntity<?> consumptions(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -72,16 +78,16 @@ public class ReportController {
 		return pdf(reports.consumptionsPdf(from, to, environment), "consumos");
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Descarga el reporte de ingresos por ambiente.
 	 *
 	 * <p>Parte de las métricas ya agregadas, de modo que sus cifras coinciden por construcción con las del tablero.
 	 *
 	 * @param from inicio del periodo, obligatorio
-	 * @param to   fin del periodo, obligatorio
+	 * @param to fin del periodo, obligatorio
 	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/income-by-environment")
 	public ResponseEntity<?> incomeByEnvironment(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -92,7 +98,6 @@ public class ReportController {
 		return pdf(reports.incomeByEnvironmentPdf(from, to), "ingresos-por-ambiente");
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Descarga el estado de cuenta de un socio.
 	 *
@@ -104,12 +109,13 @@ public class ReportController {
 	 * sensibilidad de esa información.
 	 *
 	 * @param identification cédula del socio, o {@code null} si se identifica por acción
-	 * @param shareNumber    número de acción, o {@code null} si se identifica por cédula
-	 * @param from           inicio del periodo, obligatorio
-	 * @param to             fin del periodo, obligatorio
+	 * @param shareNumber número de acción, o {@code null} si se identifica por cédula
+	 * @param from inicio del periodo, obligatorio
+	 * @param to fin del periodo, obligatorio
 	 * @return {@code 200} con el PDF adjunto; {@code 400} si falta el identificador o el rango es inválido; {@code 404} si el
 	 *         socio no existe
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/partner-statement")
 	public ResponseEntity<?> partnerStatement(
 			@RequestParam(required = false) String identification,
@@ -138,7 +144,6 @@ public class ReportController {
 		return pdf(bytes, "estado-de-cuenta-" + resolved);
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
 	/**
 	 * Descarga el reporte de seguridad del periodo.
 	 *
@@ -151,9 +156,10 @@ public class ReportController {
 	 * propaga en lugar de degradar.
 	 *
 	 * @param from inicio del periodo, obligatorio
-	 * @param to   fin del periodo, obligatorio
+	 * @param to fin del periodo, obligatorio
 	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/security")
 	public ResponseEntity<?> security(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -171,7 +177,7 @@ public class ReportController {
 	 * de métricas, no aplica valores por defecto: en un reporte el periodo es obligatorio.
 	 *
 	 * @param from inicio del periodo
-	 * @param to   fin del periodo
+	 * @param to fin del periodo
 	 * @return {@code true} si el rango debe rechazarse
 	 */
 	private boolean invalid(LocalDateTime from, LocalDateTime to) {

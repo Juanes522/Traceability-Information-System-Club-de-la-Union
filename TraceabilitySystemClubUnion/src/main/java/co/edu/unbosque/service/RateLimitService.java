@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-@Service
 /**
  * Administra las cubetas de limitación de tasa que protegen la autenticación.
  *
@@ -41,6 +40,7 @@ import java.time.Duration;
  *
  * @see co.edu.unbosque.security.RateLimitFilter
  */
+@Service
 public class RateLimitService {
 
 	private final long loginIpCapacity;
@@ -54,6 +54,19 @@ public class RateLimitService {
 	private final Cache<String, Bucket> userFailureBuckets;
 	private final Cache<String, Bucket> forgotPasswordBuckets;
 
+	/**
+	 * Crea las tres cubetas de limitacion a partir de su capacidad y ventana.
+	 *
+	 * <p>Cada par de parametros define una cubeta independiente. Los valores por defecto se aplican si las propiedades
+	 * correspondientes no estan configuradas.
+	 *
+	 * @param loginIpCapacity              intentos de inicio de sesion permitidos por direccion
+	 * @param loginIpWindowSeconds         ventana de recarga de esa cubeta, en segundos
+	 * @param loginUserCapacity            fallos permitidos por cuenta antes de bloquearla
+	 * @param loginUserWindowSeconds       ventana de recarga de esa cubeta, en segundos
+	 * @param forgotPasswordCapacity       solicitudes de recuperacion permitidas por direccion
+	 * @param forgotPasswordWindowSeconds  ventana de recarga de esa cubeta, en segundos
+	 */
 	public RateLimitService(
 			@Value("${ratelimit.login.ip.capacity:10}") long loginIpCapacity,
 			@Value("${ratelimit.login.ip.window-seconds:60}") long loginIpWindowSeconds,

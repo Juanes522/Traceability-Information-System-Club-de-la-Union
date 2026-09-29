@@ -69,8 +69,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * caché. Nótese además que el usuario se carga <strong>antes</strong> de validar el token, de modo que
      * incluso un token expirado o revocado cuesta esa consulta.
      *
-     * @param request     petición entrante
-     * @param response    respuesta; este filtro no escribe en ella
+     * @param request petición entrante
+     * @param response respuesta; este filtro no escribe en ella
      * @param filterChain cadena a continuar, siempre invocada
      * @throws ServletException si falla un filtro posterior
      * @throws IOException      si falla la entrada/salida de un filtro posterior

@@ -24,6 +24,11 @@ public class SecurityMetricsService {
 
 	private final AuditQueryService auditQueryService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param auditQueryService el valor de audit query service
+	 */
 	public SecurityMetricsService(AuditQueryService auditQueryService) {
 		this.auditQueryService = auditQueryService;
 	}
@@ -48,7 +53,7 @@ public class SecurityMetricsService {
 	 * comparte con {@link ReportService} para su reporte de seguridad.
 	 *
 	 * @param from inicio del rango, o {@code null} para no acotar
-	 * @param to   fin del rango, o {@code null} para no acotar
+	 * @param to fin del rango, o {@code null} para no acotar
 	 * @return los indicadores; con {@code degraded} activo si la bitácora no estaba disponible
 	 */
 	public SecuritySummaryDTO summary(LocalDateTime from, LocalDateTime to) {

@@ -70,37 +70,82 @@ public class Access {
 	@JoinColumn(name = "person_id", nullable = false)
 	private PersonPartner partner;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public Access() {
 	}
 
+	/**
+	 * Devuelve el identificador de la visita.
+	 *
+	 * @return el identificador de la visita
+	 */
 	public Long getAccessId() {
 		return accessId;
 	}
 
+	/**
+	 * Establece el identificador de la visita.
+	 *
+	 * @param accessId el identificador de la visita
+	 */
 	public void setAccessId(Long accessId) {
 		this.accessId = accessId;
 	}
 
+	/**
+	 * Devuelve el momento de entrada al club.
+	 *
+	 * @return el momento de entrada al club
+	 */
 	public LocalDateTime getDateTimeAdmission() {
 		return dateTimeAdmission;
 	}
 
+	/**
+	 * Establece el momento de entrada al club.
+	 *
+	 * @param dateTimeAdmission el momento de entrada al club
+	 */
 	public void setDateTimeAdmission(LocalDateTime dateTimeAdmission) {
 		this.dateTimeAdmission = dateTimeAdmission;
 	}
 
+	/**
+	 * Devuelve el momento de salida del club, o nulo si el socio sigue dentro.
+	 *
+	 * @return el momento de salida del club, o nulo si el socio sigue dentro
+	 */
 	public LocalDateTime getDateTimeDeparture() {
 		return dateTimeDeparture;
 	}
 
+	/**
+	 * Establece el momento de salida del club, o nulo si el socio sigue dentro.
+	 *
+	 * @param dateTimeDeparture el momento de salida del club, o nulo si el socio sigue dentro
+	 */
 	public void setDateTimeDeparture(LocalDateTime dateTimeDeparture) {
 		this.dateTimeDeparture = dateTimeDeparture;
 	}
 
+	/**
+	 * Devuelve el socio asociado.
+	 *
+	 * @return el socio asociado
+	 */
 	public PersonPartner getPartner() {
 		return partner;
 	}
 
+	/**
+	 * Establece el socio asociado.
+	 *
+	 * @param partner el socio asociado
+	 */
 	public void setPartner(PersonPartner partner) {
 		this.partner = partner;
 	}

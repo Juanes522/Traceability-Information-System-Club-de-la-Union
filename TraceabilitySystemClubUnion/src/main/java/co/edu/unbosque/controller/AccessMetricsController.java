@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.service.AccessMetricsService;
 
-@RestController
-@RequestMapping("/metrics/access")
 /**
  * Endpoints de métricas de afluencia: visitas, ocupación por ambiente y series de asistencia.
  *
@@ -28,17 +26,23 @@ import co.edu.unbosque.service.AccessMetricsService;
  *
  * @see co.edu.unbosque.service.AccessMetricsService
  */
+@RestController
+@RequestMapping("/metrics/access")
 public class AccessMetricsController {
 
 	private static final long MAX_RANGE_DAYS = 366;
 
 	private final AccessMetricsService metrics;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param metrics el valor de metrics
+	 */
 	public AccessMetricsController(AccessMetricsService metrics) {
 		this.metrics = metrics;
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve los indicadores de afluencia del periodo: visitas, socios distintos, frecuencia media y presentes.
 	 *
@@ -47,9 +51,10 @@ public class AccessMetricsController {
 	 * pasado, y el cliente no tiene forma de distinguirlo.
 	 *
 	 * @param from inicio del periodo; si se omite, 30 días atrás
-	 * @param to   fin del periodo; si se omite, ahora
+	 * @param to fin del periodo; si se omite, ahora
 	 * @return {@code 200} con los indicadores, o {@code 400} si el rango es inválido
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/summary")
 	public ResponseEntity<?> summary(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -61,7 +66,6 @@ public class AccessMetricsController {
 		return ResponseEntity.ok(metrics.summary(range[0], range[1]));
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve el número de socios distintos que consumieron hoy en cada ambiente.
 	 *
@@ -73,23 +77,24 @@ public class AccessMetricsController {
 	 *
 	 * @return {@code 200} con un elemento por ambiente
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/occupancy")
 	public ResponseEntity<?> occupancy() {
 		return ResponseEntity.ok(metrics.occupancyToday());
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	/**
 	 * Devuelve la serie temporal de visitas con la granularidad indicada.
 	 *
 	 * <p>La serie no tiene huecos: los periodos sin visitas se devuelven en cero.
 	 *
-	 * @param from        inicio del periodo; si se omite, 30 días atrás
-	 * @param to          fin del periodo; si se omite, ahora
+	 * @param from inicio del periodo; si se omite, 30 días atrás
+	 * @param to fin del periodo; si se omite, ahora
 	 * @param granularity {@code day}, {@code week} o {@code month}
 	 * @return {@code 200} con la serie, o {@code 400} con un mensaje si el rango es inválido o la granularidad no se
 	 *         reconoce
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 	@GetMapping("/attendance")
 	public ResponseEntity<?> attendance(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -111,7 +116,7 @@ public class AccessMetricsController {
 	 * fin igual a ahora, inicio 30 días antes, tope de 366 días.
 	 *
 	 * @param from inicio solicitado, o {@code null}
-	 * @param to   fin solicitado, o {@code null}
+	 * @param to fin solicitado, o {@code null}
 	 * @return un arreglo con el inicio y el fin normalizados, o {@code null} si el rango no es aceptable
 	 */
 	private LocalDateTime[] resolve(LocalDateTime from, LocalDateTime to) {
