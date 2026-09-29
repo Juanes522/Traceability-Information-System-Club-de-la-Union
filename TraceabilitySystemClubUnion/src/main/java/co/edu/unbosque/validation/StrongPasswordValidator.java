@@ -53,7 +53,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
 	 * {@link StrongPassword} lo combinan con {@code @NotBlank}; usarlo solo permitiría enviar una contraseña
 	 * nula sin que nada la rechace.
 	 *
-	 * @param value   contraseña propuesta
+	 * @param value contraseña propuesta
 	 * @param context contexto de validación; no se usa, de modo que el mensaje es siempre el de la anotación
 	 * @return {@code true} si cumple la política o si es {@code null}
 	 */

@@ -106,77 +106,172 @@ public class AuditEvent {
 	@Field(type = FieldType.Keyword)
 	private String severity;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public AuditEvent() {
 	}
 
+	/**
+	 * Devuelve el identificador.
+	 *
+	 * @return el identificador
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Establece el identificador.
+	 *
+	 * @param id el identificador
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Devuelve el instante del evento.
+	 *
+	 * @return el instante del evento
+	 */
 	public Instant getTimestamp() {
 		return timestamp;
 	}
 
+	/**
+	 * Establece el instante del evento.
+	 *
+	 * @param timestamp el instante del evento
+	 */
 	public void setTimestamp(Instant timestamp) {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Devuelve el tipo de evento de auditoría.
+	 *
+	 * @return el tipo de evento de auditoría
+	 */
 	public String getEventType() {
 		return eventType;
 	}
 
+	/**
+	 * Establece el tipo de evento de auditoría.
+	 *
+	 * @param eventType el tipo de evento de auditoría
+	 */
 	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
 
+	/**
+	 * Devuelve el desenlace del evento de auditoría.
+	 *
+	 * @return el desenlace del evento de auditoría
+	 */
 	public String getResult() {
 		return result;
 	}
 
+	/**
+	 * Establece el desenlace del evento de auditoría.
+	 *
+	 * @param result el desenlace del evento de auditoría
+	 */
 	public void setResult(String result) {
 		this.result = result;
 	}
 
+	/**
+	 * Devuelve el sujeto del evento, que es la cédula del socio sin enmascarar.
+	 *
+	 * @return el sujeto del evento, que es la cédula del socio sin enmascarar
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Establece el sujeto del evento, que es la cédula del socio sin enmascarar.
+	 *
+	 * @param username el sujeto del evento, que es la cédula del socio sin enmascarar
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Devuelve la dirección de origen atribuida al evento.
+	 *
+	 * @return la dirección de origen atribuida al evento
+	 */
 	public String getIpAddress() {
 		return ipAddress;
 	}
 
+	/**
+	 * Establece la dirección de origen atribuida al evento.
+	 *
+	 * @param ipAddress la dirección de origen atribuida al evento
+	 */
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 
+	/**
+	 * Devuelve la descripción legible del evento.
+	 *
+	 * @return la descripción legible del evento
+	 */
 	public String getDetail() {
 		return detail;
 	}
 
+	/**
+	 * Establece la descripción legible del evento.
+	 *
+	 * @param detail la descripción legible del evento
+	 */
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
 
+	/**
+	 * Devuelve el identificador del objeto afectado por el evento.
+	 *
+	 * @return el identificador del objeto afectado por el evento
+	 */
 	public String getTargetId() {
 		return targetId;
 	}
 
+	/**
+	 * Establece el identificador del objeto afectado por el evento.
+	 *
+	 * @param targetId el identificador del objeto afectado por el evento
+	 */
 	public void setTargetId(String targetId) {
 		this.targetId = targetId;
 	}
 
+	/**
+	 * Devuelve la severidad del evento, derivada de su tipo y desenlace.
+	 *
+	 * @return la severidad del evento, derivada de su tipo y desenlace
+	 */
 	public String getSeverity() {
 		return severity;
 	}
 
+	/**
+	 * Establece la severidad del evento, derivada de su tipo y desenlace.
+	 *
+	 * @param severity la severidad del evento, derivada de su tipo y desenlace
+	 */
 	public void setSeverity(String severity) {
 		this.severity = severity;
 	}

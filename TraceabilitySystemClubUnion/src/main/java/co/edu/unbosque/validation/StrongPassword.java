@@ -32,7 +32,24 @@ import jakarta.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = StrongPasswordValidator.class)
 public @interface StrongPassword {
+	/**
+	 * Mensaje que se devuelve cuando la contrasena no cumple la politica.
+	 *
+	 * <p>Esta escrito directamente en espanol, sin agrupacion de mensajes, de modo que no admite internacionalizacion.
+	 *
+	 * @return el mensaje de error por defecto
+	 */
 	String message() default "La contraseña debe tener al menos 12 caracteres e incluir minúscula, mayúscula y dígito.";
+	/**
+	 * Grupos de validacion a los que pertenece la restriccion.
+	 *
+	 * @return los grupos, vacio por defecto
+	 */
 	Class<?>[] groups() default {};
+	/**
+	 * Carga util asociada a la restriccion, prevista por la especificacion de validacion.
+	 *
+	 * @return la carga util, vacia por defecto
+	 */
 	Class<? extends Payload>[] payload() default {};
 }

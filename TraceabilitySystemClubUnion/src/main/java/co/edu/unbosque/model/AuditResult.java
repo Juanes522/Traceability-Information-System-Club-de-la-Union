@@ -11,7 +11,13 @@ package co.edu.unbosque.model;
  */
 public final class AuditResult {
 
+	/**
+	 * La operación se completó correctamente.
+	 */
 	public static final String SUCCESS = "SUCCESS";
+	/**
+	 * La operación no se completó. Eleva la severidad del evento a advertencia.
+	 */
 	public static final String FAILURE = "FAILURE";
 
 	private AuditResult() {

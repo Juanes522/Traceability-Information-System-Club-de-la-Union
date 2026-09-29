@@ -15,26 +15,55 @@ public class LoginHistoryDTO {
 	private Instant timestamp;
 	private String ip;
 
+	/**
+	 * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+	 */
 	public LoginHistoryDTO() {
 	}
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param timestamp el instante del evento
+	 * @param ip la dirección de origen registrada
+	 */
 	public LoginHistoryDTO(Instant timestamp, String ip) {
 		this.timestamp = timestamp;
 		this.ip = ip;
 	}
 
+	/**
+	 * Devuelve el instante del evento.
+	 *
+	 * @return el instante del evento
+	 */
 	public Instant getTimestamp() {
 		return timestamp;
 	}
 
+	/**
+	 * Establece el instante del evento.
+	 *
+	 * @param timestamp el instante del evento
+	 */
 	public void setTimestamp(Instant timestamp) {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Devuelve la dirección de origen registrada.
+	 *
+	 * @return la dirección de origen registrada
+	 */
 	public String getIp() {
 		return ip;
 	}
 
+	/**
+	 * Establece la dirección de origen registrada.
+	 *
+	 * @param ip la dirección de origen registrada
+	 */
 	public void setIp(String ip) {
 		this.ip = ip;
 	}

@@ -29,6 +29,11 @@ public class AccessService {
 
 	private final AccessRepository accessRepo;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param accessRepo el valor de access repo
+	 */
 	public AccessService(AccessRepository accessRepo) {
 		this.accessRepo = accessRepo;
 	}
@@ -65,7 +70,7 @@ public class AccessService {
 	 * excepción en cada llamada posterior y, al estar capturada por el llamante, el registro de presencia de ese
 	 * socio se detendría de forma silenciosa y permanente.
 	 *
-	 * @param partner       socio cuya presencia se registra
+	 * @param partner socio cuya presencia se registra
 	 * @param admissionTime hora de entrada; normalmente la apertura del consumo. Si es {@code null} se usa la
 	 *                      hora actual
 	 */

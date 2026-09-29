@@ -76,109 +76,244 @@ public class MonthlySnapshot {
 	private long uniquePartners;
 	private LocalDateTime generatedAt;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public MonthlySnapshot() {
 	}
 
+	/**
+	 * Devuelve el identificador.
+	 *
+	 * @return el identificador
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Establece el identificador.
+	 *
+	 * @param id el identificador
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Devuelve el mes resumido, en formato de año y mes.
+	 *
+	 * @return el mes resumido, en formato de año y mes
+	 */
 	public String getYearMonth() {
 		return yearMonth;
 	}
 
+	/**
+	 * Establece el mes resumido, en formato de año y mes.
+	 *
+	 * @param v el mes resumido, en formato de año y mes
+	 */
 	public void setYearMonth(String v) {
 		this.yearMonth = v;
 	}
 
+	/**
+	 * Devuelve el total facturado, con impuestos y recargos incluidos.
+	 *
+	 * @return el total facturado, con impuestos y recargos incluidos
+	 */
 	public double getTotalBilled() {
 		return totalBilled;
 	}
 
+	/**
+	 * Establece el total facturado, con impuestos y recargos incluidos.
+	 *
+	 * @param v el total facturado, con impuestos y recargos incluidos
+	 */
 	public void setTotalBilled(double v) {
 		this.totalBilled = v;
 	}
 
+	/**
+	 * Devuelve la suma del consumo neto.
+	 *
+	 * @return la suma del consumo neto
+	 */
 	public double getTotalConsumption() {
 		return totalConsumption;
 	}
 
+	/**
+	 * Establece la suma del consumo neto.
+	 *
+	 * @param v la suma del consumo neto
+	 */
 	public void setTotalConsumption(double v) {
 		this.totalConsumption = v;
 	}
 
+	/**
+	 * Devuelve la suma del impuesto al valor agregado.
+	 *
+	 * @return la suma del impuesto al valor agregado
+	 */
 	public double getTotalIva() {
 		return totalIva;
 	}
 
+	/**
+	 * Establece la suma del impuesto al valor agregado.
+	 *
+	 * @param v la suma del impuesto al valor agregado
+	 */
 	public void setTotalIva(double v) {
 		this.totalIva = v;
 	}
 
+	/**
+	 * Devuelve la suma de los recargos por servicio.
+	 *
+	 * @return la suma de los recargos por servicio
+	 */
 	public double getTotalService() {
 		return totalService;
 	}
 
+	/**
+	 * Establece la suma de los recargos por servicio.
+	 *
+	 * @param v la suma de los recargos por servicio
+	 */
 	public void setTotalService(double v) {
 		this.totalService = v;
 	}
 
+	/**
+	 * Devuelve la suma de las propinas.
+	 *
+	 * @return la suma de las propinas
+	 */
 	public double getTotalTip() {
 		return totalTip;
 	}
 
+	/**
+	 * Establece la suma de las propinas.
+	 *
+	 * @param v la suma de las propinas
+	 */
 	public void setTotalTip(double v) {
 		this.totalTip = v;
 	}
 
+	/**
+	 * Devuelve el número de cargos del periodo.
+	 *
+	 * @return el número de cargos del periodo
+	 */
 	public long getChargeCount() {
 		return chargeCount;
 	}
 
+	/**
+	 * Establece el número de cargos del periodo.
+	 *
+	 * @param v el número de cargos del periodo
+	 */
 	public void setChargeCount(long v) {
 		this.chargeCount = v;
 	}
 
+	/**
+	 * Devuelve el valor promedio por cargo.
+	 *
+	 * @return el valor promedio por cargo
+	 */
 	public double getAveragePerAccount() {
 		return averagePerAccount;
 	}
 
+	/**
+	 * Establece el valor promedio por cargo.
+	 *
+	 * @param v el valor promedio por cargo
+	 */
 	public void setAveragePerAccount(double v) {
 		this.averagePerAccount = v;
 	}
 
+	/**
+	 * Devuelve el porcentaje de propina sobre el consumo neto.
+	 *
+	 * @return el porcentaje de propina sobre el consumo neto
+	 */
 	public double getTipPercentage() {
 		return tipPercentage;
 	}
 
+	/**
+	 * Establece el porcentaje de propina sobre el consumo neto.
+	 *
+	 * @param v el porcentaje de propina sobre el consumo neto
+	 */
 	public void setTipPercentage(double v) {
 		this.tipPercentage = v;
 	}
 
+	/**
+	 * Devuelve el número de visitas.
+	 *
+	 * @return el número de visitas
+	 */
 	public long getVisits() {
 		return visits;
 	}
 
+	/**
+	 * Establece el número de visitas.
+	 *
+	 * @param v el número de visitas
+	 */
 	public void setVisits(long v) {
 		this.visits = v;
 	}
 
+	/**
+	 * Devuelve el número de socios distintos del periodo.
+	 *
+	 * @return el número de socios distintos del periodo
+	 */
 	public long getUniquePartners() {
 		return uniquePartners;
 	}
 
+	/**
+	 * Establece el número de socios distintos del periodo.
+	 *
+	 * @param v el número de socios distintos del periodo
+	 */
 	public void setUniquePartners(long v) {
 		this.uniquePartners = v;
 	}
 
+	/**
+	 * Devuelve el momento en que se calculó el resumen.
+	 *
+	 * @return el momento en que se calculó el resumen
+	 */
 	public LocalDateTime getGeneratedAt() {
 		return generatedAt;
 	}
 
+	/**
+	 * Establece el momento en que se calculó el resumen.
+	 *
+	 * @param v el momento en que se calculó el resumen
+	 */
 	public void setGeneratedAt(LocalDateTime v) {
 		this.generatedAt = v;
 	}

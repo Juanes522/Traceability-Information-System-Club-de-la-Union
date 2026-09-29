@@ -27,8 +27,6 @@ import co.edu.unbosque.service.PersonPartnerService;
 
 import jakarta.validation.Valid;
 
-@RestController
-@RequestMapping("/partnerconsumption")
 /**
  * Endpoints de registro y consulta de consumos.
  *
@@ -49,6 +47,8 @@ import jakarta.validation.Valid;
  *
  * @see co.edu.unbosque.service.PartnerConsumptionService
  */
+@RestController
+@RequestMapping("/partnerconsumption")
 public class PartnerConsumptionController {
 
 	@Autowired
@@ -57,10 +57,12 @@ public class PartnerConsumptionController {
 	@Autowired
 	private PersonPartnerService personPartnerService;
 
+	/**
+	 * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+	 */
 	public PartnerConsumptionController() {
 	}
 
-	@PostMapping(path = "/registerconsumption")
 	/**
 	 * Registra un consumo y desencadena la notificación al socio.
 	 *
@@ -85,6 +87,7 @@ public class PartnerConsumptionController {
 	 * @param req datos del consumo y sus líneas, validados por Bean Validation
 	 * @return {@code 201} con el consumo persistido; {@code 400} ante cualquier error, incluido un socio inexistente
 	 */
+	@PostMapping(path = "/registerconsumption")
 	public ResponseEntity<PartnerConsumption> registerConsumption(@Valid @RequestBody ConsumptionCreateRequest req) {
 		try {
 			PartnerConsumption consumption = consumptionServ.register(req);
@@ -97,8 +100,6 @@ public class PartnerConsumptionController {
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping("/by-environment/{env}")
 	/**
 	 * Devuelve una página de los consumos de un ambiente.
 	 *
@@ -108,13 +109,15 @@ public class PartnerConsumptionController {
 	 * <p>El ambiente se compara por igualdad exacta y no hay catálogo que lo valide: una errata devuelve una página vacía
 	 * sin indicar la causa.
 	 *
-	 * @param env  nombre exacto del ambiente
+	 * @param env nombre exacto del ambiente
 	 * @param from inicio del rango, opcional
-	 * @param to   fin del rango, opcional
+	 * @param to fin del rango, opcional
 	 * @param page índice de página, base cero
 	 * @param size tamaño de página
 	 * @return {@code 200} con la página; {@code 400} si el rango excede tres meses
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping("/by-environment/{env}")
 	public ResponseEntity<?> getByEnvironment(
 			@PathVariable String env,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -130,7 +133,6 @@ public class PartnerConsumptionController {
 		return ResponseEntity.ok(consumptionServ.getByEnviromentPaged(env, from, to, pageable));
 	}
 
-	@GetMapping("/by-partner/{partnerId}")
 	/**
 	 * Devuelve todos los consumos de un socio, sin paginar, previa comprobación de propiedad.
 	 *
@@ -144,6 +146,7 @@ public class PartnerConsumptionController {
 	 * @return {@code 200} con los consumos; {@code 204} si no tiene ninguno; {@code 403} si el solicitante no puede acceder
 	 *         a ese socio; {@code 404} si no existe
 	 */
+	@GetMapping("/by-partner/{partnerId}")
 	public ResponseEntity<List<PartnerConsumption>> getByPartner(@PathVariable Long partnerId) {
 		if (!canAccessPartner(partnerId)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);

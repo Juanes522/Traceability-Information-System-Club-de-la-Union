@@ -24,7 +24,6 @@ import co.edu.unbosque.model.AuditEvent;
 import co.edu.unbosque.model.AuditEventType;
 import co.edu.unbosque.model.AuditSeverity;
 
-@Service
 /**
  * Camino de <strong>lectura</strong> de la bitácora de seguridad.
  *
@@ -44,10 +43,16 @@ import co.edu.unbosque.model.AuditSeverity;
  * @see AuditService
  * @see co.edu.unbosque.model.AuditEvent
  */
+@Service
 public class AuditQueryService {
 
 	private final ElasticsearchOperations operations;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param operations el valor de operations
+	 */
 	public AuditQueryService(ElasticsearchOperations operations) {
 		this.operations = operations;
 	}
@@ -64,12 +69,12 @@ public class AuditQueryService {
 	 * el controlador <strong>fija el nombre de usuario desde el contexto de seguridad</strong>, de modo que nadie
 	 * puede consultar el historial de otro.
 	 *
-	 * @param username  sujeto a filtrar, o {@code null} para no filtrar
+	 * @param username sujeto a filtrar, o {@code null} para no filtrar
 	 * @param eventType tipo de evento, o {@code null}
-	 * @param result    desenlace, o {@code null}
-	 * @param from      inicio del rango, inclusivo, o {@code null}
-	 * @param to        fin del rango, inclusivo, o {@code null}
-	 * @param pageable  página solicitada
+	 * @param result desenlace, o {@code null}
+	 * @param from inicio del rango, inclusivo, o {@code null}
+	 * @param to fin del rango, inclusivo, o {@code null}
+	 * @param pageable página solicitada
 	 * @return la página de eventos, con el total de coincidencias
 	 */
 	public Page<AuditEvent> search(String username, String eventType, String result,
@@ -104,8 +109,8 @@ public class AuditQueryService {
 	 * índice sea grande.
 	 *
 	 * @param eventType tipo de evento a contar
-	 * @param from      inicio del rango, o {@code null}
-	 * @param to        fin del rango, o {@code null}
+	 * @param from inicio del rango, o {@code null}
+	 * @param to fin del rango, o {@code null}
 	 * @return el número de eventos coincidentes
 	 */
 	public long countByEventType(String eventType, Instant from, Instant to) {
@@ -121,8 +126,8 @@ public class AuditQueryService {
 	 * administración.
 	 *
 	 * @param severity severidad a contar
-	 * @param from     inicio del rango, o {@code null}
-	 * @param to       fin del rango, o {@code null}
+	 * @param from inicio del rango, o {@code null}
+	 * @param to fin del rango, o {@code null}
 	 * @return el número de eventos coincidentes
 	 */
 	public long countBySeverity(String severity, Instant from, Instant to) {
@@ -145,7 +150,7 @@ public class AuditQueryService {
 	 * <p>Los eventos sin usuario identificable se agrupan bajo una etiqueta genérica en lugar de descartarse.
 	 *
 	 * @param from inicio del rango, o {@code null}
-	 * @param to   fin del rango, o {@code null}
+	 * @param to fin del rango, o {@code null}
 	 * @return los usuarios con fallos y su recuento, ordenados de mayor a menor
 	 */
 	public List<UserFailedCountDTO> failedLoginsByUser(Instant from, Instant to) {
@@ -175,7 +180,7 @@ public class AuditQueryService {
 	 * reporte muestra solo los más recientes, sin indicar que hubo más.
 	 *
 	 * @param from inicio del rango, o {@code null}
-	 * @param to   fin del rango, o {@code null}
+	 * @param to fin del rango, o {@code null}
 	 * @return los eventos de severidad crítica, ordenados por fecha descendente
 	 */
 	public List<AuditEvent> criticalEvents(Instant from, Instant to) {

@@ -19,7 +19,6 @@ import co.edu.unbosque.model.Access;
 import co.edu.unbosque.repository.AccessRepository;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
-@Service
 /**
  * Métricas de afluencia: visitas, socios distintos, presencia actual y ocupación por ambiente.
  *
@@ -34,11 +33,18 @@ import co.edu.unbosque.repository.PartnerConsumptionRepository;
  * <p>Comparte tres métodos privados de agrupación temporal, duplicados literalmente, con
  * {@link ConsumptionMetricsService} y {@link PartnerMetricsService}.
  */
+@Service
 public class AccessMetricsService {
 
 	private final AccessRepository accessRepo;
 	private final PartnerConsumptionRepository consumptionRepo;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param accessRepo el valor de access repo
+	 * @param consumptionRepo el valor de consumption repo
+	 */
 	public AccessMetricsService(AccessRepository accessRepo, PartnerConsumptionRepository consumptionRepo) {
 		this.accessRepo = accessRepo;
 		this.consumptionRepo = consumptionRepo;
@@ -55,7 +61,7 @@ public class AccessMetricsService {
 	 * ese valor es un dato en vivo mezclado con datos del pasado, y el cliente no tiene forma de distinguirlo.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return los indicadores de afluencia
 	 */
 	public AccessSummaryDTO summary(LocalDateTime from, LocalDateTime to) {
@@ -104,8 +110,8 @@ public class AccessMetricsService {
 	 * aunque solo necesite su fecha de entrada y sin imponer ningún tope. Un rango amplio sobre un padrón activo carga
 	 * en memoria un volumen apreciable de filas.
 	 *
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param granularity {@code day}, {@code week} o {@code month}
 	 * @return la serie ordenada, con una entrada por cubeta del rango
 	 * @throws IllegalArgumentException si la granularidad no es una de las tres admitidas

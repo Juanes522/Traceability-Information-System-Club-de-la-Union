@@ -71,8 +71,8 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * cliente aporta ambos extremos del rango. Esos endpoints limitan la ventana a 92 días.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param pageable página solicitada
 	 * @return página de consumos
 	 */
@@ -93,7 +93,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * Consumos de un ambiente, paginados y sin filtro de fechas.
 	 *
 	 * @param enviroment nombre del ambiente, con coincidencia exacta
-	 * @param pageable   página solicitada
+	 * @param pageable página solicitada
 	 * @return página de consumos
 	 */
 	Page<PartnerConsumption> findByEnviroment(String enviroment, Pageable pageable);
@@ -106,9 +106,9 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * vacía sin ninguna indicación de por qué.
 	 *
 	 * @param enviroment nombre del ambiente, con coincidencia exacta
-	 * @param from       inicio del rango, inclusivo
-	 * @param to         fin del rango, inclusivo
-	 * @param pageable   página solicitada
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
+	 * @param pageable página solicitada
 	 * @return página de consumos
 	 */
 	Page<PartnerConsumption> findByEnviromentAndConsumptionOpeningBetween(
@@ -122,7 +122,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * abarcar 366 días— aunque la tabla de detalle del PDF muestre luego solo 40 filas.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return los consumos del rango
 	 */
 	List<PartnerConsumption> findByConsumptionOpeningBetween(LocalDateTime from, LocalDateTime to);
@@ -134,8 +134,8 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * reporte de consumos cuando se filtra por ambiente. Mismas consideraciones de volumen.
 	 *
 	 * @param enviroment nombre del ambiente, con coincidencia exacta
-	 * @param from       inicio del rango, inclusivo
-	 * @param to         fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return los consumos coincidentes
 	 */
 	List<PartnerConsumption> findByEnviromentAndConsumptionOpeningBetween(
@@ -150,8 +150,8 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * amplio hidratan todas sus entidades para calcular unas cuantas sumas.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return los consumos del socio en el rango
 	 */
 	List<PartnerConsumption> findByPartnerPersonIdAndConsumptionOpeningBetween(
@@ -173,7 +173,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * los excluye: dos métricas del mismo periodo pueden por tanto discrepar.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una única fila con las cinco agregaciones
 	 */
 	@Query("SELECT COALESCE(SUM(c.consumptionValue),0), COALESCE(SUM(c.iva),0), " +
@@ -192,7 +192,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * cargos. Los porcentajes sobre el total global los calcula el servicio, en una segunda pasada.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por ambiente, ordenadas por total descendente
 	 */
 	@Query("SELECT c.enviroment, SUM(COALESCE(c.consumptionValue,0) + COALESCE(c.iva,0) + COALESCE(c.service,0) + COALESCE(c.tip,0)), COUNT(c) " +
@@ -214,7 +214,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * entidades completas.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return las filas del rango, como proyecciones de solo lectura
 	 */
 	@Query("SELECT c.consumptionOpening AS consumptionOpening, c.consumptionValue AS consumptionValue, " +
@@ -236,7 +236,7 @@ public interface PartnerConsumptionRepository extends JpaRepository<PartnerConsu
 	 * <p>Contrato posicional: {@code [0]} ambiente, {@code [1]} número de socios distintos.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por ambiente, ordenadas por número de socios descendente
 	 */
 	@Query("SELECT c.enviroment, COUNT(DISTINCT c.partner.personId) FROM PartnerConsumption c " +

@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.model.AuditEvent;
 import co.edu.unbosque.service.AuditQueryService;
 
-@RestController
-@RequestMapping("/audit")
 /**
  * Endpoint de consulta de la bitácora de auditoría.
  *
@@ -33,15 +31,21 @@ import co.edu.unbosque.service.AuditQueryService;
  *
  * @see co.edu.unbosque.service.AuditQueryService
  */
+@RestController
+@RequestMapping("/audit")
 public class AuditController {
 
 	private final AuditQueryService queryService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param queryService el valor de query service
+	 */
 	public AuditController(AuditQueryService queryService) {
 		this.queryService = queryService;
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
 	/**
 	 * Busca eventos de auditoría con filtros opcionales, paginados y del más reciente al más antiguo.
 	 *
@@ -56,15 +60,16 @@ public class AuditController {
 	 * <p>La anotación de formato que acompaña a esos parámetros resulta engañosa: no es la que rige la conversión de un
 	 * instante, que resuelve el convertidor por defecto del framework.
 	 *
-	 * @param username  sujeto a filtrar, o vacío para no filtrar
+	 * @param username sujeto a filtrar, o vacío para no filtrar
 	 * @param eventType tipo de evento, o vacío
-	 * @param result    desenlace, o vacío
-	 * @param from      inicio del rango, opcional
-	 * @param to        fin del rango, opcional
-	 * @param page      índice de página, base cero
-	 * @param size      tamaño de página
+	 * @param result desenlace, o vacío
+	 * @param from inicio del rango, opcional
+	 * @param to fin del rango, opcional
+	 * @param page índice de página, base cero
+	 * @param size tamaño de página
 	 * @return {@code 200} con la página de eventos, o {@code 400} con un mensaje si el rango excede tres meses
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<?> search(
 			@RequestParam(required = false) String username,

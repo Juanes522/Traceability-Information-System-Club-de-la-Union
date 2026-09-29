@@ -24,8 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@RestController
-@RequestMapping("/personpartner")
 /**
  * Endpoints de consulta de socios, de datos propios y de sincronización con el padrón externo.
  *
@@ -54,6 +52,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @see co.edu.unbosque.service.PersonPartnerService
  * @see co.edu.unbosque.service.PartnerSyncService
  */
+@RestController
+@RequestMapping("/personpartner")
 public class PersonPartnerController {
 
 	@Autowired
@@ -68,11 +68,12 @@ public class PersonPartnerController {
 	@Autowired
 	private co.edu.unbosque.service.PartnerSyncService partnerSyncService;
 
+	/**
+	 * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+	 */
 	public PersonPartnerController() {
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getbyidentification/{identification}")
 	/**
 	 * Busca un socio por su identificación.
 	 *
@@ -82,6 +83,8 @@ public class PersonPartnerController {
 	 * @param identification cédula del socio
 	 * @return {@code 200} con el socio, o {@code 404} si no existe
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getbyidentification/{identification}")
 	public ResponseEntity<PersonPartner> getByIdentification(@PathVariable String identification) {
 		PersonPartner partner = partnerServ.getByIdentification(identification);
 		if (partner == null) {
@@ -90,14 +93,14 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partner, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getbyfirstname/{firstname}")
 	/**
 	 * Busca socios por su primer nombre, con coincidencia exacta.
 	 *
 	 * @param firstname primer nombre exacto; no admite búsqueda parcial
 	 * @return {@code 200} con los socios, o {@code 204} si no hay coincidencias
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getbyfirstname/{firstname}")
 	public ResponseEntity<List<PersonPartner>> getByFirstName(@PathVariable String firstname) {
 		List<PersonPartner> partners = partnerServ.getByFirstName(firstname);
 		if (partners == null || partners.isEmpty()) {
@@ -106,14 +109,14 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partners, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getbysecondname/{secondname}")
 	/**
 	 * Busca socios por su segundo nombre, con coincidencia exacta.
 	 *
 	 * @param secondname segundo nombre exacto
 	 * @return {@code 200} con los socios, o {@code 204} si no hay coincidencias
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getbysecondname/{secondname}")
 	public ResponseEntity<List<PersonPartner>> getBySecondName(@PathVariable String secondname) {
 		List<PersonPartner> partners = partnerServ.getBySecondName(secondname);
 		if (partners == null || partners.isEmpty()) {
@@ -122,8 +125,6 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partners, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getbysharenumber/{sharenumber}")
 	/**
 	 * Busca los socios asociados a un número de acción.
 	 *
@@ -133,6 +134,8 @@ public class PersonPartnerController {
 	 * @param sharenumber número de acción
 	 * @return {@code 200} con los socios, o {@code 204} si no hay coincidencias
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getbysharenumber/{sharenumber}")
 	public ResponseEntity<List<PersonPartner>> getByShareNumber(@PathVariable Long sharenumber) {
 		List<PersonPartner> partners = partnerServ.getByShareNumber(sharenumber);
 		if (partners == null || partners.isEmpty()) {
@@ -141,8 +144,6 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partners, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getall")
 	/**
 	 * Devuelve el padrón completo, sin paginar.
 	 *
@@ -150,6 +151,13 @@ public class PersonPartnerController {
 	 * un padrón grande conviene preferir {@code /getallpaged}, que es lo que hace la pantalla de administración.
 	 *
 	 * @return {@code 200} con todos los socios, o {@code 204} si no hay ninguno
+	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getall")
+	/**
+	 * Devuelve el valor de all.
+	 *
+	 * @return el valor de all
 	 */
 	public ResponseEntity<List<PersonPartner>> getAll() {
 		List<PersonPartner> partners = partnerServ.getAll();
@@ -159,8 +167,6 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partners, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getallpaged")
 	/**
 	 * Devuelve una página del padrón.
 	 *
@@ -172,6 +178,8 @@ public class PersonPartnerController {
 	 * @param size tamaño de página, acotado entre 1 y 100
 	 * @return {@code 200} con la página solicitada
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getallpaged")
 	public ResponseEntity<Page<PersonPartner>> getAllPaged(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
@@ -180,7 +188,6 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partnerServ.getAllPaged(PageRequest.of(safePage, safeSize)), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/me")
 	/**
 	 * Devuelve la ficha del usuario autenticado.
 	 *
@@ -193,6 +200,12 @@ public class PersonPartnerController {
 	 *
 	 * @return {@code 200} con la ficha propia; {@code 401} si no hay usuario autenticado; {@code 404} si el socio no
 	 *         existe
+	 */
+	@GetMapping(path = "/me")
+	/**
+	 * Devuelve el valor de me.
+	 *
+	 * @return el valor de me
 	 */
 	public ResponseEntity<PersonPartner> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -209,7 +222,6 @@ public class PersonPartnerController {
 		return new ResponseEntity<>(partner, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/getconsumptions/me")
 	/**
 	 * Devuelve una página de los consumos del propio socio, ordenados del más reciente al más antiguo.
 	 *
@@ -219,13 +231,14 @@ public class PersonPartnerController {
 	 * como el tiempo de respuesta, dado que cada fila serializada provoca además una consulta adicional para resolver el
 	 * número de acción.
 	 *
-	 * @param from  inicio del rango, opcional
-	 * @param to    fin del rango, opcional
-	 * @param page  índice de página, base cero
-	 * @param size  tamaño de página
+	 * @param from inicio del rango, opcional
+	 * @param to fin del rango, opcional
+	 * @param page índice de página, base cero
+	 * @param size tamaño de página
 	 * @return {@code 200} con la página; {@code 400} si el rango excede tres meses; {@code 401} sin sesión; {@code 404} si
 	 *         el socio no existe
 	 */
+	@GetMapping(path = "/getconsumptions/me")
 	public ResponseEntity<?> getMyConsumptions(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
@@ -249,8 +262,6 @@ public class PersonPartnerController {
 		return ResponseEntity.ok(consumptionServ.getByPartnerPaged(partner.getPersonId(), from, to, pageable));
 	}
 
-	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
-	@GetMapping(path = "/getconsumptionsidentification/{identification}")
 	/**
 	 * Devuelve una página de los consumos de un socio indicado por su identificación.
 	 *
@@ -258,12 +269,14 @@ public class PersonPartnerController {
 	 * acceso indebido es el {@code @PreAuthorize} de rol, no una guarda de propiedad.
 	 *
 	 * @param identification cédula del socio a consultar
-	 * @param from           inicio del rango, opcional
-	 * @param to             fin del rango, opcional
-	 * @param page           índice de página, base cero
-	 * @param size           tamaño de página
+	 * @param from inicio del rango, opcional
+	 * @param to fin del rango, opcional
+	 * @param page índice de página, base cero
+	 * @param size tamaño de página
 	 * @return {@code 200} con la página; {@code 400} si el rango excede tres meses; {@code 404} si el socio no existe
 	 */
+	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	@GetMapping(path = "/getconsumptionsidentification/{identification}")
 	public ResponseEntity<?> getConsumptionsByIdentification(
 			@PathVariable String identification,
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -283,7 +296,6 @@ public class PersonPartnerController {
 		return ResponseEntity.ok(consumptionServ.getByPartnerPaged(titular.getPersonId(), from, to, pageable));
 	}
 
-	@GetMapping("/notifications/me")
 	/**
 	 * Devuelve una página de los avisos del propio socio, del más reciente al más antiguo.
 	 *
@@ -296,6 +308,7 @@ public class PersonPartnerController {
 	 * @param size tamaño de página
 	 * @return {@code 200} con la página de avisos; {@code 401} si no hay usuario autenticado
 	 */
+	@GetMapping("/notifications/me")
 	public ResponseEntity<?> getMyNotifications(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
@@ -309,7 +322,6 @@ public class PersonPartnerController {
 		return ResponseEntity.ok(consumptionServ.getNotificationsForPartnerPaged(identification, PageRequest.of(safePage, safeSize)));
 	}
 
-	@GetMapping("/my-logins")
 	/**
 	 * Devuelve el historial de inicios de sesión exitosos del propio socio, con fecha e IP.
 	 *
@@ -326,6 +338,7 @@ public class PersonPartnerController {
 	 * @param size tamaño de página
 	 * @return {@code 200} con la página de accesos; {@code 401} si no hay usuario autenticado
 	 */
+	@GetMapping("/my-logins")
 	public ResponseEntity<?> getMyLogins(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size) {
@@ -343,8 +356,6 @@ public class PersonPartnerController {
 		return ResponseEntity.ok(logins);
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
-	@PostMapping("/sync")
 	/**
 	 * Dispara la sincronización del padrón con el maestro externo de socios.
 	 *
@@ -358,6 +369,8 @@ public class PersonPartnerController {
 	 * @return {@code 200} con el recuento de socios creados y actualizados; {@code 502} con un mensaje si el servicio
 	 *         externo no responde o su respuesta no se puede procesar
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/sync")
 	public ResponseEntity<?> sync() {
 		try {
 			return ResponseEntity.ok(partnerSyncService.sync());

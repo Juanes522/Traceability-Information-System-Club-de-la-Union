@@ -17,20 +17,43 @@ public class AuthRequest {
     @NotBlank
     private String password;
 
+    /**
+     * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+     */
     public AuthRequest() {}
 
+    /**
+     * Devuelve la cédula del socio, que es el nombre de usuario del sistema.
+     *
+     * @return la cédula del socio, que es el nombre de usuario del sistema
+     */
     public String getIdentification() {
         return identification;
     }
 
+    /**
+     * Establece la cédula del socio, que es el nombre de usuario del sistema.
+     *
+     * @param identification la cédula del socio, que es el nombre de usuario del sistema
+     */
     public void setIdentification(String identification) {
         this.identification = identification;
     }
 
+    /**
+     * Devuelve la contraseña, con hash BCrypt o en texto plano si es heredada.
+     *
+     * @return la contraseña, con hash BCrypt o en texto plano si es heredada
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Establece la contraseña, con hash BCrypt o en texto plano si es heredada.
+     *
+     * @param password la contraseña, con hash BCrypt o en texto plano si es heredada
+     */
     public void setPassword(String password) {
         this.password = password;
     }

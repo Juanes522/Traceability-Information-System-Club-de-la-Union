@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.unbosque.model.PasswordResetToken;
 import co.edu.unbosque.model.PersonPartner;
 
-@Repository
 /**
  * Acceso a los tokens de recuperación de contraseña.
  */
+@Repository
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
 
 	/**

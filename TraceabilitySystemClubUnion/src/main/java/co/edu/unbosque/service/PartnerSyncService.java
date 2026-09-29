@@ -13,7 +13,6 @@ import co.edu.unbosque.dto.ExternalSocioDTO;
 import co.edu.unbosque.dto.SyncResultDTO;
 import co.edu.unbosque.model.PersonPartner;
 
-@Service
 /**
  * Sincroniza el padrón de socios con el maestro externo del club.
  *
@@ -45,6 +44,7 @@ import co.edu.unbosque.model.PersonPartner;
  * @see co.edu.unbosque.dto.ExternalSocioDTO
  * @see co.edu.unbosque.dto.SyncResultDTO
  */
+@Service
 public class PartnerSyncService {
 
 	private final PersonPartnerService partnerService;
@@ -52,6 +52,14 @@ public class PartnerSyncService {
 	private final String externalSociosUrl;
 	private final PasswordEncoder passwordEncoder;
 
+	/**
+	 * Crea el servicio de sincronizacion.
+	 *
+	 * @param partnerService     acceso a los socios, que aporta ademas el limite transaccional por registro
+	 * @param restClientBuilder  constructor de cliente HTTP; el que se inyecta no define tiempos de espera
+	 * @param externalSociosUrl  direccion del maestro externo de socios
+	 * @param passwordEncoder    codificador con el que se siembra la contrasena inicial de los socios nuevos
+	 */
 	public PartnerSyncService(PersonPartnerService partnerService, RestClient.Builder restClientBuilder,
 			@Value("${external.socios.url}") String externalSociosUrl, PasswordEncoder passwordEncoder) {
 		this.partnerService = partnerService;

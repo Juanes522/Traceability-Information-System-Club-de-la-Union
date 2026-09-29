@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-@Component
 /**
  * Emisión y verificación de los JWT de acceso.
  *
@@ -49,11 +48,14 @@ import java.util.function.Function;
  * {@code setClaims}, {@code signWith(key, alg)}) quedó obsoleta o desapareció en 0.12.x. El código es
  * internamente coherente, pero no se puede actualizar la biblioteca sin reescribir esta clase.
  */
+@Component
 public class JwtUtil {
 
     private final SecretKey secretKey;
 
     /**
+     * Crea la utilidad derivando la clave de firma del secreto configurado.
+     *
      * @param secret secreto de firma HMAC, de {@code ${jwt.secret}}. Debe tener al menos 32 bytes; por
      *               debajo de ese tamaño la creación del bean falla con una excepción de JJWT
      */
@@ -110,8 +112,8 @@ public class JwtUtil {
     /**
      * Extrae un claim arbitrario aplicando la función indicada.
      *
-     * @param <T>            tipo del valor extraído
-     * @param token          JWT a inspeccionar
+     * @param <T> tipo del valor extraído
+     * @param token JWT a inspeccionar
      * @param claimsResolver función que selecciona el claim deseado
      * @return el valor del claim
      * @throws io.jsonwebtoken.JwtException si el token no es válido
@@ -173,7 +175,7 @@ public class JwtUtil {
      * antes de {@code setId} y {@code setSubject}; invertir ese orden borraría silenciosamente el {@code jti}
      * y el {@code sub}, y con ello la capacidad de revocar tokens.
      *
-     * @param claims  claims adicionales; hoy siempre vacío
+     * @param claims claims adicionales; hoy siempre vacío
      * @param subject identificación del socio, que será el claim {@code sub}
      * @return el JWT firmado con HS256
      */
@@ -199,7 +201,7 @@ public class JwtUtil {
      * <p>No consulta la lista negra de revocación: eso lo comprueba el filtro por separado, y ambas
      * condiciones deben cumplirse.
      *
-     * @param token       JWT a validar
+     * @param token JWT a validar
      * @param userDetails usuario cargado de la base con el que debe coincidir el claim {@code sub}
      * @return {@code true} si el token es del usuario y sigue vigente
      * @throws io.jsonwebtoken.JwtException si el token no es íntegro

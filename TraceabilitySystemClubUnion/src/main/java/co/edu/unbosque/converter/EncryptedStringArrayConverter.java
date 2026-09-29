@@ -41,6 +41,8 @@ public class EncryptedStringArrayConverter implements AttributeConverter<String[
 	private final AesGcmEncryptionService encryptionService;
 
 	/**
+	 * Crea el conversor con el servicio de cifrado.
+	 *
 	 * @param encryptionService servicio de cifrado AES-256-GCM, inyectado por Spring
 	 */
 	public EncryptedStringArrayConverter(AesGcmEncryptionService encryptionService) {

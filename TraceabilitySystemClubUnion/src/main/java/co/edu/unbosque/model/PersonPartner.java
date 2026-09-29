@@ -218,141 +218,316 @@ public class PersonPartner {
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<PartnerConsumption> consumptions = new ArrayList<>();
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public PersonPartner() {
 	}
 
+	/**
+	 * Devuelve la clave primaria del socio.
+	 *
+	 * @return la clave primaria del socio
+	 */
 	public Long getPersonId() {
 		return personId;
 	}
 
+	/**
+	 * Establece la clave primaria del socio.
+	 *
+	 * @param personId la clave primaria del socio
+	 */
 	public void setPersonId(Long personId) {
 		this.personId = personId;
 	}
 
+	/**
+	 * Devuelve la cédula del socio, que es el nombre de usuario del sistema.
+	 *
+	 * @return la cédula del socio, que es el nombre de usuario del sistema
+	 */
 	public String getIdentification() {
 		return identification;
 	}
 
+	/**
+	 * Establece la cédula del socio, que es el nombre de usuario del sistema.
+	 *
+	 * @param identification la cédula del socio, que es el nombre de usuario del sistema
+	 */
 	public void setIdentification(String identification) {
 		this.identification = identification;
 	}
 
+	/**
+	 * Devuelve el primer nombre.
+	 *
+	 * @return el primer nombre
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
+	/**
+	 * Establece el primer nombre.
+	 *
+	 * @param firstName el primer nombre
+	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	/**
+	 * Devuelve el segundo nombre.
+	 *
+	 * @return el segundo nombre
+	 */
 	public String getSecondName() {
 		return secondName;
 	}
 
+	/**
+	 * Establece el segundo nombre.
+	 *
+	 * @param secondName el segundo nombre
+	 */
 	public void setSecondName(String secondName) {
 		this.secondName = secondName;
 	}
 
+	/**
+	 * Devuelve el apellido.
+	 *
+	 * @return el apellido
+	 */
 	public String getLastName() {
 		return lastName;
 	}
 
+	/**
+	 * Establece el apellido.
+	 *
+	 * @param lastName el apellido
+	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	/**
+	 * Devuelve la contraseña, con hash BCrypt o en texto plano si es heredada.
+	 *
+	 * @return la contraseña, con hash BCrypt o en texto plano si es heredada
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Establece la contraseña, con hash BCrypt o en texto plano si es heredada.
+	 *
+	 * @param password la contraseña, con hash BCrypt o en texto plano si es heredada
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Devuelve la fecha de nacimiento.
+	 *
+	 * @return la fecha de nacimiento
+	 */
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
+	/**
+	 * Establece la fecha de nacimiento.
+	 *
+	 * @param birthDate la fecha de nacimiento
+	 */
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
+	/**
+	 * Devuelve la fecha de ingreso al club.
+	 *
+	 * @return la fecha de ingreso al club
+	 */
 	public LocalDate getIngressDate() {
 		return ingressDate;
 	}
 
+	/**
+	 * Establece la fecha de ingreso al club.
+	 *
+	 * @param ingressDate la fecha de ingreso al club
+	 */
 	public void setIngressDate(LocalDate ingressDate) {
 		this.ingressDate = ingressDate;
 	}
 
+	/**
+	 * Devuelve el número de acción del club, que no es único.
+	 *
+	 * @return el número de acción del club, que no es único
+	 */
 	public Long getShareNumber() {
 		return shareNumber;
 	}
 
+	/**
+	 * Establece el número de acción del club, que no es único.
+	 *
+	 * @param shareNumber el número de acción del club, que no es único
+	 */
 	public void setShareNumber(Long shareNumber) {
 		this.shareNumber = shareNumber;
 	}
 
+	/**
+	 * Devuelve el estado de actividad del socio.
+	 *
+	 * @return el estado de actividad del socio
+	 */
 	public Boolean getPartnerState() {
 		return partnerState;
 	}
 
+	/**
+	 * Establece el estado de actividad del socio.
+	 *
+	 * @param partnerState el estado de actividad del socio
+	 */
 	public void setPartnerState(Boolean partnerState) {
 		this.partnerState = partnerState;
 	}
 
+	/**
+	 * Devuelve el teléfono fijo, cifrado en reposo.
+	 *
+	 * @return el teléfono fijo, cifrado en reposo
+	 */
 	public String getPhone() {
 		return phone;
 	}
 
+	/**
+	 * Establece el teléfono fijo, cifrado en reposo.
+	 *
+	 * @param phone el teléfono fijo, cifrado en reposo
+	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
+	/**
+	 * Devuelve el teléfono móvil, cifrado en reposo.
+	 *
+	 * @return el teléfono móvil, cifrado en reposo
+	 */
 	public String getCellPhone() {
 		return cellPhone;
 	}
 
+	/**
+	 * Establece el teléfono móvil, cifrado en reposo.
+	 *
+	 * @param cellPhone el teléfono móvil, cifrado en reposo
+	 */
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
 	}
 
+	/**
+	 * Devuelve el género.
+	 *
+	 * @return el género
+	 */
 	public Character getGender() {
 		return gender;
 	}
 
+	/**
+	 * Establece el género.
+	 *
+	 * @param gender el género
+	 */
 	public void setGender(Character gender) {
 		this.gender = gender;
 	}
 
+	/**
+	 * Devuelve las direcciones de correo del socio, cifradas en reposo.
+	 *
+	 * @return las direcciones de correo del socio, cifradas en reposo
+	 */
 	public String[] getEmail() {
 		return email;
 	}
 
+	/**
+	 * Establece las direcciones de correo del socio, cifradas en reposo.
+	 *
+	 * @param email las direcciones de correo del socio, cifradas en reposo
+	 */
 	public void setEmail(String[] email) {
 		this.email = email;
 	}
 
+	/**
+	 * Devuelve si el socio debe cambiar su contraseña antes de usar la aplicación.
+	 *
+	 * @return si el socio debe cambiar su contraseña antes de usar la aplicación
+	 */
 	public Boolean getForcePasswordChange() {
 		return forcePasswordChange;
 	}
 
+	/**
+	 * Establece si el socio debe cambiar su contraseña antes de usar la aplicación.
+	 *
+	 * @param forcePasswordChange si el socio debe cambiar su contraseña antes de usar la aplicación
+	 */
 	public void setForcePasswordChange(Boolean forcePasswordChange) {
 		this.forcePasswordChange = forcePasswordChange;
 	}
 
+	/**
+	 * Devuelve las visitas del socio.
+	 *
+	 * @return las visitas del socio
+	 */
 	public List<Access> getAccesses() {
 		return accesses;
 	}
 
+	/**
+	 * Establece las visitas del socio.
+	 *
+	 * @param accesses las visitas del socio
+	 */
 	public void setAccesses(List<Access> accesses) {
 		this.accesses = accesses;
 	}
 
+	/**
+	 * Devuelve los consumos del socio.
+	 *
+	 * @return los consumos del socio
+	 */
 	public List<PartnerConsumption> getConsumptions() {
 		return consumptions;
 	}
 
+	/**
+	 * Establece los consumos del socio.
+	 *
+	 * @param consumptions los consumos del socio
+	 */
 	public void setConsumptions(List<PartnerConsumption> consumptions) {
 		this.consumptions = consumptions;
 	}
@@ -406,26 +581,56 @@ public class PersonPartner {
 		this.role = role;
 	}
 
+	/**
+	 * Devuelve si el socio aceptó la política de tratamiento de datos.
+	 *
+	 * @return si el socio aceptó la política de tratamiento de datos
+	 */
 	public Boolean getConsentAccepted() {
 		return consentAccepted;
 	}
 
+	/**
+	 * Establece si el socio aceptó la política de tratamiento de datos.
+	 *
+	 * @param consentAccepted si el socio aceptó la política de tratamiento de datos
+	 */
 	public void setConsentAccepted(Boolean consentAccepted) {
 		this.consentAccepted = consentAccepted;
 	}
 
+	/**
+	 * Devuelve la versión de la política que el socio aceptó.
+	 *
+	 * @return la versión de la política que el socio aceptó
+	 */
 	public String getConsentVersion() {
 		return consentVersion;
 	}
 
+	/**
+	 * Establece la versión de la política que el socio aceptó.
+	 *
+	 * @param consentVersion la versión de la política que el socio aceptó
+	 */
 	public void setConsentVersion(String consentVersion) {
 		this.consentVersion = consentVersion;
 	}
 
+	/**
+	 * Devuelve el momento en que el socio aceptó la política.
+	 *
+	 * @return el momento en que el socio aceptó la política
+	 */
 	public java.time.LocalDateTime getConsentAcceptedAt() {
 		return consentAcceptedAt;
 	}
 
+	/**
+	 * Establece el momento en que el socio aceptó la política.
+	 *
+	 * @param consentAcceptedAt el momento en que el socio aceptó la política
+	 */
 	public void setConsentAcceptedAt(java.time.LocalDateTime consentAcceptedAt) {
 		this.consentAcceptedAt = consentAcceptedAt;
 	}

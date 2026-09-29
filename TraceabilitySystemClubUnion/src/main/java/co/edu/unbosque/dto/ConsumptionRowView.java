@@ -15,9 +15,44 @@ import java.time.LocalDateTime;
  * <p>No se serializa nunca hacia el cliente: es de uso interno.
  */
 public interface ConsumptionRowView {
+	/**
+	 * Devuelve el momento de apertura del consumo, que es el campo por el que se agrupan las series.
+	 *
+	 * <p>El nombre de este metodo debe coincidir con el alias de la consulta que produce la proyeccion.
+	 *
+	 * @return el momento de apertura del consumo, que es el campo por el que se agrupan las series
+	 */
 	LocalDateTime getConsumptionOpening();
+	/**
+	 * Devuelve el valor neto del consumo.
+	 *
+	 * <p>El nombre de este metodo debe coincidir con el alias de la consulta que produce la proyeccion.
+	 *
+	 * @return el valor neto del consumo
+	 */
 	Double getConsumptionValue();
+	/**
+	 * Devuelve el impuesto al valor agregado.
+	 *
+	 * <p>El nombre de este metodo debe coincidir con el alias de la consulta que produce la proyeccion.
+	 *
+	 * @return el impuesto al valor agregado
+	 */
 	Double getIva();
+	/**
+	 * Devuelve el recargo por servicio.
+	 *
+	 * <p>El nombre de este metodo debe coincidir con el alias de la consulta que produce la proyeccion.
+	 *
+	 * @return el recargo por servicio
+	 */
 	Double getService();
+	/**
+	 * Devuelve la propina.
+	 *
+	 * <p>El nombre de este metodo debe coincidir con el alias de la consulta que produce la proyeccion.
+	 *
+	 * @return la propina
+	 */
 	Double getTip();
 }

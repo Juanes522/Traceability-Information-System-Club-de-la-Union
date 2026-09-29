@@ -107,7 +107,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserDetailsPa
      * razón por la que el script de migración de anchos de columna es obligatorio en bases preexistentes;
      * sin él, este reencriptado falla con un error de truncamiento.
      *
-     * @param user        usuario autenticado cuya contraseña debe actualizarse
+     * @param user usuario autenticado cuya contraseña debe actualizarse
      * @param newPassword contraseña ya codificada por el {@code PasswordEncoder}
      * @return el usuario con la contraseña actualizada y las mismas autoridades
      * @throws UsernameNotFoundException si el socio desapareció entre la autenticación y esta llamada

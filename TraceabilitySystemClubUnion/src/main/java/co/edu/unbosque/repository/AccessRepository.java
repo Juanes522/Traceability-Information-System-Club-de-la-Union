@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.unbosque.model.Access;
 
-@Repository
 /**
  * Acceso a las visitas de los socios al club.
  *
@@ -19,8 +18,9 @@ import co.edu.unbosque.model.Access;
  * «presente ahora»</strong>. Todas las consultas de presencia se apoyan en ese predicado.
  *
  * <p>Varios métodos de esta interfaz no tienen invocadores actualmente; se documentan igualmente y se
- * señala su situación, porque su existencia sugiere funcionalidad prevista que no se completó.
+ * señala su situación, porque su existencia sugiere funcionalidad prevista que no se completo.
  */
+@Repository
 public interface AccessRepository extends JpaRepository<Access, Long> {
 
 	/**
@@ -71,8 +71,8 @@ public interface AccessRepository extends JpaRepository<Access, Long> {
 	 * Visitas de un socio en un rango de fechas. Sin uso actualmente.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return las visitas cuya entrada cae en el rango
 	 */
 	List<Access> findByPartnerPersonIdAndDateTimeAdmissionBetween(Long personId, LocalDateTime from, LocalDateTime to);
@@ -92,7 +92,7 @@ public interface AccessRepository extends JpaRepository<Access, Long> {
 	 * Cuenta las visitas iniciadas en un rango.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return número de visitas
 	 */
 	long countByDateTimeAdmissionBetween(LocalDateTime from, LocalDateTime to);
@@ -104,7 +104,7 @@ public interface AccessRepository extends JpaRepository<Access, Long> {
 	 * la frecuencia media de visita por socio.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return número de socios distintos
 	 */
 	@Query("SELECT COUNT(DISTINCT a.partner.personId) FROM Access a WHERE a.dateTimeAdmission BETWEEN :from AND :to")
@@ -118,7 +118,7 @@ public interface AccessRepository extends JpaRepository<Access, Long> {
 	 * periodo aunque solo se necesiten sus fechas de entrada.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return las visitas del rango
 	 */
 	List<Access> findByDateTimeAdmissionBetween(LocalDateTime from, LocalDateTime to);
@@ -127,8 +127,8 @@ public interface AccessRepository extends JpaRepository<Access, Long> {
 	 * Cuenta las visitas de un socio concreto en un rango. Alimenta {@code PartnerMetricsDTO.visits}.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return número de visitas del socio
 	 */
 	long countByPartnerPersonIdAndDateTimeAdmissionBetween(Long personId, LocalDateTime from, LocalDateTime to);

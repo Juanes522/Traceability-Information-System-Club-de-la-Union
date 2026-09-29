@@ -7,9 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
-@EnableAsync
-@EnableScheduling
 /**
  * Punto de entrada de la aplicación cuando se ejecuta con servidor embebido.
  *
@@ -31,8 +28,20 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * proveedor no queda registrado, con lo que la firma de las notificaciones Web Push pasaría a depender de lo que ofrezca el
  * contenedor. Es una asimetría real entre ambos modos.
  */
+@SpringBootApplication
+@EnableAsync
+@EnableScheduling
 public class TraceabilitySystemClubUnionApplication {
 
+	/**
+	 * Arranca la aplicacion con servidor embebido.
+	 *
+	 * <p>Registra el proveedor criptografico BouncyCastle <strong>antes</strong> de levantar el contexto, porque la firma de
+	 * las notificaciones Web Push lo necesita. Ese registro ocurre unicamente aqui: en un despliegue como archivo web sobre un
+	 * contenedor externo este metodo no se ejecuta y el proveedor no queda disponible.
+	 *
+	 * @param args argumentos de linea de comandos, que se trasladan al contexto de Spring
+	 */
 	public static void main(String[] args) {
 		Security.addProvider(new BouncyCastleProvider());
 		SpringApplication.run(TraceabilitySystemClubUnionApplication.class, args);

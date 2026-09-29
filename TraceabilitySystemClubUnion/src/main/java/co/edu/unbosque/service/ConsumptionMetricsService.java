@@ -23,7 +23,6 @@ import co.edu.unbosque.dto.TrendPointDTO;
 import co.edu.unbosque.dto.WeekdayBucketDTO;
 import co.edu.unbosque.repository.PartnerConsumptionRepository;
 
-@Service
 /**
  * Métricas de facturación: el servicio de analítica principal del sistema.
  *
@@ -43,10 +42,16 @@ import co.edu.unbosque.repository.PartnerConsumptionRepository;
  *
  * <p>Ninguno de estos métodos es transaccional ni lo necesita: son solo lectura.
  */
+@Service
 public class ConsumptionMetricsService {
 
 	private final PartnerConsumptionRepository repository;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param repository el valor de repository
+	 */
 	public ConsumptionMetricsService(PartnerConsumptionRepository repository) {
 		this.repository = repository;
 	}
@@ -68,7 +73,7 @@ public class ConsumptionMetricsService {
 	 * inválida.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return los indicadores del periodo; todos en cero si no hubo actividad
 	 */
 	public ConsumptionSummaryDTO summary(LocalDateTime from, LocalDateTime to) {
@@ -101,7 +106,7 @@ public class ConsumptionMetricsService {
 	 * <p>Los ambientes vienen ya ordenados de mayor a menor facturación desde SQL.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return un elemento por ambiente con su total, número de cargos y porcentaje
 	 */
 	public List<EnvironmentTotalDTO> byEnvironment(LocalDateTime from, LocalDateTime to) {
@@ -132,8 +137,8 @@ public class ConsumptionMetricsService {
 	 *
 	 * <p>Recorre la proyección de filas en lugar de hidratar entidades, y acumula total y número de cargos por cubeta.
 	 *
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @param granularity {@code day}, {@code week} o {@code month}
 	 * @return la serie ordenada, con una entrada por cubeta del rango
 	 * @throws IllegalArgumentException si la granularidad no es una de las tres admitidas. El controlador la traduce a
@@ -209,7 +214,7 @@ public class ConsumptionMetricsService {
 	 * {@code GET /metrics/consumption/peak}.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return las dos series, por hora y por día de la semana, completas
 	 */
 	public PeakDTO peak(LocalDateTime from, LocalDateTime to) {
@@ -253,7 +258,7 @@ public class ConsumptionMetricsService {
 	 * matriz completa.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return las celdas con actividad, cada una con su día, hora, total y número de cargos
 	 */
 	public List<PeakHeatmapCellDTO> peakHeatmap(LocalDateTime from, LocalDateTime to) {

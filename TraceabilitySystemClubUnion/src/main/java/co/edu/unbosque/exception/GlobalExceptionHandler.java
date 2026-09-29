@@ -10,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
 /**
  * Traduce los fallos de validación de cuerpo a respuestas HTTP 400.
  *
@@ -35,8 +34,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * de las validaciones de rango, los cuerpos de texto plano del controlador de autenticación, y el formato por defecto del
  * framework, despojado de mensaje por configuración.
  */
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	/**
+	 * Traduce un fallo de validacion de cuerpo a una respuesta con el detalle por campo.
+	 *
+	 * <p>Construye un mapa plano de campo a mensaje. Conserva <strong>el primer mensaje de cada campo</strong>, de modo que un
+	 * campo con varias restricciones incumplidas reporta solo una; y como el mapa no esta ordenado, el orden de las claves no
+	 * es estable entre respuestas.
+	 *
+	 * <p>Solo atiende los errores de campo: las restricciones declaradas a nivel de clase se descartan en silencio.
+	 *
+	 * @param ex excepcion de validacion que lanza el framework al fallar la comprobacion del cuerpo
+	 * @return respuesta 400 con un objeto JSON de campo a mensaje
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();

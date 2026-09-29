@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import co.edu.unbosque.service.SnapshotService;
 
-@Component
 /**
  * Calcula al arrancar los resúmenes mensuales que falten.
  *
@@ -26,10 +25,16 @@ import co.edu.unbosque.service.SnapshotService;
  *
  * @see co.edu.unbosque.service.SnapshotService#backfillMissing()
  */
+@Component
 public class SnapshotBackfillRunner implements ApplicationRunner {
 
 	private final SnapshotService snapshotService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param snapshotService el valor de snapshot service
+	 */
 	public SnapshotBackfillRunner(SnapshotService snapshotService) {
 		this.snapshotService = snapshotService;
 	}

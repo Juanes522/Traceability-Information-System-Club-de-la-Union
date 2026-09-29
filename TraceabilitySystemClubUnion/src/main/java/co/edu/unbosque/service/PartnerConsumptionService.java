@@ -49,6 +49,20 @@ public class PartnerConsumptionService {
     private final AuditService auditService;
     private final AccessService accessService;
 
+    /**
+     * Crea el servicio con sus siete colaboradores.
+     *
+     * <p>Esa cantidad refleja el alcance del registro de un consumo, que además de persistir el cargo debe registrar la
+     * presencia del socio y disparar tres notificaciones.
+     *
+     * @param consumptionRepo repositorio de consumos
+     * @param partnerRepo     repositorio de socios, para resolver el titular del cargo
+     * @param notRepo         repositorio de avisos
+     * @param pushService     entrega de notificaciones al navegador
+     * @param emailService    envio del aviso por correo
+     * @param auditService    registro del evento de cargo
+     * @param accessService   registro de la presencia inferida del consumo
+     */
     public PartnerConsumptionService(PartnerConsumptionRepository consumptionRepo,
                                      PersonPartnerRepository partnerRepo,
                                      NotificationRepository notRepo,
@@ -216,9 +230,9 @@ public class PartnerConsumptionService {
      * ventana se ignora por completo y se devuelve el histórico entero paginado. El controlador acota el rango a
      * 92 días, pero no exige que se envíe.
      *
-     * @param env      nombre exacto del ambiente
-     * @param from     inicio del rango, o {@code null}
-     * @param to       fin del rango, o {@code null}
+     * @param env nombre exacto del ambiente
+     * @param from inicio del rango, o {@code null}
+     * @param to fin del rango, o {@code null}
      * @param pageable página solicitada
      * @return la página de consumos
      */
@@ -237,8 +251,8 @@ public class PartnerConsumptionService {
      * {@link #getByEnviromentPaged(String, LocalDateTime, LocalDateTime, Pageable)}.
      *
      * @param personId clave primaria del socio
-     * @param from     inicio del rango, o {@code null}
-     * @param to       fin del rango, o {@code null}
+     * @param from inicio del rango, o {@code null}
+     * @param to fin del rango, o {@code null}
      * @param pageable página solicitada, normalmente ordenada por apertura descendente
      * @return la página de consumos
      */
@@ -294,7 +308,7 @@ public class PartnerConsumptionService {
      * adicionales. Es el precio de recalcular el total en lugar de almacenarlo en el aviso.
      *
      * @param identification identificación del socio, en claro
-     * @param pageable       página solicitada
+     * @param pageable página solicitada
      * @return la página de avisos como DTO, del más reciente al más antiguo
      */
     public Page<NotificationDTO> getNotificationsForPartnerPaged(String identification, Pageable pageable) {

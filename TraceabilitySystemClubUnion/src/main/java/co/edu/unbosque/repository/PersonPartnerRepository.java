@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.unbosque.model.PersonPartner;
 
-@Repository
 /**
  * Acceso a los socios y usuarios del sistema.
  *
@@ -20,6 +19,7 @@ import co.edu.unbosque.model.PersonPartner;
  * correo se resuelve recorriendo la tabla en
  * {@link co.edu.unbosque.service.PersonPartnerService#getByEmail(String)}.
  */
+@Repository
 public interface PersonPartnerRepository extends JpaRepository<PersonPartner, Long> {
 
 	/**

@@ -17,12 +17,25 @@ public class ChangePasswordRequest {
     @StrongPassword
     private String newPassword;
 
+    /**
+     * Constructor sin argumentos requerido para la deserialización del cuerpo de la petición.
+     */
     public ChangePasswordRequest() {}
 
+    /**
+     * Devuelve la contraseña nueva.
+     *
+     * @return la contraseña nueva
+     */
     public String getNewPassword() {
         return newPassword;
     }
 
+    /**
+     * Establece la contraseña nueva.
+     *
+     * @param newPassword la contraseña nueva
+     */
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }

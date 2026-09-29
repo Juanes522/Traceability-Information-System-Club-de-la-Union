@@ -62,45 +62,100 @@ public class PushSubscription {
 	@JoinColumn(name = "person_id", nullable = false)
 	private PersonPartner partner;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public PushSubscription() {
 	}
 
+	/**
+	 * Devuelve el identificador.
+	 *
+	 * @return el identificador
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Establece el identificador.
+	 *
+	 * @param id el identificador
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Devuelve la dirección de entrega de la suscripción push.
+	 *
+	 * @return la dirección de entrega de la suscripción push
+	 */
 	public String getEndpoint() {
 		return endpoint;
 	}
 
+	/**
+	 * Establece la dirección de entrega de la suscripción push.
+	 *
+	 * @param endpoint la dirección de entrega de la suscripción push
+	 */
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
 
+	/**
+	 * Devuelve la clave pública del cliente para la suscripción push.
+	 *
+	 * @return la clave pública del cliente para la suscripción push
+	 */
 	public String getP256dhKey() {
 		return p256dhKey;
 	}
 
+	/**
+	 * Establece la clave pública del cliente para la suscripción push.
+	 *
+	 * @param p256dhKey la clave pública del cliente para la suscripción push
+	 */
 	public void setP256dhKey(String p256dhKey) {
 		this.p256dhKey = p256dhKey;
 	}
 
+	/**
+	 * Devuelve el secreto de autenticación de la suscripción push.
+	 *
+	 * @return el secreto de autenticación de la suscripción push
+	 */
 	public String getAuthKey() {
 		return authKey;
 	}
 
+	/**
+	 * Establece el secreto de autenticación de la suscripción push.
+	 *
+	 * @param authKey el secreto de autenticación de la suscripción push
+	 */
 	public void setAuthKey(String authKey) {
 		this.authKey = authKey;
 	}
 
+	/**
+	 * Devuelve el socio asociado.
+	 *
+	 * @return el socio asociado
+	 */
 	public PersonPartner getPartner() {
 		return partner;
 	}
 
+	/**
+	 * Establece el socio asociado.
+	 *
+	 * @param partner el socio asociado
+	 */
 	public void setPartner(PersonPartner partner) {
 		this.partner = partner;
 	}

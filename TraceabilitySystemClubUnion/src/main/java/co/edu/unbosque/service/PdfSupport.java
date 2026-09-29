@@ -78,8 +78,8 @@ public class PdfSupport {
 	 * aquí y no en {@link #build()}.
 	 *
 	 * @param reportTitle título del reporte, que aparece bajo el nombre del club
-	 * @param from        inicio del periodo cubierto, para la línea de metadatos
-	 * @param to          fin del periodo cubierto
+	 * @param from inicio del periodo cubierto, para la línea de metadatos
+	 * @param to fin del periodo cubierto
 	 */
 	public PdfSupport(String reportTitle, LocalDateTime from, LocalDateTime to) {
 		this.document = new Document(PageSize.A4, 40, 40, 54, 40);
@@ -100,6 +100,11 @@ public class PdfSupport {
 		document.add(meta);
 	}
 
+	/**
+	 * Anade un titulo de seccion al documento.
+	 *
+	 * @param text texto del titulo
+	 */
 	public void heading(String text) {
 		Paragraph h = new Paragraph(text, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, BRAND));
 		h.setSpacingBefore(10);
@@ -107,6 +112,11 @@ public class PdfSupport {
 		document.add(h);
 	}
 
+	/**
+	 * Anade un parrafo de texto corrido al documento.
+	 *
+	 * @param text contenido del parrafo
+	 */
 	public void paragraph(String text) {
 		Paragraph p = new Paragraph(text, FontFactory.getFont(FontFactory.HELVETICA, 10, Color.DARK_GRAY));
 		p.setSpacingAfter(6);
@@ -121,7 +131,7 @@ public class PdfSupport {
 	 * generación.
 	 *
 	 * @param headers títulos de las columnas
-	 * @param rows    filas, cada una con tantos elementos como encabezados
+	 * @param rows filas, cada una con tantos elementos como encabezados
 	 */
 	public void table(String[] headers, List<String[]> rows) {
 		PdfPTable table = new PdfPTable(headers.length);
@@ -157,6 +167,15 @@ public class PdfSupport {
 		document.add(table);
 	}
 
+	/**
+	 * Anade una linea de total, alineada a la derecha y destacada.
+	 *
+	 * <p>Se usa para cerrar una tabla de detalle con su suma, de modo que la cifra agregada quede visualmente separada de las
+	 * filas que la componen.
+	 *
+	 * @param label  etiqueta del total
+	 * @param value  importe ya formateado
+	 */
 	public void total(String label, String value) {
 		Paragraph p = new Paragraph(label + ": " + value,
 				FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, GOLD.darker()));
@@ -194,6 +213,19 @@ public class PdfSupport {
 		document.add(table);
 	}
 
+	/**
+	 * Anade una grafica de barras al documento.
+	 *
+	 * <p>La grafica se rasteriza a imagen antes de incrustarse, de modo que su generacion requiere una maquina virtual capaz
+	 * de operar sin entorno grafico.
+	 *
+	 * <p>Con una lista de categorias vacia no hace nada, en lugar de fallar: un periodo sin actividad debe producir igualmente
+	 * un documento valido.
+	 *
+	 * @param title      titulo de la grafica
+	 * @param categories etiquetas del eje de categorias
+	 * @param values     valores correspondientes a cada categoria
+	 */
 	public void barChart(String title, List<String> categories, List<Double> values) {
 		if (categories.isEmpty()) {
 			return;
@@ -210,6 +242,18 @@ public class PdfSupport {
 		addChart(chart);
 	}
 
+	/**
+	 * Anade una grafica de linea al documento.
+	 *
+	 * <p>Se usa para las series temporales, donde la continuidad entre puntos es significativa, frente a la de barras, que
+	 * compara categorias independientes.
+	 *
+	 * <p>Como aquella, no hace nada ante una lista de categorias vacia.
+	 *
+	 * @param title      titulo de la grafica
+	 * @param categories etiquetas del eje temporal
+	 * @param values     valores correspondientes a cada punto
+	 */
 	public void lineChart(String title, List<String> categories, List<Double> values) {
 		if (categories.isEmpty()) {
 			return;

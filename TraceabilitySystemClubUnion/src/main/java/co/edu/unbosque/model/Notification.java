@@ -78,61 +78,136 @@ public class Notification {
 	@JoinColumn(name = "consumption_id")
 	private PartnerConsumption consumption;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public Notification() {
 	}
 
+	/**
+	 * Devuelve el identificador del aviso.
+	 *
+	 * @return el identificador del aviso
+	 */
 	public Long getNotificationId() {
 		return notificationId;
 	}
 
+	/**
+	 * Establece el identificador del aviso.
+	 *
+	 * @param notificationId el identificador del aviso
+	 */
 	public void setNotificationId(Long notificationId) {
 		this.notificationId = notificationId;
 	}
 
+	/**
+	 * Devuelve el tipo de aviso.
+	 *
+	 * @return el tipo de aviso
+	 */
 	public String getNotificationType() {
 		return notificationType;
 	}
 
+	/**
+	 * Establece el tipo de aviso.
+	 *
+	 * @param notificationType el tipo de aviso
+	 */
 	public void setNotificationType(String notificationType) {
 		this.notificationType = notificationType;
 	}
 
+	/**
+	 * Devuelve el titulo.
+	 *
+	 * @return el titulo
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Establece el titulo.
+	 *
+	 * @param title el titulo
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Devuelve el cuerpo del aviso.
+	 *
+	 * @return el cuerpo del aviso
+	 */
 	public String getBody() {
 		return body;
 	}
 
+	/**
+	 * Establece el cuerpo del aviso.
+	 *
+	 * @param body el cuerpo del aviso
+	 */
 	public void setBody(String body) {
 		this.body = body;
 	}
 
+	/**
+	 * Devuelve el momento del aviso, que coincide con la apertura del consumo.
+	 *
+	 * @return el momento del aviso, que coincide con la apertura del consumo
+	 */
 	public LocalDateTime getGenerationDate() {
 		return generationDate;
 	}
 
+	/**
+	 * Establece el momento del aviso, que coincide con la apertura del consumo.
+	 *
+	 * @param generationDate el momento del aviso, que coincide con la apertura del consumo
+	 */
 	public void setGenerationDate(LocalDateTime generationDate) {
 		this.generationDate = generationDate;
 	}
 
+	/**
+	 * Devuelve el estado del aviso.
+	 *
+	 * @return el estado del aviso
+	 */
 	public Character getState() {
 		return state;
 	}
 
+	/**
+	 * Establece el estado del aviso.
+	 *
+	 * @param state el estado del aviso
+	 */
 	public void setState(Character state) {
 		this.state = state;
 	}
 
+	/**
+	 * Devuelve el consumo asociado.
+	 *
+	 * @return el consumo asociado
+	 */
 	public PartnerConsumption getConsumption() {
 		return consumption;
 	}
 
+	/**
+	 * Establece el consumo asociado.
+	 *
+	 * @param consumption el consumo asociado
+	 */
 	public void setConsumption(PartnerConsumption consumption) {
 		this.consumption = consumption;
 	}

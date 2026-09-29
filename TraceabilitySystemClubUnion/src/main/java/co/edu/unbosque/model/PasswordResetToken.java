@@ -62,9 +62,21 @@ public class PasswordResetToken {
 	@JoinColumn(name = "person_id", nullable = false)
 	private PersonPartner partner;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public PasswordResetToken() {
 	}
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param token el token
+	 * @param partner el socio asociado
+	 * @param expiryDate la fecha de caducidad
+	 */
 	public PasswordResetToken(String token, PersonPartner partner, LocalDateTime expiryDate) {
 		this.token = token;
 		this.partner = partner;
@@ -85,30 +97,65 @@ public class PasswordResetToken {
 		return LocalDateTime.now().isAfter(this.expiryDate);
 	}
 
+	/**
+	 * Devuelve el identificador.
+	 *
+	 * @return el identificador
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Devuelve el token.
+	 *
+	 * @return el token
+	 */
 	public String getToken() {
 		return token;
 	}
 
+	/**
+	 * Establece el token.
+	 *
+	 * @param token el token
+	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
 
+	/**
+	 * Devuelve la fecha de caducidad.
+	 *
+	 * @return la fecha de caducidad
+	 */
 	public LocalDateTime getExpiryDate() {
 		return expiryDate;
 	}
 
+	/**
+	 * Establece la fecha de caducidad.
+	 *
+	 * @param expiryDate la fecha de caducidad
+	 */
 	public void setExpiryDate(LocalDateTime expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 
+	/**
+	 * Devuelve el socio asociado.
+	 *
+	 * @return el socio asociado
+	 */
 	public PersonPartner getPartner() {
 		return partner;
 	}
 
+	/**
+	 * Establece el socio asociado.
+	 *
+	 * @param partner el socio asociado
+	 */
 	public void setPartner(PersonPartner partner) {
 		this.partner = partner;
 	}

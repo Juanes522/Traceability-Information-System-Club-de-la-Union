@@ -67,44 +67,97 @@ public class RevokedToken {
 	@JoinColumn(name = "person_id")
 	private PersonPartner person;
 
+	/**
+	 * Constructor sin argumentos requerido por el proveedor de persistencia.
+	 *
+	 * <p>No está pensado para usarse desde el código de la aplicación.
+	 */
 	public RevokedToken() {
 	}
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param jti el identificador único del token
+	 * @param expiryDate la fecha de caducidad
+	 */
 	public RevokedToken(String jti, LocalDateTime expiryDate) {
 		this.jti = jti;
 		this.expiryDate = expiryDate;
 	}
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param jti el identificador único del token
+	 * @param expiryDate la fecha de caducidad
+	 * @param person el socio propietario del token, que puede ser nulo
+	 */
 	public RevokedToken(String jti, LocalDateTime expiryDate, PersonPartner person) {
 		this.jti = jti;
 		this.expiryDate = expiryDate;
 		this.person = person;
 	}
 
+	/**
+	 * Devuelve el identificador.
+	 *
+	 * @return el identificador
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Devuelve el identificador único del token.
+	 *
+	 * @return el identificador único del token
+	 */
 	public String getJti() {
 		return jti;
 	}
 
+	/**
+	 * Establece el identificador único del token.
+	 *
+	 * @param jti el identificador único del token
+	 */
 	public void setJti(String jti) {
 		this.jti = jti;
 	}
 
+	/**
+	 * Devuelve la fecha de caducidad.
+	 *
+	 * @return la fecha de caducidad
+	 */
 	public LocalDateTime getExpiryDate() {
 		return expiryDate;
 	}
 
+	/**
+	 * Establece la fecha de caducidad.
+	 *
+	 * @param expiryDate la fecha de caducidad
+	 */
 	public void setExpiryDate(LocalDateTime expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 
+	/**
+	 * Devuelve el socio propietario del token, que puede ser nulo.
+	 *
+	 * @return el socio propietario del token, que puede ser nulo
+	 */
 	public PersonPartner getPerson() {
 		return person;
 	}
 
+	/**
+	 * Establece el socio propietario del token, que puede ser nulo.
+	 *
+	 * @param person el socio propietario del token, que puede ser nulo
+	 */
 	public void setPerson(PersonPartner person) {
 		this.person = person;
 	}

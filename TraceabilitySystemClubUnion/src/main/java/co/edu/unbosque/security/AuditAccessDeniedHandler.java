@@ -36,6 +36,11 @@ public class AuditAccessDeniedHandler implements AccessDeniedHandler {
 
 	private final AuditService auditService;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param auditService el valor de audit service
+	 */
 	public AuditAccessDeniedHandler(AuditService auditService) {
 		this.auditService = auditService;
 	}
@@ -60,8 +65,8 @@ public class AuditAccessDeniedHandler implements AccessDeniedHandler {
 	 *       no exponerse a una inyección a través de una ruta construida a propósito.</li>
 	 * </ul>
 	 *
-	 * @param request               petición rechazada; de ella se toma el URI para el detalle del evento
-	 * @param response              respuesta en la que se escribe el 403
+	 * @param request petición rechazada; de ella se toma el URI para el detalle del evento
+	 * @param response respuesta en la que se escribe el 403
 	 * @param accessDeniedException excepción que originó el rechazo; no se inspecciona
 	 * @throws IOException si falla la escritura de la respuesta de error
 	 */

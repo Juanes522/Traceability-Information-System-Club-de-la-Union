@@ -41,6 +41,8 @@ public class DeterministicEncryptedStringConverter implements AttributeConverter
 	private final DeterministicEncryptionService encryptionService;
 
 	/**
+	 * Crea el conversor con el servicio de cifrado determinista.
+	 *
 	 * @param encryptionService servicio de cifrado determinista. Recibirlo por constructor implica que
 	 *                          <strong>Hibernate no puede instanciar este conversor por
 	 *                          reflexión</strong>: depende de que Spring Boot haya conectado su

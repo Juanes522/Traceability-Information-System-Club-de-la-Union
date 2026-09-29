@@ -56,7 +56,7 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * cantidades, {@code [3]} suma de importes.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, ordenadas por ingresos descendentes y sin truncar
 	 */
 	@Query("SELECT i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "
@@ -72,8 +72,8 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * compara por igualdad exacta contra {@code c.enviroment}.
 	 *
 	 * @param environment nombre exacto del ambiente
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, ordenadas por ingresos descendentes
 	 */
 	@Query("SELECT i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "
@@ -90,7 +90,7 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * a una pregunta de negocio distinta: qué se vende más, frente a qué deja más ingresos.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, ordenadas por cantidad descendente
 	 */
 	@Query("SELECT i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "
@@ -105,8 +105,8 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * <p>Cuarta y última combinación de la familia de rankings: cantidad más filtro de ambiente.
 	 *
 	 * @param environment nombre exacto del ambiente
-	 * @param from        inicio del rango, inclusivo
-	 * @param to          fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, ordenadas por cantidad descendente
 	 */
 	@Query("SELECT i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "
@@ -129,7 +129,7 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * servicio sustituye por una etiqueta genérica al presentarlas.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por par categoría/subcategoría, ordenadas por ingresos descendentes
 	 */
 	@Query("SELECT i.category, i.subcategory, SUM(i.quantity), SUM(i.lineTotal) "
@@ -148,7 +148,7 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * {@code [3]} suma de importes.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por par ambiente/categoría, ordenadas por ingresos descendentes
 	 */
 	@Query("SELECT c.enviroment, i.category, SUM(i.quantity), SUM(i.lineTotal) "
@@ -169,8 +169,8 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * <p>Mismo contrato posicional que {@link #topProducts(LocalDateTime, LocalDateTime)}.
 	 *
 	 * @param personId clave primaria del socio
-	 * @param from     inicio del rango, inclusivo
-	 * @param to       fin del rango, inclusivo
+	 * @param from inicio del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, ordenadas por ingresos descendentes
 	 */
 	@Query("SELECT i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "
@@ -193,7 +193,7 @@ public interface ConsumptionItemRepository extends JpaRepository<ConsumptionItem
 	 * {@code [5]} suma de importes.
 	 *
 	 * @param from inicio del rango, inclusivo
-	 * @param to   fin del rango, inclusivo
+	 * @param to fin del rango, inclusivo
 	 * @return una fila por producto, agrupadas por sección y ordenadas por ingresos dentro de cada una
 	 */
 	@Query("SELECT i.category, i.subcategory, i.productId, i.name, SUM(i.quantity), SUM(i.lineTotal) "

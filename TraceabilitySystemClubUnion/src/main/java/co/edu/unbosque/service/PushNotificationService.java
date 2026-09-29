@@ -43,6 +43,11 @@ public class PushNotificationService {
 
 	private final PushSubscriptionRepository subscriptionRepo;
 
+	/**
+	 * Crea una instancia con sus valores.
+	 *
+	 * @param subscriptionRepo el valor de subscription repo
+	 */
 	public PushNotificationService(PushSubscriptionRepository subscriptionRepo) {
 		this.subscriptionRepo = subscriptionRepo;
 	}
@@ -82,8 +87,8 @@ public class PushNotificationService {
 	 * </ul>
 	 *
 	 * @param partnerIdentification identificación del socio destinatario, en claro
-	 * @param title                 título de la notificación
-	 * @param body                  cuerpo de la notificación
+	 * @param title título de la notificación
+	 * @param body cuerpo de la notificación
 	 */
 	public void sendToPartner(String partnerIdentification, String title, String body) {
 		List<PushSubscription> subs = subscriptionRepo.findByPartnerIdentification(partnerIdentification);
