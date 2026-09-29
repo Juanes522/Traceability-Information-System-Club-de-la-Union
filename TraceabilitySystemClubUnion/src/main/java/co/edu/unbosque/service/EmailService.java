@@ -90,11 +90,11 @@ public class EmailService {
 		    <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 		    <meta name="viewport" content="width=device-width,initial-scale=1">
 		    <title>Recuperación de contraseña</title></head>
-		    <body style="margin:0;padding:0;background:#0f1115;font-family:'Segoe UI',Arial,Helvetica,sans-serif;">
-		    <table width="100%%" cellpadding="0" cellspacing="0" style="background:#0f1115;padding:40px 16px;">
+		    <body style="margin:0;padding:0;background:#1A1F4D;font-family:'Segoe UI',Arial,Helvetica,sans-serif;">
+		    <table width="100%%" cellpadding="0" cellspacing="0" style="background:#1A1F4D;padding:40px 16px;">
 		    <tr><td align="center">
-		    <table width="100%%" style="max-width:480px;background:#1a1d24;border-radius:16px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 32px 80px rgba(0,0,0,0.6);overflow:hidden;">
-		    <tr><td style="background:linear-gradient(135deg,#1a1d24 0%%,#252a35 100%%);padding:32px 40px;text-align:center;border-bottom:2px solid rgba(199,165,103,0.25);">
+		    <table width="100%%" style="max-width:480px;background:#232a5e;border-radius:16px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 32px 80px rgba(0,0,0,0.6);overflow:hidden;">
+		    <tr><td style="background:linear-gradient(135deg,#232a5e 0%%,#1A1F4D 100%%);padding:32px 40px;text-align:center;border-bottom:2px solid rgba(199,165,103,0.25);">
 		      <p style="margin:0 0 6px;color:#c7a567;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">Club de la Unión</p>
 		      <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700;letter-spacing:-0.02em;">Recupera tu contraseña</h1>
 		    </td></tr>
@@ -107,7 +107,7 @@ public class EmailService {
 		        <p style="margin:0;color:#c7a567;font-size:13px;font-weight:600;">Este enlace es válido por 1 hora</p>
 		      </div>
 		      <div style="text-align:center;margin-bottom:24px;">
-		        <a href="%s" style="display:inline-block;background:#c7a567;color:#0f1115;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">
+		        <a href="%s" style="display:inline-block;background:#c7a567;color:#1A1F4D;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">
 		          Restablecer contraseña
 		        </a>
 		      </div>
@@ -115,7 +115,7 @@ public class EmailService {
 		      <p style="margin:0 0 28px;word-break:break-all;">
 		        <a href="%s" style="color:#c7a567;font-size:12px;">%s</a>
 		      </p>
-		      <div style="background:#12151b;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;">
+		      <div style="background:#1A1F4D;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;">
 		        <p style="margin:0;color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;">
 		          <strong style="color:rgba(255,255,255,0.6);">¿No solicitaste este cambio?</strong><br>
 		          Cambia tu contraseña inmediatamente y comunícate con el club. No compartas este enlace con nadie.
@@ -188,11 +188,11 @@ public class EmailService {
 		    <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 		    <meta name="viewport" content="width=device-width,initial-scale=1">
 		    <title>Nuevo cargo registrado</title></head>
-		    <body style="margin:0;padding:0;background:#0f1115;font-family:'Segoe UI',Arial,Helvetica,sans-serif;">
-		    <table width="100%%" cellpadding="0" cellspacing="0" style="background:#0f1115;padding:40px 16px;">
+		    <body style="margin:0;padding:0;background:#1A1F4D;font-family:'Segoe UI',Arial,Helvetica,sans-serif;">
+		    <table width="100%%" cellpadding="0" cellspacing="0" style="background:#1A1F4D;padding:40px 16px;">
 		    <tr><td align="center">
-		    <table width="100%%" style="max-width:520px;background:#1a1d24;border-radius:16px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 32px 80px rgba(0,0,0,0.6);overflow:hidden;">
-		    <tr><td style="background:linear-gradient(135deg,#1a1d24 0%%,#252a35 100%%);padding:32px 40px;text-align:center;border-bottom:2px solid rgba(199,165,103,0.25);">
+		    <table width="100%%" style="max-width:520px;background:#232a5e;border-radius:16px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 32px 80px rgba(0,0,0,0.6);overflow:hidden;">
+		    <tr><td style="background:linear-gradient(135deg,#232a5e 0%%,#1A1F4D 100%%);padding:32px 40px;text-align:center;border-bottom:2px solid rgba(199,165,103,0.25);">
 		      <p style="margin:0 0 6px;color:#c7a567;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;">Club de la Unión</p>
 		      <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700;letter-spacing:-0.02em;">Nuevo cargo registrado</h1>
 		    </td></tr>
@@ -201,7 +201,7 @@ public class EmailService {
 		      <p style="margin:0 0 28px;color:rgba(255,255,255,0.5);font-size:14px;line-height:1.6;">
 		        Se ha registrado un nuevo cargo a tu <span style="color:#c7a567;font-weight:600;">Acción N° %s</span>.
 		      </p>
-		      <div style="background:#12151b;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;margin-bottom:16px;">
+		      <div style="background:#1A1F4D;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;margin-bottom:16px;">
 		        <p style="margin:0 0 14px;color:#c7a567;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Detalle del cargo</p>
 		        <table width="100%%" cellpadding="0" cellspacing="0">
 		          <tr><td style="padding:5px 0;color:rgba(255,255,255,0.45);font-size:13px;width:40%%;">Ambiente</td><td style="padding:5px 0;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;">%s</td></tr>
@@ -211,7 +211,7 @@ public class EmailService {
 		          <tr><td style="padding:5px 0;color:rgba(255,255,255,0.45);font-size:13px;">Mesero</td><td style="padding:5px 0;color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;">%s</td></tr>
 		        </table>
 		      </div>
-		      <div style="background:#12151b;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;margin-bottom:28px;">
+		      <div style="background:#1A1F4D;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;margin-bottom:28px;">
 		        <p style="margin:0 0 14px;color:#c7a567;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Desglose</p>
 		        <table width="100%%" cellpadding="0" cellspacing="0">
 		          <tr><td style="padding:4px 0;color:rgba(255,255,255,0.45);font-size:13px;">Consumo</td><td style="padding:4px 0;color:rgba(255,255,255,0.75);font-size:13px;text-align:right;">%s</td></tr>
