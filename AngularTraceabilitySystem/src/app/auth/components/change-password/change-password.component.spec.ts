@@ -7,6 +7,13 @@ import { ChangePasswordComponent } from './change-password.component';
 import { AuthApiService } from '../../../core/services/auth-api.service';
 import { AuthService } from '../../../core/services/auth.service';
 
+/**
+ * Prueba de humo de la pantalla de cambio de contraseña.
+ *
+ * @remarks
+ * **Prueba un componente inalcanzable:** su ruta está tras la guarda que expulsa a los usuarios con sesión, que son
+ * precisamente su único público. La función real la cumple un modal del contenedor principal.
+ */
 describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
   let fixture: ComponentFixture<ChangePasswordComponent>;

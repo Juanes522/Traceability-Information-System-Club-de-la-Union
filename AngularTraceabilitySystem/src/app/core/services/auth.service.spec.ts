@@ -9,6 +9,17 @@ import { UserSession } from '../../shared/models';
 const PARTNER_SESSION: UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: false, needsConsent: false };
 const FORCE_SESSION:   UserSession = { token: 'tok', role: 'ROLE_PARTNER', needsPasswordChange: true, needsConsent: false  };
 
+/**
+ * Verifica la gestión de la sesión.
+ *
+ * @remarks
+ * Sus dos casos más valiosos fijan decisiones de diseño que serían fáciles de romper: que el inicio de sesión **navega igual
+ * aunque la contraseña deba cambiarse** —porque ese trámite se resuelve con un modal dentro de la aplicación—, y que el
+ * cierre de sesión **limpia el estado local aunque el backend falle**, para no dejar al usuario atrapado en una sesión que ya
+ * dio por cerrada.
+ *
+ * No cubre el estado de consentimiento pendiente.
+ */
 describe('AuthService', () => {
   let service: AuthService;
   let tokenService: jasmine.SpyObj<TokenService>;

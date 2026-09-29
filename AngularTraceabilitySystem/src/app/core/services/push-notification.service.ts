@@ -3,6 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { SwPush } from '@angular/service-worker';
 import { API_BASE } from '../config/api.config';
 
+/**
+ * Gestiona la suscripción del navegador a las notificaciones push.
+ *
+ * @remarks
+ * El alta requiere tres pasos encadenados: obtener la clave pública del servidor, pedir la suscripción al navegador
+ * —que solicitará permiso al usuario— y registrarla en el backend.
+ *
+ * Solo se activa para los socios, desde el contenedor principal, porque son los únicos destinatarios de avisos de consumo.
+ *
+ * **Todos sus caminos de error están silenciados**, de modo que una suscripción fallida es invisible tanto para el usuario
+ * como para el desarrollador. Y el método de baja ni se invoca desde ninguna parte ni llama al backend: se limita al
+ * navegador, dejando huérfano el registro del servidor.
+ */
 @Injectable({ providedIn: 'root' })
 export class PushNotificationService {
 

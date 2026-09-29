@@ -19,6 +19,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los cálculos de métricas de afluencia.
+ *
+ * <p>Comprueba los indicadores, el relleno de periodos vacíos en la serie de asistencia y el mapeo de la ocupación por
+ * ambiente.
+ */
 class AccessMetricsServiceTest {
 
 	private AccessRepository accessRepo;

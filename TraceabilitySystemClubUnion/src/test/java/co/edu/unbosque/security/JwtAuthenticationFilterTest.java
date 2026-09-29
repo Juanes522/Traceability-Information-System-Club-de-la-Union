@@ -20,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Comprueba que el filtro autentica solo cuando el token es válido <strong>y</strong> no está revocado.
+ *
+ * <p>La segunda condición es la que se prueba aquí de forma específica: un token técnicamente correcto pero revocado no debe
+ * poblar el contexto de seguridad. Sin ella, el cierre de sesión no tendría efecto real.
+ */
 class JwtAuthenticationFilterTest {
 
     private JwtUtil jwtUtil;

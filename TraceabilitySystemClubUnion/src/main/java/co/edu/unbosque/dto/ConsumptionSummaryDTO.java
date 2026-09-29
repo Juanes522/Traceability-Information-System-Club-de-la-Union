@@ -1,5 +1,19 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Indicadores globales de facturación de un periodo.
+ *
+ * <p>Contiene el desglose monetario, el total facturado, el número de cargos y dos valores derivados que conviene precisar:
+ *
+ * <ul>
+ *   <li>El valor promedio se calcula por <strong>cargo</strong>, no por socio ni por visita.</li>
+ *   <li>El porcentaje de propina se calcula sobre el <strong>consumo neto</strong> y no sobre el total facturado, que es la
+ *       convención del negocio: la propina se expresa respecto a lo consumido, no a lo cobrado.</li>
+ * </ul>
+ *
+ * <p>Los cuatro campos del desglose se calculan y se envían, pero <strong>ninguna pantalla los muestra</strong>: el tablero
+ * presenta solo el total, el número de cargos, el promedio y el porcentaje de propina.
+ */
 public class ConsumptionSummaryDTO {
 
 	private double totalBilled;

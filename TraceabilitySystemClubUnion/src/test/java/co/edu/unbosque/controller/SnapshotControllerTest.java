@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica que el endpoint de resúmenes mensuales devuelve la serie completa.
+ */
 class SnapshotControllerTest {
 
 	private SnapshotService service;

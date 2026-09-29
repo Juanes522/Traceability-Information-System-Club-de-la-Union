@@ -9,6 +9,13 @@ const MOCK_SESSION: UserSession = {
   needsConsent: false,
 };
 
+/**
+ * Verifica la persistencia de la sesión en el almacenamiento del navegador.
+ *
+ * @remarks
+ * Incluye el caso de contenido corrupto, que debe resolverse como ausencia de sesión en lugar de propagar un error: un
+ * almacenamiento manipulado no debe impedir arrancar la aplicación.
+ */
 describe('TokenService', () => {
   let service: TokenService;
 

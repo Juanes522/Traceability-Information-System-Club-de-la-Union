@@ -2,6 +2,14 @@ package co.edu.unbosque.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * Suscripción Web Push que envía el navegador al darse de alta.
+ *
+ * <p>Refleja aplanado el objeto que produce la API Push del navegador: la dirección de entrega y las dos claves
+ * criptográficas necesarias para cifrar el mensaje.
+ *
+ * <p>Nótese que el endpoint de baja acepta este mismo cuerpo <strong>sin validarlo</strong>.
+ */
 public class PushSubscriptionRequest {
 
 	@NotBlank

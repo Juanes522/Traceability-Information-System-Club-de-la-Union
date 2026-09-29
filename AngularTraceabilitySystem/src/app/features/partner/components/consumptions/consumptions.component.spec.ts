@@ -3,6 +3,13 @@ import { of } from 'rxjs';
 import { ConsumptionsComponent } from './consumptions.component';
 import { PartnerService } from '../../partner.service';
 
+/**
+ * Verifica el listado de consumos del socio.
+ *
+ * @remarks
+ * Comprueba el periodo por defecto, la conversión entre la numeración de página de la interfaz y la del backend, y el rechazo
+ * de rangos superiores a tres meses.
+ */
 describe('Partner ConsumptionsComponent', () => {
   let component: ConsumptionsComponent;
   let fixture: ComponentFixture<ConsumptionsComponent>;

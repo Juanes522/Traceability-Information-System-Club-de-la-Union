@@ -4,6 +4,18 @@ import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
 import { PartnerProfile, Consumption, NotificationPage, ConsumptionPage, LoginHistoryPage } from '../../shared/models/index';
 
+/**
+ * Acceso a los datos propios del socio autenticado.
+ *
+ * @remarks
+ * **Todos sus métodos consultan endpoints de datos propios**, sin enviar ningún identificador: la identidad la resuelve el
+ * backend desde la sesión. Esa propiedad hace imposible por construcción que un socio acceda a datos de otro.
+ *
+ * Tiene una consecuencia que conviene conocer: al remontarse este módulo bajo la rama de gestor, ese atajo muestra al gestor
+ * **sus propios** datos de socio, no los de nadie más.
+ *
+ * Los parámetros de fecha solo se envían cuando tienen valor, de modo que una ventana vacía consulta todo el histórico.
+ */
 @Injectable()
 export class PartnerService {
   constructor(private http: HttpClient) {}

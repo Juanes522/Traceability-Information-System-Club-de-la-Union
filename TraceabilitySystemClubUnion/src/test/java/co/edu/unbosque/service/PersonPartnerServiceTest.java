@@ -16,6 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el servicio de socios, incluida su convención de valores nulos.
+ *
+ * <p>Fija de forma explícita que las búsquedas sin resultados devuelven <strong>nulo y no una lista vacía</strong>. Es una
+ * convención discutible, pero está probada, de modo que quien la cambie debe actualizar también los controladores que
+ * dependen de ella para decidir entre una respuesta sin contenido y una de no encontrado.
+ */
 class PersonPartnerServiceTest {
 
     private PersonPartnerRepository repository;

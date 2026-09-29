@@ -18,6 +18,20 @@ const INK = '#1A1F4D';
   templateUrl: './partner-metrics.component.html',
   styleUrls: ['./partner-metrics.component.scss'],
 })
+/**
+ * Panel de métricas de un socio, reutilizado en tres pantallas.
+ *
+ * @remarks
+ * Funciona en dos modos según reciba o no una identificación: sin ella consulta los datos del propio usuario, y con ella los
+ * del socio indicado. Eso permite que el mismo componente sirva el tablero del socio y la pestaña de métricas de las
+ * pantallas de gestor y administrador.
+ *
+ * **No reacciona a un cambio de la identificación recibida** una vez creado. Hoy es inocuo porque las pantallas que lo usan
+ * lo destruyen y lo recrean al cambiar de socio, pero es una dependencia implícita de cómo lo consumen.
+ *
+ * Nótese que la fecha de última visita se muestra sin formatear, a diferencia de todas las demás fechas de la aplicación, y
+ * que ese dato ignora el periodo seleccionado.
+ */
 export class PartnerMetricsComponent implements OnInit {
   @Input() identification?: string;
 

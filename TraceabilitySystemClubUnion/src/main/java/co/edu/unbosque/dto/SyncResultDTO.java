@@ -1,5 +1,12 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Resultado de una sincronización con el maestro externo de socios.
+ *
+ * <p><strong>No incluye contador de fallos</strong>, de modo que los errores parciales son invisibles para el
+ * administrador que disparó la operación: un feed procesado a medias y uno procesado por completo producen respuestas
+ * indistinguibles salvo por los números.
+ */
 public class SyncResultDTO {
 	private long created;
 	private long updated;

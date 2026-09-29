@@ -13,6 +13,21 @@ function initAuth(authService: AuthService): () => void {
   return () => authService.init();
 }
 
+/**
+ * Configuración de arranque de la aplicación: enrutamiento, cliente HTTP, trabajador de servicio e inicialización.
+ *
+ * @remarks
+ * **El orden de los interceptores importa:** el que añade el token se declara primero y el de errores después, de modo que
+ * este último envuelve al primero y ve los fallos de las peticiones ya autenticadas.
+ *
+ * Registra explícitamente los tres servicios de sesión porque ninguno se declara de ámbito raíz por su cuenta; ese registro
+ * es por tanto necesario, no decorativo.
+ *
+ * La inicialización que registra es la pieza que sostiene todas las guardas: rehidrata la sesión desde el almacenamiento
+ * **antes de que se resuelva la primera ruta**, y sin ella una recarga de página expulsaría al usuario.
+ *
+ * El trabajador de servicio se registra solo en compilaciones de producción.
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

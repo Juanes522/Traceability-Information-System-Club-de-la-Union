@@ -10,6 +10,16 @@ import { PaginatorComponent } from '../../../../shared/components/paginator/pagi
     styleUrls: ['./access-log.component.scss'],
     imports: [CommonModule, PaginatorComponent],
 })
+/**
+ * Historial de accesos al sistema del propio socio.
+ *
+ * @remarks
+ * **El nombre induce a confusión:** muestra inicios de sesión —fecha y dirección de origen, tomados de la bitácora de
+ * auditoría—, no entradas físicas al club. Esas últimas existen en el backend pero no se exponen a los socios.
+ *
+ * Su utilidad es de seguridad: permite que el socio detecte accesos que no reconoce. Conviene saber que la dirección mostrada
+ * proviene de una cabecera falsificable por el cliente.
+ */
 export class AccessLogComponent implements OnInit {
   logins: LoginHistory[] = [];
   loading = true;

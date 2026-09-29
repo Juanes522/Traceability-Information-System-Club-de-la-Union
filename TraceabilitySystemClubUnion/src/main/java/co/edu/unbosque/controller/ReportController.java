@@ -23,6 +23,20 @@ import co.edu.unbosque.service.ReportService;
 
 @RestController
 @RequestMapping("/reports")
+/**
+ * Endpoints de descarga de reportes en PDF.
+ *
+ * <p>Los cuatro devuelven {@code application/pdf} como flujo de bytes, con cabecera de descarga y un nombre de archivo que
+ * incorpora la fecha de generación. No hay DTO de por medio: el documento se compone entero en
+ * {@link co.edu.unbosque.service.ReportService} y se entrega tal cual.
+ *
+ * <p>A diferencia de los controladores de métricas, aquí {@code from} y {@code to} son <strong>obligatorios</strong>: un
+ * reporte sin periodo declarado no tendría sentido como documento. Se mantiene el tope de 366 días.
+ *
+ * <p>El reporte de seguridad es el único reservado a {@code ADMIN}; los otros tres admiten también {@code MANAGER}.
+ *
+ * @see co.edu.unbosque.service.ReportService
+ */
 public class ReportController {
 
 	private static final long MAX_RANGE_DAYS = 366;
@@ -36,6 +50,17 @@ public class ReportController {
 	}
 
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	/**
+	 * Descarga el reporte de consumos del periodo, opcionalmente restringido a un ambiente.
+	 *
+	 * <p>Es el reporte más completo: indicadores, gráficas por ambiente y por día, detalle de los consumos más recientes y
+	 * tres secciones de analítica de producto.
+	 *
+	 * @param from        inicio del periodo, obligatorio
+	 * @param to          fin del periodo, obligatorio
+	 * @param environment nombre exacto del ambiente, o vacío para incluir todos
+	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango está invertido o excede 366 días
+	 */
 	@GetMapping("/consumptions")
 	public ResponseEntity<?> consumptions(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -48,6 +73,15 @@ public class ReportController {
 	}
 
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	/**
+	 * Descarga el reporte de ingresos por ambiente.
+	 *
+	 * <p>Parte de las métricas ya agregadas, de modo que sus cifras coinciden por construcción con las del tablero.
+	 *
+	 * @param from inicio del periodo, obligatorio
+	 * @param to   fin del periodo, obligatorio
+	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango es inválido
+	 */
 	@GetMapping("/income-by-environment")
 	public ResponseEntity<?> incomeByEnvironment(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -59,6 +93,23 @@ public class ReportController {
 	}
 
 	@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
+	/**
+	 * Descarga el estado de cuenta de un socio.
+	 *
+	 * <p>Acepta <strong>dos formas de identificar al socio</strong> y exige exactamente una: su cédula o su número de
+	 * acción. Cuando se usa el número de acción, el controlador resuelve el socio tomando el <strong>primero</strong> de la
+	 * lista, porque ese número no es único: con una acción compartida por varias personas la resolución es arbitraria.
+	 *
+	 * <p>El documento resultante contiene datos personales descifrados —nombre y cédula—, de modo que hereda la
+	 * sensibilidad de esa información.
+	 *
+	 * @param identification cédula del socio, o {@code null} si se identifica por acción
+	 * @param shareNumber    número de acción, o {@code null} si se identifica por cédula
+	 * @param from           inicio del periodo, obligatorio
+	 * @param to             fin del periodo, obligatorio
+	 * @return {@code 200} con el PDF adjunto; {@code 400} si falta el identificador o el rango es inválido; {@code 404} si el
+	 *         socio no existe
+	 */
 	@GetMapping("/partner-statement")
 	public ResponseEntity<?> partnerStatement(
 			@RequestParam(required = false) String identification,
@@ -88,6 +139,21 @@ public class ReportController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
+	/**
+	 * Descarga el reporte de seguridad del periodo.
+	 *
+	 * <p>Único reporte reservado a {@code ADMIN}, y único que se construye íntegramente sobre la bitácora de auditoría en
+	 * Elasticsearch en lugar de la base relacional. Presenta los intentos fallidos agrupados por usuario y una tabla de
+	 * eventos críticos.
+	 *
+	 * <p>Hereda los topes del servicio de consulta de la bitácora, de modo que en un periodo con muchos incidentes
+	 * <strong>subestima sin indicarlo</strong>. Y, a diferencia del panel de seguridad, aquí un fallo de Elasticsearch
+	 * propaga en lugar de degradar.
+	 *
+	 * @param from inicio del periodo, obligatorio
+	 * @param to   fin del periodo, obligatorio
+	 * @return {@code 200} con el PDF adjunto, o {@code 400} si el rango es inválido
+	 */
 	@GetMapping("/security")
 	public ResponseEntity<?> security(
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
@@ -98,6 +164,16 @@ public class ReportController {
 		return pdf(reports.securityPdf(from, to), "seguridad");
 	}
 
+	/**
+	 * Comprueba si la ventana temporal solicitada es inaceptable.
+	 *
+	 * <p>Rechaza los rangos invertidos y los superiores a 366 días. A diferencia del método equivalente de los controladores
+	 * de métricas, no aplica valores por defecto: en un reporte el periodo es obligatorio.
+	 *
+	 * @param from inicio del periodo
+	 * @param to   fin del periodo
+	 * @return {@code true} si el rango debe rechazarse
+	 */
 	private boolean invalid(LocalDateTime from, LocalDateTime to) {
 		return from.isAfter(to) || ChronoUnit.DAYS.between(from, to) > MAX_RANGE_DAYS;
 	}

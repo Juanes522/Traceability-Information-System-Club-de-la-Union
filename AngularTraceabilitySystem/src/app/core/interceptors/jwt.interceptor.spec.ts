@@ -5,6 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { jwtInterceptor } from './jwt.interceptor';
 import { TokenService } from '../services/token.service';
 
+/**
+ * Verifica a qué peticiones se añade el token de sesión.
+ *
+ * @remarks
+ * Sus casos más valiosos son los negativos y los aparentemente contradictorios: **no** se añade al inicio de sesión, y **sí**
+ * al cierre de sesión y al cambio de contraseña, aunque el backend declare públicas esas rutas. Esa asimetría es deliberada y
+ * quedaría sin documentar de no ser por estas comprobaciones.
+ */
 describe('jwtInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;

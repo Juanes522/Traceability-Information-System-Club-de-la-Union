@@ -18,6 +18,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import({ AesGcmEncryptionService.class, DeterministicEncryptionService.class })
+/**
+ * Verifica las nueve agregaciones que sostienen la analítica de productos.
+ *
+ * <p>Es la prueba de repositorio más extensa, y lo justifica el hecho de que todas esas consultas devuelven arreglos
+ * posicionales cuyo significado no está tipado: sin estas comprobaciones, un cambio en el orden de las columnas se detectaría
+ * solo en ejecución.
+ *
+ * <p>Confirma también que las líneas se persisten en cascada desde el consumo, sin guardarlas por separado.
+ */
 class ConsumptionItemRepositoryTest {
 
 	@Autowired

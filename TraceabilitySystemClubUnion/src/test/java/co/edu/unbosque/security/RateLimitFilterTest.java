@@ -9,6 +9,20 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Verifica la limitación de tasa por dirección y sus condiciones de aplicación.
+ *
+ * <p>Además de los límites, fija cuatro decisiones de diseño que serían fáciles de romper sin darse cuenta:
+ *
+ * <ul>
+ *   <li>La cabecera de reenvío <strong>se ignora si el emisor no es un proxy de confianza</strong>, que es la protección que
+ *       impide eludir el límite con direcciones inventadas.</li>
+ *   <li>El prefijo de contexto se descuenta antes de comparar rutas, sin lo cual el filtro no actuaría en un despliegue sobre
+ *       contenedor externo.</li>
+ *   <li>Las rutas ajenas a la autenticación no se filtran.</li>
+ *   <li>Las peticiones de sondeo previo del navegador tampoco, para que no consuman cupo antes de la petición real.</li>
+ * </ul>
+ */
 class RateLimitFilterTest {
 
     private RateLimitService service;

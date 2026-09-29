@@ -1,5 +1,11 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Cruce de un ambiente con una categoría de producto.
+ *
+ * <p>Permite distinguir un bar donde predomina la bebida de un restaurante donde predomina la comida: cruza una dimensión
+ * del consumo con una del producto, algo que ninguna otra métrica hace.
+ */
 public class EnvironmentCategoryDTO {
 	private String environment;
 	private String category;

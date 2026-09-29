@@ -4,6 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { AuditComponent } from './audit.component';
 import { AuditService } from '../../audit.service';
 
+/**
+ * Verifica la pantalla de consulta de la bitácora. **Es la suite más completa del frontend.**
+ *
+ * @remarks
+ * Cubre lo que ninguna otra prueba del proyecto cubre: la **conversión de fechas a tiempo universal** antes de consultar, que
+ * es exclusiva de este endpoint; la suspensión del refresco automático cuando el usuario ha paginado o ha buscado por su
+ * cuenta; y el ciclo completo del temporizador, incluida su cancelación al destruir el componente.
+ *
+ * Comprueba además que un rango superior a tres meses se rechaza **sin llegar a consultar**.
+ */
 describe('AuditComponent', () => {
   let component: AuditComponent;
   let fixture: ComponentFixture<AuditComponent>;

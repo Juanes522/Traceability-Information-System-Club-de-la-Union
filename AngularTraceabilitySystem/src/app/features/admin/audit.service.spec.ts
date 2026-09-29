@@ -4,6 +4,12 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { AuditService } from './audit.service';
 import { API_BASE } from '../../core/config/api.config';
 
+/**
+ * Verifica que los parámetros de consulta se construyen omitiendo los filtros vacíos.
+ *
+ * @remarks
+ * Esa omisión es lo que hace que una consulta sin filtros devuelva la bitácora completa en lugar de fallar.
+ */
 describe('AuditService', () => {
   let service: AuditService;
   let httpMock: HttpTestingController;

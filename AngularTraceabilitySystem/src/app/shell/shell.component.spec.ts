@@ -9,6 +9,13 @@ import { PushNotificationService } from '../core/services/push-notification.serv
 import { IdleService } from '../core/services/idle.service';
 import { of } from 'rxjs';
 
+/**
+ * Prueba de humo del contenedor principal: verifica que se crea y monta la barra lateral y el punto de enrutamiento.
+ *
+ * @remarks
+ * Cobertura muy escasa para un componente que además gobierna los dos modales bloqueantes, la vigilancia de inactividad y la
+ * suscripción a notificaciones. Ninguna de esas responsabilidades está probada.
+ */
 describe('ShellComponent', () => {
   let component: ShellComponent;
   let fixture: ComponentFixture<ShellComponent>;

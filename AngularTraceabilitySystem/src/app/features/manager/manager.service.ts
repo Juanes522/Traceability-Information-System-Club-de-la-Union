@@ -4,6 +4,20 @@ import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
 import { PartnerProfile, ConsumptionPage } from '../../shared/models/index';
 
+/**
+ * Acceso a los datos de socios y consumos para el rol de gestor.
+ *
+ * @remarks
+ * A diferencia del servicio de socio, **todos sus métodos reciben un identificador**: el gestor consulta datos ajenos, y quien
+ * autoriza ese acceso es el backend.
+ *
+ * El servicio de administrador es una copia casi literal de este, con una sola diferencia real: recupera el padrón de forma
+ * paginada mientras que aquí se pide completo, lo que obliga a paginar en el cliente.
+ *
+ * **Limitación conocida:** solo el nombre de ambiente se codifica antes de insertarlo en la dirección. Las búsquedas por
+ * nombre, cédula o número de acción lo insertan tal cual, de modo que un valor con espacios o caracteres reservados produce
+ * una petición malformada.
+ */
 @Injectable()
 export class ManagerService {
   constructor(private http: HttpClient) {}

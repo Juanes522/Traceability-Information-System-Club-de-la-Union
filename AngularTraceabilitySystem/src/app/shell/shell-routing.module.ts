@@ -37,4 +37,15 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
+/**
+ * Rutas de la aplicación autenticada, cargadas de forma diferida por rol.
+ *
+ * @remarks
+ * Monta el contenedor principal y cuelga de él las tres ramas de funcionalidad, cada una protegida por la guarda de rol y
+ * cargada solo cuando se visita.
+ *
+ * **Defecto latente:** la ruta vacía redirige a la rama de socio, de modo que un gestor o un administrador que llegue a la
+ * raíz de la aplicación acaba en la pantalla de acceso no autorizado. Rara vez ocurre porque el inicio de sesión navega
+ * directamente al tablero del rol, pero sí puede alcanzarse al expirar la sesión.
+ */
 export class ShellRoutingModule {}

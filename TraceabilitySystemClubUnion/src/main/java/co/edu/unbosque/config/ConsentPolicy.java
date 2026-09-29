@@ -1,5 +1,31 @@
 package co.edu.unbosque.config;
 
+/**
+ * Texto y versión de la política de tratamiento de datos personales.
+ *
+ * <p>Contenedor de constantes con la versión vigente, el título y el texto completo del aviso de privacidad, redactado en
+ * español y estructurado en secciones: responsable del tratamiento, finalidades, seguridad, comunicación de datos, derechos
+ * del titular y consentimiento.
+ *
+ * <p>La <strong>versión</strong> es el elemento funcionalmente activo: es el valor que se compara con el que cada socio
+ * aceptó para decidir si debe volver a consentir.
+ *
+ * <p>Dos consideraciones sobre esta forma de almacenar la política:
+ *
+ * <ul>
+ *   <li><strong>El texto está compilado.</strong> Cambiarlo exige recompilar y volver a desplegar; no es un parámetro de
+ *       configuración ni un registro de base de datos.</li>
+ *   <li><strong>La versión debe incrementarse a mano.</strong> Editar el texto sin cambiarla deja a todos los usuarios
+ *       «consintiendo» un aviso que nunca vieron, lo que anula el propósito del versionado.</li>
+ * </ul>
+ *
+ * <p>Nótese que el texto invoca la normativa de protección de datos personales del <strong>Ecuador</strong>, coherente con
+ * que el club sea guayaquileño, mientras que el paquete y las coordenadas del proyecto corresponden a una universidad
+ * colombiana. No es un defecto de código, pero es una discrepancia jurisdiccional aparente que conviene confirmar con el
+ * responsable del proyecto.
+ *
+ * @see co.edu.unbosque.controller.AuthController#needsConsent(co.edu.unbosque.model.PersonPartner)
+ */
 public final class ConsentPolicy {
 
 	public static final String VERSION = "1.0";

@@ -17,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
 @SpringBootTest
+/**
+ * Verifica la consulta de avisos de un socio, en sus variantes paginada y completa.
+ *
+ * <p>Lo que realmente fija es que el recorrido de tres niveles hasta la identificación del socio <strong>funciona sobre una
+ * columna cifrada</strong>, y que cada socio ve únicamente sus propios avisos, en orden del más reciente al más antiguo.
+ */
 class NotificationRepositoryTest {
 
 	@Autowired

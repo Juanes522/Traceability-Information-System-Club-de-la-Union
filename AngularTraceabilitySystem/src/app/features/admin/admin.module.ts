@@ -27,4 +27,13 @@ const routes: Routes = [
         AdminReportsComponent],
     providers: [AdminService, AuditService],
 })
+/**
+ * Módulo de la rama de administración, cargado de forma diferida.
+ *
+ * @remarks
+ * Aloja las rutas de la rama y registra sus dos servicios con ámbito de módulo.
+ *
+ * Nótese que el componente de usuarios del sistema **no está enrutado y ni siquiera figura en las importaciones** del módulo:
+ * es el elemento más completamente desconectado del proyecto.
+ */
 export class AdminModule {}

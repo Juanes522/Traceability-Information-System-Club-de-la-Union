@@ -15,6 +15,23 @@ type ActivePreset = 'today' | 'week' | 'month' | 'all' | 'custom';
   templateUrl: './audit.component.html',
   styleUrls: ['./audit.component.scss'],
 })
+/**
+ * Consulta de la bitácora de auditoría, con filtros y refresco automático.
+ *
+ * @remarks
+ * Es la pantalla más elaborada del frontend, y la mejor probada.
+ *
+ * Su diseño de estado merece atención: el refresco automático **se suspende solo** cuando dejaría de tener sentido —si el
+ * usuario ha paginado más allá de la primera página, o si ha lanzado una búsqueda propia—, de modo que nunca arrastra al
+ * usuario fuera de lo que está mirando. Las recargas de fondo además no muestran indicador de carga, para no parpadear.
+ *
+ * **Es el único componente que convierte las fechas a tiempo universal** antes de enviarlas, porque es el único endpoint del
+ * backend que espera instantes absolutos; el resto de la API recibe fechas locales del servidor. Esa asimetría es real y está
+ * documentada en el registro de hallazgos.
+ *
+ * Nótese que numera las páginas desde cero, al contrario que todos los demás listados, y que duplica a mano los catálogos de
+ * tipos de evento y de resultados del backend, sin mecanismo alguno de sincronización.
+ */
 export class AuditComponent implements OnInit, OnDestroy {
   filters: AuditFilters = { page: 0, size: 10 };
   events: AuditEvent[] = [];

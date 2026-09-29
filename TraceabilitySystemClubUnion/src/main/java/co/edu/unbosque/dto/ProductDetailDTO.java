@@ -1,5 +1,13 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Producto individual con su clasificación completa, cantidad e ingresos.
+ *
+ * <p>Es la granularidad más fina de la analítica de producto. Solo la consumen los reportes en PDF, donde el orden de las
+ * filas —por categoría, subcategoría y luego ingresos— <strong>es</strong> la estructura de la sección del documento.
+ *
+ * <p>Ningún endpoint la expone.
+ */
 public class ProductDetailDTO {
 	private String category;
 	private String subcategory;

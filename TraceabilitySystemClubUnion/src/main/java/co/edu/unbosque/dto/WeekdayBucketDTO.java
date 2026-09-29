@@ -1,5 +1,10 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Facturación agregada en un día de la semana.
+ *
+ * <p>Se emiten siempre los siete días, de lunes a domingo, rellenando con ceros los que no tuvieron actividad.
+ */
 public class WeekdayBucketDTO {
 
 	private String weekday;

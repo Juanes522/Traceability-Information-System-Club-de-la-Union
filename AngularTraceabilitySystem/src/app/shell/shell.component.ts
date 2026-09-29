@@ -24,6 +24,25 @@ import { NgIf } from '@angular/common';
         FormsModule,
     ],
 })
+/**
+ * Contenedor principal de la aplicación autenticada.
+ *
+ * @remarks
+ * Es el componente con más responsabilidades del frontend, y cumple cuatro papeles a la vez:
+ *
+ * 1. **Diseño**, con barra lateral fija en pantallas anchas y cajón desplegable en las estrechas.
+ * 2. **Modal de cambio forzado de contraseña**, que es el mecanismo real por el que se impone ese cambio: la pantalla
+ *    dedicada que existe en el proyecto es inalcanzable por estar tras la guarda que expulsa a los usuarios con sesión.
+ * 3. **Modal de aceptación del consentimiento**, con precedencia explícita por debajo del anterior.
+ * 4. **Efectos por rol:** activa la suscripción a notificaciones solo para socios, y arranca la vigilancia de inactividad,
+ *    que por eso no se aplica en las pantallas de autenticación.
+ *
+ * **Consideración importante sobre los modales:** son hermanos del punto de montaje del enrutador y no lo reemplazan, de modo
+ * que la pantalla subyacente **se renderiza y lanza sus peticiones** por detrás del bloqueo.
+ *
+ * Nótese que la política de consentimiento se solicita en cada montaje del contenedor, incluso cuando el usuario ya la
+ * aceptó, y esa llamada no tiene tratamiento de error.
+ */
 export class ShellComponent implements OnInit, OnDestroy {
   sidebarOpen = false;
   showPasswordModal = false;

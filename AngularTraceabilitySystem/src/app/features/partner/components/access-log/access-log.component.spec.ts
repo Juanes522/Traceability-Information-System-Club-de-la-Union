@@ -3,6 +3,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AccessLogComponent } from './access-log.component';
 import { PartnerService } from '../../partner.service';
 
+/**
+ * Prueba de humo del historial de accesos al sistema: verifica que se crea.
+ */
 describe('AccessLogComponent', () => {
   let component: AccessLogComponent;
   let fixture: ComponentFixture<AccessLogComponent>;

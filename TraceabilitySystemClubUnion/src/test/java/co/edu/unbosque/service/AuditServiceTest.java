@@ -16,6 +16,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el registro de eventos de auditoría y la derivación de severidad.
+ *
+ * <p>Comprueba las tres reglas de clasificación por separado, de modo que un cambio que deje de considerar crítico un bloqueo
+ * o una denegación de acceso se detecta de inmediato.
+ *
+ * <p>Fija además, de forma explícita, que el registro <strong>no propaga el fallo</strong> si el almacén no responde: auditar
+ * no debe romper la operación auditada. Es la cara deseada de ese diseño; la indeseada —que la pérdida sea silenciosa— está
+ * documentada como hallazgo.
+ */
 class AuditServiceTest {
 
     private ElasticsearchOperations operations;

@@ -17,4 +17,14 @@ const routes: Routes = [
 @NgModule({
     imports: [CommonModule, ReactiveFormsModule, RouterModule.forChild(routes), LoginComponent, ChangePasswordComponent, ForgotPasswordComponent, ResetPasswordComponent],
 })
+/**
+ * Módulo de las pantallas de autenticación, cargado de forma diferida.
+ *
+ * @remarks
+ * Existe únicamente para alojar las rutas de esta rama: todos sus componentes son independientes, de modo que su lista de
+ * importaciones es inerte y las rutas los referencian directamente.
+ *
+ * Nótese que **todas** sus rutas quedan tras la guarda que expulsa a los usuarios con sesión, lo que vuelve inalcanzable la
+ * pantalla de cambio de contraseña, pensada precisamente para ellos.
+ */
 export class AuthModule {}

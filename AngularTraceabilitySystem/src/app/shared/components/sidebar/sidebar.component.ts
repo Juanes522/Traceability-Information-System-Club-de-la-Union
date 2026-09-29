@@ -20,6 +20,21 @@ import { NgFor, NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
         TitleCasePipe,
     ],
 })
+/**
+ * Barra lateral de navegación, con las entradas que corresponden al rol de la sesión.
+ *
+ * @remarks
+ * Obtiene las entradas de la tabla estática de navegación según el rol observado. Es orientación, no seguridad: ocultar una
+ * entrada no impide alcanzar la ruta escribiéndola.
+ *
+ * Funciona también como cajón lateral en pantallas estrechas, de ahí que reciba su estado de apertura y emita el cierre
+ * cuando el usuario elige una entrada.
+ *
+ * Cancela su suscripción al destruirse, evitando la fuga que dejaría un flujo vivo.
+ *
+ * Nótese que el rol se muestra aplicando un formato de capitalización al identificador interno, lo que produce un texto poco
+ * presentable en lugar de una etiqueta legible.
+ */
 export class SidebarComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Output() closed = new EventEmitter<void>();

@@ -5,6 +5,13 @@ import { SidebarComponent } from './sidebar.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserSession } from '../../models/index';
 
+/**
+ * Verifica que la barra lateral muestra las entradas del rol observado.
+ *
+ * @remarks
+ * Comprueba que un rol nulo produce una navegación vacía en lugar de fallar, y que la suscripción se cancela al destruir el
+ * componente, evitando una fuga.
+ */
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;

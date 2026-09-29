@@ -19,6 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Verifica el cálculo y el relleno de los resúmenes mensuales.
+ *
+ * <p>Fija dos comportamientos clave: que el guardado <strong>reutiliza la fila existente</strong> en lugar de duplicarla, y que
+ * el relleno <strong>omite los meses ya calculados</strong>. Esa segunda regla es la que lo hace idempotente y seguro de
+ * ejecutar en cada arranque —y también la razón por la que un mes capturado prematuramente nunca se corrige.
+ */
 class SnapshotServiceTest {
 
 	private ConsumptionMetricsService consumptionMetrics;

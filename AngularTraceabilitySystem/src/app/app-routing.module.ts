@@ -34,4 +34,14 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
+/**
+ * Módulo de enrutamiento raíz. **Código muerto.**
+ *
+ * @remarks
+ * Duplica literalmente la tabla de rutas que la aplicación sí usa, envuelta en la forma antigua basada en módulos. Una
+ * búsqueda en el proyecto no encuentra ninguna referencia a este módulo fuera de su propio archivo.
+ *
+ * Se documenta en lugar de ignorarse porque es una **trampa de mantenimiento**: quien edite las rutas aquí no verá ningún
+ * efecto, y quien las edite en el archivo vivo dejará esta copia divergiendo en silencio.
+ */
 export class AppRoutingModule {}

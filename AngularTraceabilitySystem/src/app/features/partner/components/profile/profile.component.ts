@@ -15,6 +15,15 @@ import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
         AccionPipe,
     ],
 })
+/**
+ * Ficha de datos personales del socio.
+ *
+ * @remarks
+ * Presenta los datos que el backend entrega ya descifrados.
+ *
+ * Nótese el detalle del formateo de fechas: se les añade la hora cero antes de interpretarlas, precisamente para que el
+ * navegador no las desplace un día por zona horaria, que es el error clásico al mostrar fechas sin hora.
+ */
 export class ProfileComponent implements OnInit {
   profile: PartnerProfile | null = null;
   loading = true;

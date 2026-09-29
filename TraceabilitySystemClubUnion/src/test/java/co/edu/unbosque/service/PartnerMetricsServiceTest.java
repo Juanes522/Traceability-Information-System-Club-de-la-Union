@@ -16,6 +16,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica las métricas individuales de un socio.
+ *
+ * <p>Comprueba el cálculo completo, el caso de un socio sin actividad —que debe dar ceros y no fallar— y el rechazo de una
+ * granularidad no reconocida.
+ */
 class PartnerMetricsServiceTest {
 
 	private PartnerConsumptionRepository repo;

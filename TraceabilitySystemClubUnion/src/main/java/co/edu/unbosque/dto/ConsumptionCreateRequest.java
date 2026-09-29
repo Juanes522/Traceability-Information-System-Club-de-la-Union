@@ -11,6 +11,27 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Datos de entrada para registrar un consumo, con sus líneas de detalle.
+ *
+ * <p>Es el DTO más validado del sistema, y con razón: alimenta la única operación de escritura que mueve dinero.
+ *
+ * <p>Lo que <strong>sí</strong> se valida: el socio es obligatorio, el ambiente y el mesero no pueden ir vacíos, los
+ * cuatro importes son obligatorios y no negativos, la hora de apertura es obligatoria, y cada línea se valida en cascada.
+ *
+ * <p>Lo que <strong>no</strong> se valida, y conviene conocer:
+ *
+ * <ul>
+ *   <li><strong>No hay validación cruzada.</strong> Nada comprueba que el cierre sea posterior a la apertura, ni que la
+ *       suma de las líneas coincida con el valor declarado del consumo, ni que la apertura esté en el pasado.</li>
+ *   <li>La lista de líneas <strong>no tiene tope de tamaño ni exige contenido</strong>: se admite un consumo sin detalle,
+ *       que quedaría fuera de toda la analítica de productos.</li>
+ *   <li>La hora de cierre es opcional; si falta, el servicio inventa una a veinte minutos de la apertura.</li>
+ * </ul>
+ *
+ * <p>El campo del ambiente conserva la errata del modelo, sin la segunda letra n, porque debe coincidir con el nombre que
+ * usan la entidad y las consultas.
+ */
 public class ConsumptionCreateRequest {
 
 	@NotNull

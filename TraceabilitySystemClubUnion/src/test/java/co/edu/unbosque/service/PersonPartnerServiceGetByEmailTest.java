@@ -13,6 +13,15 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica la búsqueda de socio por correo.
+ *
+ * <p>Comprueba que encuentra la coincidencia en <strong>cualquiera</strong> de las direcciones del socio, que ignora
+ * mayúsculas y espacios sobrantes, y que devuelve nulo si no hay coincidencia.
+ *
+ * <p>Tiene prueba propia, separada del resto del servicio, porque es el único método que no puede resolverse con una consulta:
+ * el cifrado del correo obliga a recorrer la tabla descifrando fila por fila.
+ */
 class PersonPartnerServiceGetByEmailTest {
 
     private PersonPartnerRepository repository;

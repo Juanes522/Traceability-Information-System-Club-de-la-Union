@@ -5,6 +5,20 @@ import { ToastService } from './toast.service';
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000;
 const ACTIVITY_EVENTS = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
 
+/**
+ * Cierra la sesión automáticamente tras un periodo de inactividad.
+ *
+ * @remarks
+ * Es una medida de seguridad para equipos compartidos: vigila varios tipos de interacción del usuario y reinicia un
+ * temporizador con cada una.
+ *
+ * Los oyentes se registran **fuera del ciclo de detección de cambios** de la aplicación, algo necesario porque el
+ * seguimiento del puntero dispararía comprobaciones continuas y degradaría el rendimiento de toda la interfaz. La vuelta al
+ * ciclo se hace de forma explícita solo cuando el temporizador vence.
+ *
+ * Lo activa y lo detiene el contenedor principal, de modo que la vigilancia **no se aplica en las pantallas de
+ * autenticación**, donde no tendría sentido.
+ */
 @Injectable({ providedIn: 'root' })
 export class IdleService {
   private timer: ReturnType<typeof setTimeout> | null = null;

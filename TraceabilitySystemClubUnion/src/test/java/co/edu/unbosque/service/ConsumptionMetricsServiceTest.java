@@ -14,6 +14,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los cálculos de métricas de facturación.
+ *
+ * <p>Es la prueba de servicio más extensa, y cubre tres familias de casos: la aritmética de los indicadores, el
+ * <strong>relleno de periodos vacíos</strong> en las series temporales —lo que garantiza que no tengan huecos— y las
+ * divisiones por cero, que deben dar cero en lugar de propagar un error.
+ *
+ * <p>Comprueba también la variación intermensual, aunque <strong>no el solapamiento de la frontera del mes</strong> que
+ * documenta el registro de hallazgos: por eso ese defecto no lo detecta el conjunto de pruebas.
+ */
 class ConsumptionMetricsServiceTest {
 
 	private PartnerConsumptionRepository repo;

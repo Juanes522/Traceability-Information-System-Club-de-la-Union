@@ -14,6 +14,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los contadores de seguridad y su degradación elegante.
+ *
+ * <p>Su caso central comprueba que, cuando la bitácora no responde, el servicio <strong>marca el resultado como degradado en
+ * lugar de fallar</strong>. Y el caso complementario verifica que no lo marca cuando todo funciona, sin lo cual el indicador
+ * sería inútil por estar siempre activo.
+ */
 class SecurityMetricsServiceTest {
 
 	private AuditQueryService auditQuery;

@@ -17,6 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @Import({ AesGcmEncryptionService.class, DeterministicEncryptionService.class })
+/**
+ * Verifica las agregaciones de facturación.
+ *
+ * <p>Su caso más valioso es el que comprueba que la suma por ambiente <strong>incluye las filas con importes nulos</strong>
+ * tratándolos como cero. Como ninguna columna monetaria es obligatoria, sin esa protección una sola fila incompleta anularía
+ * el total de todo un periodo.
+ *
+ * <p>Comprueba además que la proyección de filas respeta los límites del rango solicitado.
+ */
 class PartnerConsumptionRepositoryMetricsTest {
 
 	@Autowired

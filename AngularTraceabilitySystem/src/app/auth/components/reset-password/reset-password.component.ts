@@ -16,6 +16,17 @@ import { strongPasswordValidator, PASSWORD_REQUIREMENTS_TEXT } from '../../../co
         NgClass,
     ],
 })
+/**
+ * Formulario de establecimiento de una contraseña nueva a partir del enlace recibido por correo.
+ *
+ * @remarks
+ * Toma el token de los parámetros de la dirección; es la **única credencial** de la operación, ya que aquí no hay sesión.
+ *
+ * Valida la contraseña con la misma regla que el backend, reimplementada en el cliente y sin fuente común, de modo que ambas
+ * pueden divergir.
+ *
+ * No tiene pruebas, pese a manejar la extracción del token y el caso de un enlace sin él.
+ */
 export class ResetPasswordComponent implements OnInit {
   form: FormGroup;
   loading = false;

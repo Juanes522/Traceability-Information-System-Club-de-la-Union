@@ -14,6 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import({ AesGcmEncryptionService.class, DeterministicEncryptionService.class })
+/**
+ * Verifica el acceso a los resúmenes mensuales.
+ *
+ * <p>Fija dos cosas: la consulta de existencia en la que se apoya la idempotencia del relleno de arranque, y que el orden por
+ * mes coincide con el orden cronológico —propiedad que solo se cumple gracias al formato elegido para ese campo.
+ */
 class MonthlySnapshotRepositoryTest {
 
 	@Autowired private MonthlySnapshotRepository repo;

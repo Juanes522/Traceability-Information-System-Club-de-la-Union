@@ -1,5 +1,11 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Posición de un producto en un ranking, con su cantidad e ingresos.
+ *
+ * <p>Lleva ambas magnitudes con independencia del criterio de orden aplicado, de modo que el cliente puede mostrar las dos
+ * sin pedir otra vez los datos al cambiar de criterio.
+ */
 public class ProductRankDTO {
 	private String productId;
 	private String name;

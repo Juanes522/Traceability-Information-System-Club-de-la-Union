@@ -25,6 +25,25 @@ const AMBIENTES = ['Restaurante', 'Bar Caballeros', 'Coworking/Business Center',
   templateUrl: './metrics-dashboard.component.html',
   styleUrls: ['./metrics-dashboard.component.scss'],
 })
+/**
+ * Tablero de métricas de gerencia y administración.
+ *
+ * @remarks
+ * Es el componente más grande y con más lógica de la aplicación. Un único indicador de entrada decide si se muestran los
+ * datos de seguridad, y es **la única diferencia** entre el tablero del gestor y el del administrador: ambos son envoltorios
+ * de una línea sobre este componente.
+ *
+ * Lanza en paralelo todas las peticiones de métricas de una sola vez, y cada una lleva su propio tratamiento de error con un
+ * valor neutro de reserva, de modo que **un endpoint caído no deja la página en blanco**. Los datos de seguridad degradados
+ * se reflejan en la interfaz en lugar de ocultarse.
+ *
+ * Los productos se piden aparte, para que cambiar el ambiente o el criterio de orden no obligue a recargar todo el tablero.
+ *
+ * Nótese que mantiene una lista fija de nombres de ambiente para sus filtros, sin ninguna relación con los valores que
+ * realmente existen en los datos: un ambiente registrado con otra grafía no aparece en el filtro.
+ *
+ * No tiene ninguna prueba, pese a ser la unidad de mayor complejidad del frontend.
+ */
 export class MetricsDashboardComponent implements OnInit {
   @Input() showSecurity = false;
 

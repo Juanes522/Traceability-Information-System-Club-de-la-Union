@@ -36,6 +36,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el ciclo de vida de la sesión y de la cuenta.
+ *
+ * <p>Cubre el inicio de sesión, el cambio de contraseña, el consentimiento y el cierre de sesión, y en cada caso comprueba
+ * <strong>tanto la respuesta como el evento de auditoría</strong> que debe quedar registrado. Esa segunda comprobación es la
+ * que impide que una operación sensible deje de auditarse sin que nadie lo note.
+ *
+ * <p>Fija además la regla del consentimiento versionado: debe volver a pedirse no solo si nunca se aceptó, sino también si se
+ * aceptó una versión distinta de la vigente.
+ */
 class AuthControllerTest {
 
     private AuthenticationManager authenticationManager;

@@ -17,6 +17,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica la revocación de tokens.
+ *
+ * <p>Fija que la operación es <strong>idempotente</strong>, de modo que revocar dos veces el mismo token no crea duplicados y
+ * el cierre de sesión se puede reintentar sin consecuencias. Comprueba también que un identificador nulo se ignora en lugar de
+ * provocar un error.
+ */
 class TokenBlacklistServiceTest {
 
     private RevokedTokenRepository repository;

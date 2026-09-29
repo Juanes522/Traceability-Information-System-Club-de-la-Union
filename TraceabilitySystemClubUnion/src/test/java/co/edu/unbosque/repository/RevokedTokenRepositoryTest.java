@@ -16,6 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
 @SpringBootTest
+/**
+ * Verifica la lista negra de tokens revocados.
+ *
+ * <p>Comprueba la consulta de existencia que el filtro de autenticación ejecuta en cada petición, y que la depuración
+ * periódica <strong>elimina solo los ya vencidos</strong>: borrar de más invalidaría revocaciones todavía necesarias, y una
+ * sesión cerrada volvería a ser utilizable.
+ */
 class RevokedTokenRepositoryTest {
 
 	@Autowired

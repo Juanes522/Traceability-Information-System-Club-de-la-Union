@@ -9,6 +9,18 @@ import {
   ProductRank, CategoryMix, EnvironmentCategory,
 } from '../models';
 
+/**
+ * Acceso a los diecisiete endpoints de métricas del backend.
+ *
+ * @remarks
+ * No guarda estado ni memoriza resultados: cada cambio de periodo en un tablero vuelve a pedir todos los datos.
+ *
+ * Nótese que el método de comparación intermensual **ignora la ventana temporal** y recibe un mes; es el único así, y por eso
+ * el indicador de variación del tablero es independiente del periodo que el usuario haya elegido.
+ *
+ * Varios métodos insertan la identificación del socio en la dirección **sin codificarla**, de modo que un valor con
+ * caracteres especiales produciría una petición malformada.
+ */
 @Injectable({ providedIn: 'root' })
 export class MetricsService {
   constructor(private http: HttpClient) {}

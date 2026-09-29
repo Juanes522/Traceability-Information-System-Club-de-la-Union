@@ -9,6 +9,16 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ * Verifica la resolución de la dirección del cliente.
+ *
+ * <p>Fija tres comportamientos: que se prefiere el primer salto de la cabecera de reenvío, que en su ausencia se usa la
+ * dirección del socket, y que fuera de una petición devuelve nulo en lugar de fallar —lo que importa porque esta utilidad se
+ * invoca desde código que puede ejecutarse sin petición asociada.
+ *
+ * <p>Nótese lo que <strong>no</strong> comprueba, porque el código tampoco lo hace: que la cabecera provenga de un origen de
+ * confianza. La prueba equivalente del filtro de limitación de tasa sí lo exige, y esa diferencia es un hallazgo documentado.
+ */
 class HttpRequestUtilsTest {
 
     @AfterEach

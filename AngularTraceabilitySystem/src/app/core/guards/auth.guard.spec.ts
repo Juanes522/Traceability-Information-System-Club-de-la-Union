@@ -5,6 +5,9 @@ import { firstValueFrom } from 'rxjs';
 import { authGuard } from './auth.guard';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Verifica que la guarda de sesión permite el paso con sesión y redirige al inicio de sesión sin ella.
+ */
 describe('authGuard', () => {
   let isAuth$: BehaviorSubject<boolean>;
   let router: jasmine.SpyObj<Router>;

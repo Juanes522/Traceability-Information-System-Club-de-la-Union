@@ -4,6 +4,17 @@ import { Observable } from 'rxjs';
 import { API_BASE } from '../config/api.config';
 import { UserSession, ChangePasswordRequest, ForgotPasswordRequest, ResetPasswordRequest, ConsentPolicy } from '../../shared/models';
 
+/**
+ * Envoltura de las siete operaciones de autenticación y cuenta del backend.
+ *
+ * @remarks
+ * No guarda estado ni decide nada: se limita a construir las peticiones. Quien administra la sesión es el servicio de
+ * autenticación, que lo consume.
+ *
+ * Varias de estas operaciones responden con **texto plano** en lugar de JSON, y por eso sus métodos fuerzan el tipo de
+ * respuesta. El efecto secundario es que los tipos declarados prometen más de lo que el servidor entrega, y que los mensajes
+ * redactados en el backend no llegan a mostrarse al usuario.
+ */
 @Injectable()
 export class AuthApiService {
   constructor(private http: HttpClient) {}

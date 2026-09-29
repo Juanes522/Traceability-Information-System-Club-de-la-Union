@@ -28,6 +28,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de analítica de productos.
+ *
+ * <p>Su caso más interesante comprueba que una petición a la ruta propia <strong>se resuelve al manejador propio y no al que
+ * espera una identificación</strong>. Las dos rutas encajan formalmente con esa petición, y solo la precedencia de segmentos
+ * literales del emparejador decide cuál gana: esta prueba es lo que protege esa resolución.
+ *
+ * <p>Comprueba también que los parámetros de ambiente y de criterio de orden llegan efectivamente al servicio.
+ */
 class ProductMetricsControllerTest {
 
 	private ProductMetricsService metrics;

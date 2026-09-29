@@ -25,6 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+/**
+ * Comprueba que la política de robustez se aplica de extremo a extremo al restablecer una contraseña.
+ *
+ * <p>Complementa a la prueba unitaria del validador verificando que la restricción está efectivamente <strong>conectada al
+ * endpoint</strong>: una política correcta pero no aplicada al DTO sería indetectable con pruebas unitarias.
+ */
 class PasswordPolicySecurityTest {
 
 	@Autowired

@@ -5,6 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
+/**
+ * Línea de detalle en la creación de un consumo: un producto, su cantidad y su precio unitario.
+ *
+ * <p>El importe de la línea <strong>no se recibe</strong>: lo calcula el servicio multiplicando precio por cantidad, de
+ * modo que el cliente no puede declarar un total incoherente con sus propios factores.
+ *
+ * <p>La clasificación del producto es texto libre y no se valida: no existe catálogo de productos ni de categorías contra
+ * el que contrastarla.
+ */
 public class ConsumptionItemRequest {
 
 	private String productId;

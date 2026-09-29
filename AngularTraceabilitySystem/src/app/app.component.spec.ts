@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 
+/**
+ * Prueba de humo del componente raíz: verifica que se crea y que monta el punto de enrutamiento.
+ */
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [AppComponent],

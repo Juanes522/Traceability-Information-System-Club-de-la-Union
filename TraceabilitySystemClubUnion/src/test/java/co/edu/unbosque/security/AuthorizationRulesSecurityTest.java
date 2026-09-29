@@ -28,6 +28,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+/**
+ * Recorre la matriz de autorización endpoint por endpoint y rol por rol.
+ *
+ * <p>Comprueba las tres direcciones del control de acceso: que el anónimo es rechazado, que cada rol alcanza lo que le
+ * corresponde, y —lo más valioso— que <strong>no alcanza lo que no le corresponde</strong>. Sin esta última comprobación, una
+ * expresión de autorización mal escrita pasaría inadvertida.
+ *
+ * <p>Es la prueba de mayor valor del conjunto, y también la única que <strong>no es hermética</strong>: uno de sus casos
+ * levanta el contexto completo y golpea un endpoint de administración que consulta la bitácora, de modo que
+ * <strong>falla si no hay un Elasticsearch en ejecución</strong>. Es el único error de la línea base del proyecto.
+ */
 class AuthorizationRulesSecurityTest {
 
 	private static final String ADMIN_ONLY = "/audit";

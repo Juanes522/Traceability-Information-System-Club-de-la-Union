@@ -16,6 +16,18 @@ import { RouterLink } from '@angular/router';
         RouterLink,
     ],
 })
+/**
+ * Formulario de inicio de sesión.
+ *
+ * @remarks
+ * Delega en el servicio de sesión, que además de guardar el estado **navega por su cuenta** al tablero del rol. Por eso este
+ * componente no decide el destino tras autenticarse.
+ *
+ * **Limitación conocida en los mensajes de error:** lee el motivo del fallo de un campo estructurado de la respuesta, pero el
+ * backend responde a estas operaciones con texto plano. El resultado es que los mensajes del servidor se descartan y se
+ * muestra siempre uno genérico de credenciales incorrectas; en particular, un bloqueo temporal por exceso de intentos se
+ * anuncia como contraseña equivocada, lo que induce al usuario a insistir y prolongar el bloqueo.
+ */
 export class LoginComponent {
   form: FormGroup;
   loading = false;

@@ -1,6 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { PaginatorComponent } from './paginator.component';
 
+/**
+ * Verifica la lógica de elipsis del control de paginación en todos sus casos límite.
+ *
+ * @remarks
+ * Cubre el rango corto sin elipsis, el intermedio con elipsis a ambos lados, y los extremos donde solo corresponde una. Fija
+ * además que no se emite evento al pulsar la página actual ni una elipsis.
+ *
+ * Es la suite más exhaustiva sobre una unidad pequeña, y la que hace de este el componente mejor probado del proyecto.
+ */
 describe('PaginatorComponent', () => {
   let component: PaginatorComponent;
 

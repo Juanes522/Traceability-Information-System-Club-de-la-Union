@@ -1,5 +1,10 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Punto de una serie temporal de visitas.
+ *
+ * <p>Como las series de facturación, se devuelve sin huecos: los periodos sin visitas llegan en cero.
+ */
 public class AttendancePointDTO {
 
 	private String bucket;

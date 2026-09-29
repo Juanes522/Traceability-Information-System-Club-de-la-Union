@@ -15,6 +15,12 @@ import java.util.Properties;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Verifica el envío del aviso de consumo por correo.
+ *
+ * <p>Sus tres casos fijan una limitación deliberada: se notifica a la <strong>primera</strong> dirección del socio, y si no hay
+ * ninguna el envío se omite en silencio en lugar de fallar.
+ */
 class EmailServiceTest {
 
     private JavaMailSender mailSender;

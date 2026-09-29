@@ -25,6 +25,18 @@ type ActiveTab = 'profile' | 'consumptions' | 'metrics';
         AccionPipe,
     ],
 })
+/**
+ * Ficha de un socio con pestañas de perfil, consumos y métricas.
+ *
+ * @remarks
+ * No es un componente enrutado: lo muestra el buscador como hijo, recibiendo el socio ya seleccionado y devolviendo el
+ * control mediante un evento de retorno.
+ *
+ * Reimplementa por su cuenta toda la mecánica de listado de consumos —paginación, periodos predefinidos, validación del tope
+ * de tres meses— en lugar de reutilizar la del listado del socio.
+ *
+ * Nótese que **carga los consumos al iniciarse**, aunque el usuario nunca abra esa pestaña.
+ */
 export class PartnerDetailComponent implements OnInit {
   @Input() partner!: PartnerProfile;
   @Output() back = new EventEmitter<void>();

@@ -5,6 +5,12 @@ import { firstValueFrom } from 'rxjs';
 import { noAuthGuard } from './no-auth.guard';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Verifica que la guarda inversa deja pasar a los anónimos y desvía a los autenticados a su tablero según el rol.
+ *
+ * @remarks
+ * Incluye el caso de un rol nulo, que debe llevar al inicio de sesión en lugar de a una ruta indefinida.
+ */
 describe('noAuthGuard', () => {
   let isAuth$: BehaviorSubject<boolean>;
   let role$: BehaviorSubject<string | null>;

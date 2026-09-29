@@ -18,6 +18,18 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/push")
+/**
+ * Endpoints de gestión de las suscripciones Web Push de los navegadores.
+ *
+ * <p><strong>Es el único controlador que rompe la arquitectura en capas:</strong> inyecta el repositorio y persiste
+ * directamente, sin pasar por un servicio.
+ *
+ * <p>Tres operaciones con tres niveles de protección distintos, y el tercero es un defecto: la clave pública es
+ * deliberadamente anónima, el alta comprueba el principal a mano, y la baja <strong>no comprueba nada</strong>.
+ *
+ * @see co.edu.unbosque.service.PushNotificationService
+ * @see co.edu.unbosque.model.PushSubscription
+ */
 public class PushSubscriptionController {
 
 	private final PushSubscriptionRepository subRepo;
@@ -31,11 +43,32 @@ public class PushSubscriptionController {
 		this.pushService = pushService;
 	}
 
+	/**
+	 * Devuelve la clave pública VAPID que el navegador necesita para suscribirse.
+	 *
+	 * <p>Es uno de los tres endpoints públicos del sistema, y con razón: el navegador la requiere <strong>antes</strong> de
+	 * poder crear la suscripción. La mitad pública de un par VAPID es pública por diseño y exponerla no compromete nada.
+	 *
+	 * @return {@code 200} con la clave en texto plano
+	 */
 	@GetMapping("/vapid-public-key")
 	public ResponseEntity<String> getVapidPublicKey() {
 		return ResponseEntity.ok(pushService.getVapidPublicKey());
 	}
 
+	/**
+	 * Registra la suscripción Web Push del navegador del usuario autenticado.
+	 *
+	 * <p>Es <strong>idempotente</strong>: si el endpoint ya está almacenado responde 200 en lugar de crear un duplicado, lo
+	 * que permite al cliente reintentar el alta sin comprobar antes si ya existe.
+	 *
+	 * <p>La suscripción se asocia al principal resuelto del contexto de seguridad, nunca a un identificador enviado por el
+	 * cliente. La comprobación de autenticación es manual, igual que en las operaciones de cuenta.
+	 *
+	 * @param req endpoint y claves criptográficas que entrega la API Push del navegador
+	 * @return {@code 201} si se creó; {@code 200} si ya estaba registrada; {@code 401} sin sesión; {@code 404} si el socio no
+	 *         existe
+	 */
 	@PostMapping("/subscribe")
 	public ResponseEntity<Void> subscribe(@Valid @RequestBody PushSubscriptionRequest req) {
 		String identification = currentIdentification();
@@ -60,6 +93,22 @@ public class PushSubscriptionController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
+	/**
+	 * Elimina una suscripción Web Push identificada por su endpoint.
+	 *
+	 * <p><strong>No comprueba la propiedad ni valida el cuerpo.</strong> A diferencia del alta, no verifica el principal, de
+	 * modo que cualquier usuario autenticado que conozca el endpoint de otro puede eliminar su suscripción y silenciar sus
+	 * avisos. Tampoco lleva anotación de validación, así que un endpoint nulo llega hasta la consulta.
+	 *
+	 * <p>Además, es probable que <strong>falle en ejecución</strong>: la operación de borrado del repositorio se declara sin
+	 * transacción, y una consulta derivada de borrado la necesita.
+	 *
+	 * <p>Ninguna pantalla lo invoca —el cliente se da de baja solo en el navegador—, de modo que ni el defecto ni el riesgo
+	 * se manifiestan en la práctica. La consecuencia observable es otra: las suscripciones nunca se depuran del servidor.
+	 *
+	 * @param req cuerpo del que se toma el endpoint a eliminar
+	 * @return {@code 204} sin contenido
+	 */
 	@DeleteMapping("/unsubscribe")
 	public ResponseEntity<Void> unsubscribe(@RequestBody PushSubscriptionRequest req) {
 		subRepo.deleteByEndpoint(req.getEndpoint());
