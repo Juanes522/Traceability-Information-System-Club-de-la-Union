@@ -14,6 +14,16 @@ import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
     styleUrls: ['./consumptions.component.scss'],
     imports: [ReactiveFormsModule, FormsModule, NgIf, NgFor, PaginatorComponent, AccionPipe],
 })
+/**
+ * Listado de consumos filtrado por ambiente, para el administrador.
+ *
+ * @remarks
+ * **Es un clon del componente equivalente de la rama de gestor**, con el servicio cambiado y el selector renombrado. Ambos
+ * llaman al mismo endpoint con los mismos permisos, de modo que podrían ser un único componente compartido.
+ *
+ * Comparte también sus limitaciones: el ambiente se escribe a mano sin catálogo, y los periodos predefinidos no recargan
+ * mientras no haya un ambiente escrito.
+ */
 export class ConsumptionsComponent implements OnInit {
   environment = '';
   results: Consumption[] = [];

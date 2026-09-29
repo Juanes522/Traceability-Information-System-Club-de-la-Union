@@ -16,6 +16,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de métricas de facturación y seguridad.
+ *
+ * <p>Más que los cálculos —que prueban los servicios— comprueba la <strong>validación de entrada</strong>: rangos invertidos,
+ * rangos superiores a un año, granularidades no reconocidas y formatos de mes inválidos deben rechazarse antes de llegar a la
+ * base.
+ */
 class MetricsControllerTest {
 
 	private ConsumptionMetricsService consumptionMetrics;

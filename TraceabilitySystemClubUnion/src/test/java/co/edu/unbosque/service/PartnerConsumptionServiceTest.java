@@ -23,6 +23,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+/**
+ * Verifica la coherencia temporal del registro de un consumo.
+ *
+ * <p>Su único caso fija algo que sería fácil romper: el aviso, el registro de presencia y el evento de auditoría deben
+ * fecharse con la <strong>hora de apertura del consumo</strong>, no con el instante del registro. Sin esa coherencia, un cargo
+ * cargado en diferido aparecería en las métricas con la fecha equivocada.
+ *
+ * <p>Nótese la escasa cobertura de un método que es el flujo central del sistema: no hay pruebas del cierre sintético a los
+ * veinte minutos, del cálculo de importes de línea ni de la tolerancia a fallos de las notificaciones.
+ */
 class PartnerConsumptionServiceTest {
 
 	private PartnerConsumptionRepository consumptionRepo;

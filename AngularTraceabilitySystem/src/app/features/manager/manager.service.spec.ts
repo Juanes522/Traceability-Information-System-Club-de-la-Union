@@ -3,6 +3,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ManagerService } from './manager.service';
 import { API_BASE } from '../../core/config/api.config';
 
+/**
+ * Verifica las llamadas del servicio de gestor.
+ *
+ * @remarks
+ * Cubre cuatro de sus siete operaciones; quedan sin probar las búsquedas por nombre y por número de acción.
+ */
 describe('ManagerService', () => {
   let service: ManagerService;
   let http: HttpTestingController;

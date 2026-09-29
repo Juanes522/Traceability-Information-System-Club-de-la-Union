@@ -22,6 +22,15 @@ import co.edu.unbosque.dto.ProductRankDTO;
 import co.edu.unbosque.repository.ConsumptionItemRepository;
 
 @ExtendWith(MockitoExtension.class)
+/**
+ * Verifica la analítica de productos y, sobre todo, la selección de consulta.
+ *
+ * <p>Su aportación más valiosa es comprobar que cada combinación de criterio de orden y filtro de ambiente
+ * <strong>delega en la consulta correcta</strong> de las cuatro disponibles. Un error ahí devolvería datos plausibles pero
+ * equivocados, que es precisamente el tipo de defecto que no se detecta a simple vista.
+ *
+ * <p>Comprueba además que un total de ingresos nulo no provoca división por cero al calcular porcentajes.
+ */
 class ProductMetricsServiceTest {
 
 	@Mock ConsumptionItemRepository repo;

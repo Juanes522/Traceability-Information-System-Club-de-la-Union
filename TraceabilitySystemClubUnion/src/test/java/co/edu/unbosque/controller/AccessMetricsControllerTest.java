@@ -14,6 +14,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de métricas de afluencia y su validación de entrada.
+ *
+ * <p>Comprueba el rechazo de rangos y granularidades inválidos, y que el endpoint de ocupación responde sin necesidad de
+ * parámetros.
+ */
 class AccessMetricsControllerTest {
 
 	private AccessMetricsService metrics;

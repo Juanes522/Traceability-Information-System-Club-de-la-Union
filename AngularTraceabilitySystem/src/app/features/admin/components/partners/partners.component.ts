@@ -27,6 +27,23 @@ type ActiveTab   = 'profile' | 'consumptions' | 'metrics';
         AccionPipe,
     ],
 })
+/**
+ * Gestión del padrón de socios con ficha de detalle integrada.
+ *
+ * @remarks
+ * Es el componente más grande de la rama de administración: fusiona en una sola clase el buscador y la ficha de detalle que
+ * en la rama de gestor son dos componentes separados.
+ *
+ * **Opera con dos modos de paginación.** Al listar el padrón completo pagina contra el servidor; al mostrar resultados de
+ * búsqueda pagina en el cliente. Varias propiedades derivadas se bifurcan según el modo activo, y esa es la lógica más sutil
+ * de todo el frontend.
+ *
+ * Es también el **único** componente que se protege de respuestas fuera de orden, descartando las que ya no corresponden a la
+ * página visible. Los otros seis componentes paginados tienen la misma exposición sin esa protección.
+ *
+ * Al integrar dos pantallas, mantiene dos juegos paralelos de estado de paginación y periodo, distinguidos solo por el prefijo
+ * de sus nombres.
+ */
 export class PartnersComponent {
   searchField: SearchField = 'identification';
   searchValue = '';

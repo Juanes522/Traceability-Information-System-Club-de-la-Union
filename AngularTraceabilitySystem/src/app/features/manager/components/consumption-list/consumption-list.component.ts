@@ -14,6 +14,20 @@ import { AccionPipe } from '../../../../shared/pipes/accion.pipe';
     styleUrls: ['./consumption-list.component.scss'],
     imports: [ReactiveFormsModule, FormsModule, NgIf, NgFor, PaginatorComponent, AccionPipe],
 })
+/**
+ * Listado de consumos filtrado por ambiente.
+ *
+ * @remarks
+ * El ambiente se escribe a mano, sin autocompletado ni catálogo, y se compara por igualdad exacta en el backend: una errata
+ * produce una tabla vacía sin explicación. El tablero de métricas sí mantiene una lista de ambientes, pero las dos no están
+ * conectadas.
+ *
+ * Los periodos predefinidos solo recargan si ya hay un ambiente escrito, de modo que cambiar el periodo antes de escribirlo no
+ * produce ningún efecto visible.
+ *
+ * **La pantalla equivalente del administrador es un clon de este componente**, con el servicio cambiado, y ambas llaman al
+ * mismo endpoint con los mismos permisos.
+ */
 export class ConsumptionListComponent implements OnInit {
   environment = '';
   results: Consumption[] = [];

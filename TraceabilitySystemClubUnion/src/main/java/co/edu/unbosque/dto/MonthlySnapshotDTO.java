@@ -1,5 +1,14 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Resumen mensual precalculado tal como se expone al cliente.
+ *
+ * <p>Es una proyección <strong>parcial</strong> de lo que se persiste: omite el desglose monetario y la fecha de generación,
+ * que se calculan y se guardan pero ningún cliente consulta.
+ *
+ * <p>El mes viaja como cadena en formato de año y mes, un formato cuyo orden alfabético coincide con el cronológico, lo que
+ * permite ordenar la serie sin convertir a fecha.
+ */
 public class MonthlySnapshotDTO {
 
 	private String yearMonth;

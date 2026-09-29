@@ -11,6 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Verifica el conversor de cifrado de cadenas simples.
+ *
+ * <p>Fija el ciclo completo de ida y vuelta, y sobre todo el mecanismo de migración: un valor heredado sin prefijo se
+ * <strong>devuelve intacto</strong> en lugar de fallar al intentar descifrarlo.
+ */
 class EncryptedStringConverterTest {
 
 	private EncryptedStringConverter converter;

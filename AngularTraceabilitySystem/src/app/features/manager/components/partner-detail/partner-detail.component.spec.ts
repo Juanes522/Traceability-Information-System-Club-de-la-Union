@@ -4,6 +4,13 @@ import { PartnerDetailComponent } from './partner-detail.component';
 import { ManagerService } from '../../manager.service';
 import { PartnerProfile } from '../../../../shared/models';
 
+/**
+ * Verifica la ficha de socio del gestor.
+ *
+ * @remarks
+ * Comprueba que al abrirse parte de la última semana y de la primera página, que la edición manual de una fecha reinicia la
+ * paginación, y que se rechazan los rangos superiores a tres meses.
+ */
 describe('Manager PartnerDetailComponent', () => {
   let component: PartnerDetailComponent;
   let fixture: ComponentFixture<PartnerDetailComponent>;

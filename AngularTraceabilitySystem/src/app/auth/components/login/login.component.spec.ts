@@ -6,6 +6,9 @@ import { LoginComponent } from './login.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 
+/**
+ * Verifica el formulario de inicio de sesión.
+ */
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;

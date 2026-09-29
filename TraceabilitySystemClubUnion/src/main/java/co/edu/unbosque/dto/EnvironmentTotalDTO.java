@@ -1,5 +1,10 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Facturación de un ambiente, con su peso porcentual sobre el total del periodo.
+ *
+ * <p>El porcentaje no lo calcula la base: requiere una segunda pasada sobre el resultado, una vez conocido el total global.
+ */
 public class EnvironmentTotalDTO {
 
 	private String environment;

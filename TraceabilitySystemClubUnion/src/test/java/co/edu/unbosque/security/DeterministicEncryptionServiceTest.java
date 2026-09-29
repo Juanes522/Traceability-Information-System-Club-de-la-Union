@@ -4,6 +4,15 @@ import org.junit.jupiter.api.Test;
 import java.util.Base64;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Verifica el cifrado determinista del que depende el inicio de sesión.
+ *
+ * <p>La propiedad central que fija es que <strong>el mismo texto produce siempre el mismo criptograma</strong>. Sin ella, la
+ * búsqueda por identificación dejaría de funcionar y nadie podría autenticarse.
+ *
+ * <p>Comprueba también la otra cara de la moneda: que dos cédulas distintas producen criptogramas distintos, es decir que el
+ * determinismo no degenera en colisiones.
+ */
 class DeterministicEncryptionServiceTest {
 
 	private final String KEY = Base64.getEncoder().encodeToString(new byte[32]);

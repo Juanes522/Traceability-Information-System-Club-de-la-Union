@@ -4,6 +4,16 @@ import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
 import { PartnerProfile, PartnerPage, ConsumptionPage } from '../../shared/models/index';
 
+/**
+ * Acceso a los datos de socios y consumos para el rol de administrador.
+ *
+ * @remarks
+ * **Es una copia casi literal del servicio de gestor**, con una sola diferencia real: recupera el padrón de forma paginada en
+ * lugar de completo, lo que permite a la pantalla de administración paginar en el servidor.
+ *
+ * Los demás métodos son idénticos y consultan los mismos endpoints con los mismos permisos, de modo que la duplicación no
+ * aporta ninguna separación de privilegios.
+ */
 @Injectable()
 export class AdminService {
   constructor(private http: HttpClient) {}

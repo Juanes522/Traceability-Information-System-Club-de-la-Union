@@ -7,6 +7,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Verifica el constructor de documentos PDF.
+ *
+ * <p>Su caso más útil comprueba que las gráficas <strong>sin datos no provocan error</strong>: un reporte de un periodo sin
+ * actividad debe generarse igual, con sus secciones vacías, en lugar de fallar.
+ *
+ * <p>Al ejercitar la rasterización de gráficas, es también la prueba que exige una máquina virtual capaz de operar sin entorno
+ * gráfico.
+ */
 class PdfSupportTest {
 
 	@Test

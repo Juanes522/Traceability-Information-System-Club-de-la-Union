@@ -1,5 +1,13 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Participación de una categoría y subcategoría en la venta del periodo.
+ *
+ * <p>Como en la distribución por ambiente, el porcentaje requiere una segunda pasada sobre el resultado, una vez conocido el
+ * total global.
+ *
+ * <p>Las líneas sin clasificar se agrupan bajo una etiqueta genérica en lugar de descartarse.
+ */
 public class CategoryMixDTO {
 	private String category;
 	private String subcategory;

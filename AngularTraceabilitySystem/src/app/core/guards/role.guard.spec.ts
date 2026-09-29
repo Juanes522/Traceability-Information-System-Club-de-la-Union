@@ -5,6 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { roleGuard } from './role.guard';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Verifica que la guarda de rol permite el acceso solo cuando el rol coincide con el que la ruta exige.
+ *
+ * @remarks
+ * Cubre las tres situaciones: coincidencia, discrepancia y rol ausente. Las dos últimas deben desviar a la pantalla de acceso
+ * no autorizado.
+ */
 describe('roleGuard', () => {
   let role$: BehaviorSubject<string | null>;
   let router: jasmine.SpyObj<Router>;

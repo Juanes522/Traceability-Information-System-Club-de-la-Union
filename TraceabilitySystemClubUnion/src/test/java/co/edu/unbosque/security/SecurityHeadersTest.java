@@ -12,6 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+/**
+ * Verifica que las respuestas llevan las cabeceras de seguridad endurecidas.
+ *
+ * <p>Las comprueba sobre un endpoint <strong>público</strong>, que es el caso exigente: las cabeceras deben aplicarse a toda
+ * respuesta, no solo a las autenticadas.
+ */
 class SecurityHeadersTest {
 
     @Autowired

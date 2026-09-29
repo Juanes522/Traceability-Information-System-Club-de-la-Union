@@ -21,6 +21,17 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica la generación de los cuatro reportes en PDF.
+ *
+ * <p>Comprueba que cada uno se genera sin error y que incluye sus secciones de analítica de producto. Al no inspeccionar el
+ * contenido del documento, su alcance real es detectar fallos de composición —una tabla vacía, una gráfica sin datos— más que
+ * verificar cifras.
+ *
+ * <p>Fija dos comportamientos concretos: que el estado de cuenta <strong>devuelve nulo</strong> cuando el socio no existe, que
+ * es lo que el controlador traduce a una respuesta de no encontrado, y que la tabla de detalle se recorta correctamente cuando
+ * hay muchas filas.
+ */
 class ReportServiceTest {
 
 	private PartnerConsumptionRepository consumptionRepo;

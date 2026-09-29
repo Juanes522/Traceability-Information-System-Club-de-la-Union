@@ -4,6 +4,19 @@ import { Observable } from 'rxjs';
 import { API_BASE } from '../../core/config/api.config';
 import { MetricsWindow } from '../models';
 
+/**
+ * Descarga los reportes en PDF que genera el backend.
+ *
+ * @remarks
+ * A diferencia del resto de los servicios, sus métodos devuelven contenido binario en lugar de datos estructurados.
+ *
+ * El estado de cuenta de socio admite identificarlo por cédula o por número de acción, y para ello **elige en tiempo de
+ * ejecución el nombre del parámetro** que envía.
+ *
+ * Incluye además una operación estática que provoca la descarga en el navegador manipulando el documento directamente. Es
+ * pragmática, pero rompe el aislamiento del servicio respecto del entorno del navegador y no funcionaría en un renderizado
+ * del lado del servidor.
+ */
 @Injectable({ providedIn: 'root' })
 export class ReportService {
   constructor(private http: HttpClient) {}

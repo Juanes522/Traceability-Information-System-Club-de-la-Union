@@ -30,6 +30,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de consulta de socios y de datos propios.
+ *
+ * <p>Comprueba que los endpoints de datos propios <strong>rechazan la petición sin sesión</strong>, que los parámetros de
+ * paginación se acotan en lugar de aceptarse tal cual, y que los rangos superiores a tres meses se rechazan.
+ */
 class PersonPartnerControllerTest {
 
     private PersonPartnerService partnerServ;

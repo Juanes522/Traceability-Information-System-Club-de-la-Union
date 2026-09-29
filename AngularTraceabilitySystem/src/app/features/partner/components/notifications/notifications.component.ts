@@ -10,6 +10,16 @@ import { PaginatorComponent } from '../../../../shared/components/paginator/pagi
     styleUrls: ['./notifications.component.scss'],
     imports: [NgIf, NgFor, PaginatorComponent],
 })
+/**
+ * Listado paginado de los avisos de cargo del socio.
+ *
+ * @remarks
+ * Es la vista persistente de las notificaciones: el correo y el mensaje push son entregas efímeras que pueden fallar en
+ * silencio, mientras que estos registros permanecen consultables.
+ *
+ * No ofrece filtro de periodo, a diferencia del listado de consumos, ni acción de marcar como leído: el estado del aviso se
+ * muestra pero no se puede cambiar, porque el backend no expone ninguna operación para ello.
+ */
 export class NotificationsComponent implements OnInit {
   notifications: NotificationDTO[] = [];
   loading = true;

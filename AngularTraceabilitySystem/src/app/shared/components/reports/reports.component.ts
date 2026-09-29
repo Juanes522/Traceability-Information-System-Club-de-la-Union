@@ -12,6 +12,20 @@ type ReportType = 'consumptions' | 'income' | 'partner' | 'security';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss'],
 })
+/**
+ * Formulario de generación y descarga de reportes, reutilizado por gestor y administrador.
+ *
+ * @remarks
+ * Un único indicador de entrada decide si se ofrece el reporte de seguridad, que es la única diferencia entre ambos roles.
+ * Conviene subrayar que eso es **solo presentación**: quien impide de verdad que un gestor descargue ese reporte es la
+ * autorización del backend.
+ *
+ * El formulario se adapta al tipo de reporte elegido, mostrando solo los campos que este necesita.
+ *
+ * **Limitación conocida:** un mismo campo almacena la cédula y el número de acción según el modo elegido, y el nombre del
+ * archivo descargado se construye siempre a partir de él, de modo que un estado de cuenta pedido por número de acción se
+ * guarda con ese número en el nombre como si fuera una cédula.
+ */
 export class ReportsComponent implements OnInit {
   @Input() showSecurity = false;
 

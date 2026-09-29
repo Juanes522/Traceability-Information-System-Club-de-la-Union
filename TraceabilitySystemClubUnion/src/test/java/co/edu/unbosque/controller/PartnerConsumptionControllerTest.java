@@ -31,6 +31,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el control de acceso a los consumos.
+ *
+ * <p>Sus tres casos centrales fijan la guarda contra acceso indebido introducida para corregir ese defecto: un socio
+ * <strong>no puede</strong> ver los consumos de otro, sí los propios, y un gestor puede ver los de cualquiera.
+ *
+ * <p>Nótese que <strong>no hay ninguna prueba del endpoint de registro de consumos</strong>, que es precisamente el que
+ * carece de control de autorización.
+ */
 class PartnerConsumptionControllerTest {
 
     private PartnerConsumptionService consumptionServ;

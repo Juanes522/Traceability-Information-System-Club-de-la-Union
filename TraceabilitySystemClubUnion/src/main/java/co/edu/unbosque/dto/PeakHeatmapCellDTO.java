@@ -1,5 +1,14 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Celda de la matriz día de la semana por hora de facturación.
+ *
+ * <p>Cruzar las dos dimensiones permite ver que el pico del viernes no está a la misma hora que el del martes, algo que las
+ * series agregadas por separado no revelan.
+ *
+ * <p>El día se numera desde cero, con el lunes como cero. A diferencia de las series completas, aquí <strong>solo se emiten
+ * las celdas con actividad</strong>: el cliente debe tratar las ausentes como cero al dibujar la matriz.
+ */
 public class PeakHeatmapCellDTO {
 
 	private int weekday;

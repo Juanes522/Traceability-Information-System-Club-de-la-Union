@@ -3,6 +3,18 @@ import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 
+/**
+ * Tabla de rutas raíz de la aplicación.
+ *
+ * @remarks
+ * Divide la aplicación en dos ramas protegidas por guardas inversas: la de autenticación, vedada a quien ya tiene sesión, y
+ * la del contenedor principal, vedada a quien no la tiene. Ambas se cargan de forma diferida.
+ *
+ * Cualquier ruta desconocida redirige al inicio de sesión en lugar de mostrar un error.
+ *
+ * **Esta es la tabla que la aplicación usa realmente.** Existe otro archivo con una copia literal de estas rutas envuelta en
+ * un módulo de enrutamiento, al que no hace referencia nadie.
+ */
 export const routes: Routes = [
   // Redirect root → login
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },

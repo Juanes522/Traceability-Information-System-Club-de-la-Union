@@ -18,6 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
 @SpringBootTest
+/**
+ * Verifica las consultas de visitas sobre una base en memoria.
+ *
+ * <p>Su caso central es la localización de la visita abierta, es decir la que no tiene salida registrada: es el predicado en
+ * el que se apoya toda la noción de «presente ahora» del sistema, y la invariante de una sola visita abierta por socio.
+ */
 class AccessRepositoryTest {
 
 	@Autowired

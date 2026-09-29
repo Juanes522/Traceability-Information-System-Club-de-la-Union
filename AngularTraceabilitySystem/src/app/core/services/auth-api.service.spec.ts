@@ -4,6 +4,13 @@ import { AuthApiService } from './auth-api.service';
 import { API_BASE } from '../config/api.config';
 import { UserSession, ChangePasswordRequest } from '../../shared/models';
 
+/**
+ * Verifica que las operaciones de autenticación construyen la petición correcta.
+ *
+ * @remarks
+ * Cubre solo dos de las siete operaciones del servicio: quedan sin probar el cierre de sesión, la recuperación y el
+ * restablecimiento de contraseña, y las dos de consentimiento.
+ */
 describe('AuthApiService', () => {
   let service: AuthApiService;
   let httpMock: HttpTestingController;

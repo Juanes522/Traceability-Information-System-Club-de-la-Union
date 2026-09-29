@@ -1,5 +1,15 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Contadores del panel de seguridad, calculados sobre la bitácora de auditoría.
+ *
+ * <p>El campo que lo distingue del resto de los DTO de métricas es el indicador de <strong>degradación</strong>: cuando la
+ * bitácora no está disponible, el endpoint responde correctamente con contadores parciales y activa ese indicador en lugar
+ * de fallar.
+ *
+ * <p>El cliente <strong>debe</strong> mostrarlo. Unos contadores en cero podrían leerse como ausencia de incidentes cuando
+ * en realidad significan ausencia de datos, que es una conclusión muy distinta en un panel de seguridad.
+ */
 public class SecuritySummaryDTO {
 
 	private long loginFailedCount;

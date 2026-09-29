@@ -34,6 +34,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+/**
+ * Comprueba que ningún token defectuoso concede acceso.
+ *
+ * <p>Cubre las cuatro formas en que un token puede fallar: ausente, malformado, con la firma manipulada y expirado. Es la
+ * prueba que impide que una relajación en la validación —por ejemplo, dejar de verificar la firma— pase inadvertida.
+ */
 class JwtTokenSecurityTest {
 
 	private static final String PROTECTED_ENDPOINT = "/personpartner/getall";

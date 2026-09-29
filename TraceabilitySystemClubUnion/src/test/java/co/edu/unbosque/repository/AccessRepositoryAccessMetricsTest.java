@@ -18,6 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @Import({ AesGcmEncryptionService.class, DeterministicEncryptionService.class })
+/**
+ * Verifica las consultas de agregación de afluencia.
+ *
+ * <p>Cubre los conteos de presentes y de socios distintos, el cierre masivo de visitas, y la ocupación por ambiente.
+ *
+ * <p>Nótese que esta última consulta vive aquí, en las pruebas de accesos, pero agrega sobre <strong>consumos</strong>: es la
+ * misma discrepancia conceptual que existe en el código de producción.
+ */
 class AccessRepositoryAccessMetricsTest {
 
 	@Autowired private TestEntityManager em;

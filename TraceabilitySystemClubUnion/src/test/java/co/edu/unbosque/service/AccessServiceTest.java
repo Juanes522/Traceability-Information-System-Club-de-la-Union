@@ -16,6 +16,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+/**
+ * Verifica la invariante de una sola visita abierta por socio.
+ *
+ * <p>Comprueba que se crea una visita cuando no hay ninguna abierta y que <strong>no se crea</strong> cuando ya la hay. Sin
+ * esa segunda regla, cada cargo del día abriría una visita nueva y las métricas de afluencia contarían una visita por consumo
+ * en lugar de una por estancia.
+ */
 class AccessServiceTest {
 
 	private AccessRepository repo;

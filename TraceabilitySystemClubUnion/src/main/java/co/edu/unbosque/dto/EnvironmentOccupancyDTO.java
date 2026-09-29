@@ -1,5 +1,11 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Número de socios distintos que consumieron hoy en un ambiente.
+ *
+ * <p>Es lo que el sistema llama «ocupación», y conviene precisarlo: se deriva de los <strong>consumos</strong> y no de la
+ * tabla de accesos, de modo que es una medida de actividad por espacio, no de aforo.
+ */
 public class EnvironmentOccupancyDTO {
 
 	private String environment;

@@ -17,6 +17,15 @@ import co.edu.unbosque.dto.ExternalSocioDTO;
 import co.edu.unbosque.dto.SyncResultDTO;
 import co.edu.unbosque.model.PersonPartner;
 
+/**
+ * Verifica la sincronización con el maestro externo de socios.
+ *
+ * <p>Su caso más importante comprueba que actualizar un socio existente <strong>no sobrescribe su contraseña</strong>. Es el
+ * límite entre lo que el feed posee —los datos demográficos— y lo que posee el backend; sin esa separación, cada
+ * sincronización devolvería a todos los socios a su contraseña inicial.
+ *
+ * <p>Comprueba también el alta de un socio nuevo y el tratamiento de un correo ausente en el feed.
+ */
 class PartnerSyncServiceTest {
 
 	private final PersonPartnerService partnerService = mock(PersonPartnerService.class);

@@ -2,6 +2,16 @@ package co.edu.unbosque.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * Aviso de cargo tal como lo consulta el socio.
+ *
+ * <p>Enriquece el aviso almacenado con dos datos del consumo asociado —el ambiente y el importe total— que la entidad de
+ * notificación no guarda. El importe se <strong>recalcula</strong> en cada lectura a partir del consumo, y ese
+ * enriquecimiento es lo que provoca una consulta adicional por cada fila de la página.
+ *
+ * <p>Nótese que aquí el ambiente se escribe correctamente, mientras que en la entidad de consumo el campo equivalente
+ * conserva una errata histórica.
+ */
 public class NotificationDTO {
 
 	private Long notificationId;

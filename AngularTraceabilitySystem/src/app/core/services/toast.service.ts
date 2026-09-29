@@ -7,6 +7,20 @@ export interface Toast {
   type: 'success' | 'error';
 }
 
+/**
+ * Cola de avisos efímeros que se muestran en una esquina de la pantalla.
+ *
+ * @remarks
+ * Cada aviso se descarta solo transcurridos unos segundos. Solo existen dos variantes, éxito y error, lo que obliga a
+ * encajar en una de ellas mensajes que no son ninguna de las dos —el cierre de sesión por inactividad se anuncia como
+ * éxito.
+ *
+ * **Defecto conocido:** el identificador de cada aviso se deriva del instante de creación, de modo que dos avisos generados
+ * en el mismo milisegundo comparten identificador; como el descarte filtra por ese valor, cerrar uno cierra ambos.
+ *
+ * Es el único servicio de esta carpeta que declara aquí su propio tipo en lugar de hacerlo en el módulo de modelos
+ * compartidos.
+ */
 @Injectable({ providedIn: 'root' })
 export class ToastService {
   private toastsSubject = new BehaviorSubject<Toast[]>([]);

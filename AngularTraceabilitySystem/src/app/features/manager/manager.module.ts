@@ -35,4 +35,16 @@ const routes: Routes = [
         ManagerReportsComponent],
     providers: [ManagerService],
 })
+/**
+ * Módulo de la rama de gestor, cargado de forma diferida.
+ *
+ * @remarks
+ * Aloja las rutas de la rama y registra su servicio con ámbito de módulo.
+ *
+ * **Particularidad poco evidente:** vuelve a montar de forma anidada el módulo de socio bajo una subruta propia. Esa rama no
+ * tiene entrada de navegación, guarda propia ni pruebas, y como los endpoints del servicio de socio son todos de datos
+ * propios, un gestor que llegue allí escribiendo la dirección verá **sus propios** datos de socio.
+ *
+ * Dos de sus rutas apuntan a componentes que son marcadores de posición sin funcionalidad.
+ */
 export class ManagerModule {}

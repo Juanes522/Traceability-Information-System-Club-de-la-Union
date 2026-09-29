@@ -8,6 +8,21 @@ import { NgFor, NgIf } from '@angular/common';
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
 })
+/**
+ * Control de paginación reutilizable, con elipsis para rangos largos.
+ *
+ * @remarks
+ * Es puramente de presentación: no conoce el origen de los datos ni pide nada. Recibe la página actual y el total, y emite
+ * la página solicitada; quien decide si eso se resuelve en el cliente o en el servidor es el componente contenedor.
+ *
+ * Numera las páginas **desde uno**, que es lo natural para el usuario. Los componentes que lo usan se encargan de convertir
+ * a la numeración desde cero que espera el backend, conversión que aparece repetida en cada uno de ellos.
+ *
+ * Cuando hay pocas páginas las muestra todas; a partir de cierto número condensa el rango dejando la primera, la última y
+ * el entorno de la actual, con elipsis entre medias. Se oculta por completo si solo hay una página.
+ *
+ * Es el componente mejor factorizado y mejor probado de la aplicación.
+ */
 export class PaginatorComponent {
   @Input() currentPage = 1;
   @Input() totalPages = 1;

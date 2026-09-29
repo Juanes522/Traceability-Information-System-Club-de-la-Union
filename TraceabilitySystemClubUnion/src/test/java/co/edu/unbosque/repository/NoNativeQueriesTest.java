@@ -8,6 +8,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+/**
+ * Prueba de arquitectura: verifica que ningún repositorio declara consultas nativas.
+ *
+ * <p>No comprueba comportamiento sino una restricción de diseño. Su valor es preventivo: mantener todas las consultas en el
+ * lenguaje de consulta de la capa de persistencia conserva la portabilidad de dialecto, algo especialmente relevante aquí,
+ * donde las pruebas corren sobre una base en memoria y producción sobre SQL Server.
+ */
 class NoNativeQueriesTest {
 
     private static final List<Class<?>> REPOSITORIES = List.of(

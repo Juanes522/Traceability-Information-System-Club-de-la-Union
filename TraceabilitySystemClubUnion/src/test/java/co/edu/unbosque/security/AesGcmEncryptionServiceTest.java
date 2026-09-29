@@ -12,6 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Verifica el cifrado con vector aleatorio y su tolerancia a datos heredados.
+ *
+ * <p>Fija cuatro propiedades que conviene no perder: que el mismo texto produce criptogramas <strong>distintos</strong> en
+ * cada operación, que un valor sin prefijo se devuelve intacto —el mecanismo completo de migración progresiva—, que un
+ * criptograma manipulado o truncado <strong>falla</strong> en lugar de devolver basura, y que una clave de longitud o formato
+ * incorrectos se rechaza al construir el servicio y no en el primer uso.
+ */
 class AesGcmEncryptionServiceTest {
 
 	private static String testKey() {

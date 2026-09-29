@@ -1,3 +1,24 @@
+/**
+ * Modelos de datos compartidos por toda la aplicación.
+ *
+ * @remarks
+ * Son **espejos mantenidos a mano** de los objetos de transferencia del backend. El proyecto no genera cliente a partir del
+ * contrato OpenAPI, pese a que el backend lo publica, de modo que nada garantiza que estas formas sigan coincidiendo con las
+ * del servidor.
+ *
+ * Esa ausencia de generación tiene consecuencias comprobadas: tres campos del perfil de socio —parentesco, tipo de socio y
+ * secuencia— **no existen en el backend** y por tanto valen siempre indefinido en ejecución, aunque dos de ellos estén
+ * declarados como obligatorios. TypeScript no puede detectarlo porque el tipo se afirma en la frontera de la petición.
+ *
+ * Tres interfaces son código muerto: la de validación de consumo —resto de una funcionalidad que el backend nunca
+ * implementó—, la de registro de acceso físico, y la de usuario del sistema.
+ *
+ * Nótese que el campo de ambiente del consumo conserva la errata del backend, sin la segunda letra n, mientras que el del
+ * aviso usa la grafía correcta. Ambas formas son intencionales en su contexto.
+ *
+ * Las cinco formas paginadas repiten la misma estructura en lugar de derivar de un tipo genérico, y ninguna modela el
+ * número total de páginas que el backend sí envía.
+ */
 export interface UserSession {
   token: string;
   role: 'ROLE_PARTNER' | 'ROLE_MANAGER' | 'ROLE_ADMIN';

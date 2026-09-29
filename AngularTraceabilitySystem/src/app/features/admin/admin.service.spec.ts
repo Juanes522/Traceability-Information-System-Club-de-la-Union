@@ -3,6 +3,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AdminService } from './admin.service';
 import { API_BASE } from '../../core/config/api.config';
 
+/**
+ * Verifica las llamadas del servicio de administrador.
+ *
+ * @remarks
+ * Comprueba en particular que el padrón se pide de forma **paginada**, que es la única diferencia real respecto del servicio
+ * de gestor.
+ */
 describe('AdminService', () => {
   let service: AdminService;
   let http: HttpTestingController;

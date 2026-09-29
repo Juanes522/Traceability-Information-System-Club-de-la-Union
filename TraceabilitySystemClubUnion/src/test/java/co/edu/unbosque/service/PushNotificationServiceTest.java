@@ -12,6 +12,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica la entrega de notificaciones Web Push y el escape del contenido.
+ *
+ * <p>Comprueba que un socio sin suscripciones no provoca error, y que el escape protege las comillas y las barras invertidas
+ * del texto.
+ *
+ * <p>Nótese el alcance de esa última comprobación: cubre los caracteres que romperían la estructura del mensaje, pero
+ * <strong>no</strong> los saltos de línea ni los caracteres de control, que también producirían un mensaje inválido. Hoy no se
+ * manifiesta porque el título y el cuerpo los genera el servidor con un formato fijo.
+ */
 class PushNotificationServiceTest {
 
 	private PushSubscriptionRepository subscriptionRepo;

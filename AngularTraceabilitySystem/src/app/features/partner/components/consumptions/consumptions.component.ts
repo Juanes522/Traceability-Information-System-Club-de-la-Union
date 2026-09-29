@@ -13,6 +13,18 @@ import { PaginatorComponent } from '../../../../shared/components/paginator/pagi
     styleUrls: ['./consumptions.component.scss'],
     imports: [NgIf, NgFor, FormsModule, PaginatorComponent],
 })
+/**
+ * Listado paginado de los consumos del socio, con filtro de periodo.
+ *
+ * @remarks
+ * Ofrece periodos predefinidos y un rango a medida, y valida en el cliente el tope de tres meses que el backend impone, para
+ * avisar antes de lanzar una petición condenada a fallar.
+ *
+ * Como el resto de los listados, convierte la numeración de página de la del componente de paginación a la que espera el
+ * backend, conversión repetida en cada pantalla paginada.
+ *
+ * Ante un error devuelve una página vacía en lugar de propagar el fallo, de modo que la tabla se muestra vacía y no rota.
+ */
 export class ConsumptionsComponent implements OnInit {
   results: Consumption[] = [];
   loading = false;

@@ -5,6 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { passwordChangeGuard } from './password-change.guard';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Verifica la guarda de cambio forzado de contraseña.
+ *
+ * @remarks
+ * **Prueba código muerto:** esa guarda no está conectada a ninguna ruta. El cambio forzado se resuelve con un modal del
+ * contenedor principal.
+ */
 describe('passwordChangeGuard', () => {
   let needsChange$: BehaviorSubject<boolean>;
   let router: jasmine.SpyObj<Router>;

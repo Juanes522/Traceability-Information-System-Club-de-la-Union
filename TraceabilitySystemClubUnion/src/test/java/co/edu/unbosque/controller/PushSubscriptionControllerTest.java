@@ -26,6 +26,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el alta y la baja de suscripciones Web Push.
+ *
+ * <p>Comprueba que el alta exige sesión y que es <strong>idempotente</strong>: reenviar una suscripción ya registrada no crea
+ * un duplicado.
+ *
+ * <p>Nótese que la prueba de la baja verifica únicamente que se invoca el borrado y se responde sin contenido:
+ * <strong>no comprueba que exista control de propiedad</strong>, porque el endpoint no lo tiene.
+ */
 class PushSubscriptionControllerTest {
 
 	private PushSubscriptionRepository subRepo;

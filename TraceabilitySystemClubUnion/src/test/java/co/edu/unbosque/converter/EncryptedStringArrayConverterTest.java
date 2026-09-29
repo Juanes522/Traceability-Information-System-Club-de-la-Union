@@ -12,6 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Verifica el conversor que persiste el arreglo de correos como un único valor cifrado.
+ *
+ * <p>Su caso más significativo es el de compatibilidad: comprueba que un valor separado por comas escrito por el conversor
+ * <strong>anterior</strong>, sin cifrar, se sigue leyendo correctamente. Es la prueba que documenta cuál fue el camino de
+ * migración y por qué el conversor obsoleto permanece en el código.
+ *
+ * <p>Confirma además que el valor almacenado no es texto en claro, y que las semánticas de nulo y vacío coinciden con las del
+ * conversor al que sustituyó.
+ */
 class EncryptedStringArrayConverterTest {
 
 	private EncryptedStringArrayConverter converter;

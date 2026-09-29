@@ -1,5 +1,11 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Política de tratamiento de datos personales que se presenta al socio.
+ *
+ * <p>La versión es el campo funcionalmente relevante: es lo que se compara con la que cada socio aceptó para decidir si
+ * debe volver a consentir. Publicar una versión nueva obliga a todos los socios a aceptarla otra vez.
+ */
 public class ConsentPolicyDTO {
 
 	private String version;

@@ -22,6 +22,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de métricas individuales en sus dos variantes.
+ *
+ * <p>Comprueba que la variante propia exige sesión y que la privilegiada responde correctamente ante un socio inexistente, sin
+ * confundir «sin datos» con «no existe».
+ */
 class PartnerMetricsControllerTest {
 
 	private PartnerMetricsService metrics;

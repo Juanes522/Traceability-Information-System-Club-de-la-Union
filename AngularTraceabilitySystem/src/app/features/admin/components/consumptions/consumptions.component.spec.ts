@@ -3,6 +3,13 @@ import { of } from 'rxjs';
 import { ConsumptionsComponent } from './consumptions.component';
 import { AdminService } from '../../admin.service';
 
+/**
+ * Verifica el listado de consumos por ambiente de la rama de administración.
+ *
+ * @remarks
+ * Comprueba la paginación, los periodos predefinidos y el rechazo de rangos superiores a tres meses. Es prácticamente idéntica
+ * a la prueba del componente equivalente de la rama de gestor, reflejo de que ambos componentes son clones.
+ */
 describe('ConsumptionsComponent', () => {
   let component: ConsumptionsComponent;
   let fixture: ComponentFixture<ConsumptionsComponent>;

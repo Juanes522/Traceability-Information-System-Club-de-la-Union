@@ -6,6 +6,12 @@ import { Router } from '@angular/router';
 import { errorInterceptor } from './error.interceptor';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * Verifica la reacción centralizada a los errores de autenticación y autorización.
+ *
+ * @remarks
+ * Comprueba también que un error de servidor **se propaga sin redirigir**: no todo fallo debe expulsar al usuario.
+ */
 describe('errorInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;

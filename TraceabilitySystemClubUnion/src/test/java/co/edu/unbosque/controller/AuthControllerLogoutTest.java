@@ -21,6 +21,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el cierre de sesión y la revocación del token.
+ *
+ * <p>Su aportación específica son los casos degradados: sin cabecera de autorización, o con un token ilegible o expirado, el
+ * cierre de sesión <strong>debe responder correctamente y no lanzar excepción</strong>. Es deliberado: un cliente que cierra
+ * sesión tiene que poder limpiar su estado local aunque el servidor no logre revocar nada.
+ */
 class AuthControllerLogoutTest {
 
     private JwtUtil jwtUtil;

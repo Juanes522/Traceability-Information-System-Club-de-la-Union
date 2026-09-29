@@ -3,6 +3,14 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { PartnerService } from './partner.service';
 import { API_BASE } from '../../core/config/api.config';
 
+/**
+ * Verifica las llamadas del servicio de datos propios del socio.
+ *
+ * @remarks
+ * Su caso más útil comprueba que los parámetros de fecha **se omiten cuando no tienen valor**, en lugar de enviarse vacíos.
+ *
+ * Deja sin probar la consulta de avisos y la de historial de accesos.
+ */
 describe('PartnerService', () => {
   let service: PartnerService;
   let http: HttpTestingController;

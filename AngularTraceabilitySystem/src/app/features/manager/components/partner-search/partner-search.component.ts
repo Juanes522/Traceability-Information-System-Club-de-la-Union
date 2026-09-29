@@ -26,6 +26,22 @@ type SearchField = 'identification' | 'shareNumber' | 'firstName' | 'secondName'
         AccionPipe,
     ],
 })
+/**
+ * Buscador de socios con vista de detalle.
+ *
+ * @remarks
+ * Ofrece cuatro criterios de búsqueda. El de cédula devuelve un objeto único en lugar de una lista, y el componente lo
+ * normaliza a lista para que el resto de la pantalla trate todos los criterios por igual.
+ *
+ * **Pagina en el cliente**, porque el endpoint que usa devuelve el padrón completo: la lista entera se carga en memoria en
+ * cada visita.
+ *
+ * Absorbe en silencio las respuestas de «no encontrado» y «sin contenido», mostrando una lista vacía en lugar de un error,
+ * que es lo correcto para una búsqueda.
+ *
+ * Es el único componente de la aplicación que fuerza manualmente la detección de cambios, sin que la causa resulte evidente.
+ * Y, pese a su complejidad, no tiene pruebas.
+ */
 export class PartnerSearchComponent implements OnInit {
   searchField: SearchField = 'identification';
   searchValue = '';

@@ -3,6 +3,9 @@ import { of } from 'rxjs';
 import { NotificationsComponent } from './notifications.component';
 import { PartnerService } from '../../partner.service';
 
+/**
+ * Prueba de humo del listado de avisos: verifica que se crea.
+ */
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
   let fixture: ComponentFixture<NotificationsComponent>;

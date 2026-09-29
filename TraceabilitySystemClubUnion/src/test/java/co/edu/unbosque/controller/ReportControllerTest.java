@@ -20,6 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica los endpoints de descarga de reportes.
+ *
+ * <p>Comprueba las cabeceras de descarga, el rechazo de rangos inválidos y las tres situaciones del estado de cuenta:
+ * resolución por número de acción, socio inexistente y petición sin ningún identificador.
+ */
 class ReportControllerTest {
 
 	private ReportService reportService;

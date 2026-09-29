@@ -4,6 +4,14 @@ import { PartnersComponent } from './partners.component';
 import { AdminService } from '../../admin.service';
 import { PartnerProfile } from '../../../../shared/models';
 
+/**
+ * Verifica la pantalla de gestión del padrón, con sus dos modos de paginación.
+ *
+ * @remarks
+ * Su caso más valioso distingue los dos modos: al listar el padrón completo la paginación **consulta al servidor**, y al
+ * mostrar resultados de búsqueda **no lo hace**, porque se resuelve en el cliente. Confundirlos produciría peticiones
+ * innecesarias o páginas que no cambian.
+ */
 describe('PartnersComponent', () => {
   let component: PartnersComponent;
   let fixture: ComponentFixture<PartnersComponent>;

@@ -8,6 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Fija el comportamiento del codificador de contraseñas, incluida su rampa de compatibilidad.
+ *
+ * <p><strong>Es la prueba más importante de documentar de todo el conjunto</strong>, porque consagra un comportamiento que a
+ * primera vista parece un defecto: afirma explícitamente que una contraseña heredada almacenada <strong>en texto plano se
+ * valida correctamente</strong>, y que debe marcarse para recodificación.
+ *
+ * <p>Quien «corrija» el codificador retirando ese respaldo hará fallar esta prueba, y con razón: dejaría fuera del sistema a
+ * todos los socios cuya contraseña nunca se ha recodificado. La forma correcta de cerrar la rampa es migrar esas filas
+ * primero.
+ */
 class PasswordEncoderConfigTest {
 
 	private PasswordEncoder encoder;

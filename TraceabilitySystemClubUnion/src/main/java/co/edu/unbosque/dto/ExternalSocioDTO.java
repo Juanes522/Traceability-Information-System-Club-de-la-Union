@@ -1,5 +1,26 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Registro de socio tal como lo entrega el maestro externo del club.
+ *
+ * <p>Es la frontera de entrada de la única integración saliente del sistema, y su tipado es deliberadamente laxo porque un
+ * feed externo no es confiable: el género y las dos fechas llegan como texto y se convierten después.
+ *
+ * <p>Pérdidas de información conocidas al mapearlo a la entidad:
+ *
+ * <ul>
+ *   <li>Trae <strong>un solo correo</strong>, que reemplaza el arreglo completo de la entidad y descarta las direcciones
+ *       adicionales que el socio tuviera.</li>
+ *   <li>El género se reduce a su primer carácter.</li>
+ *   <li>Una fecha malformada se convierte en nulo en silencio.</li>
+ * </ul>
+ *
+ * <p><strong>No tiene ninguna anotación de validación.</strong> Un registro sin identificación se intentará persistir y
+ * fallará contra la restricción de la base, sin error controlado.
+ *
+ * <p>El feed no conoce ni la contraseña, ni el rol, ni el estado, ni el consentimiento: esos datos son propiedad del
+ * backend y la sincronización no los toca.
+ */
 public class ExternalSocioDTO {
 
 	private String identification;

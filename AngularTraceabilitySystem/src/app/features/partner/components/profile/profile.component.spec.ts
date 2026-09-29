@@ -3,6 +3,9 @@ import { of } from 'rxjs';
 import { ProfileComponent } from './profile.component';
 import { PartnerService } from '../../partner.service';
 
+/**
+ * Prueba de humo de la ficha de perfil del socio: verifica que se crea.
+ */
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;

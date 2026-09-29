@@ -12,6 +12,23 @@ const ROLE_ROUTES: Record<string, string> = {
   ROLE_ADMIN:   '/app/admin/dashboard',
 };
 
+/**
+ * Fuente única de verdad sobre la sesión del usuario.
+ *
+ * @remarks
+ * Mantiene el estado de sesión en un flujo observable y lo expone en varias proyecciones —autenticado, rol, cambio de
+ * contraseña pendiente, consentimiento pendiente— que consumen las guardas, la barra lateral y el contenedor principal.
+ *
+ * Su inicialización se invoca durante el arranque de la aplicación, **antes de que se resuelva la primera ruta**. Esa
+ * garantía es lo que permite que las guardas se evalúen de forma sincrónica sin expulsar a un usuario con sesión válida.
+ *
+ * El inicio de sesión navega desde el propio servicio, en lugar de devolver el control al componente. Lo hace incluso cuando
+ * la sesión exige cambiar la contraseña, porque ese trámite se resuelve con un modal dentro de la aplicación y no con una
+ * pantalla aparte.
+ *
+ * El cierre de sesión limpia el estado local **tanto si la llamada al backend tiene éxito como si falla**: no se puede dejar
+ * al usuario atrapado en una sesión que él ya dio por cerrada.
+ */
 @Injectable()
 export class AuthService {
   private subject = new BehaviorSubject<UserSession | null>(null);

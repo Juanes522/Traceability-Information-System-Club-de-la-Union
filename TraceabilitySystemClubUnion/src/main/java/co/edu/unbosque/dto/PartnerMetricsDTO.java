@@ -2,6 +2,16 @@ package co.edu.unbosque.dto;
 
 import java.util.List;
 
+/**
+ * Conjunto completo de métricas de un socio: su facturación, sus ambientes, su tendencia y sus visitas.
+ *
+ * <p>Reutiliza los mismos DTO que las métricas globales, de modo que un mismo componente del cliente puede presentar el
+ * consumo de un socio y el del club entero.
+ *
+ * <p><strong>Advertencia sobre la última visita:</strong> a diferencia de todos los demás campos, ignora el periodo
+ * solicitado; es la última visita registrada del socio, que puede ser muy anterior a la ventana consultada. Y cuando el
+ * socio nunca ha visitado el club se informa como cadena vacía, no como nulo.
+ */
 public class PartnerMetricsDTO {
 
 	private ConsumptionSummaryDTO summary;

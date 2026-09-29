@@ -20,6 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @Import({ DeterministicEncryptionService.class, DeterministicEncryptedStringConverter.class,
 		AesGcmEncryptionService.class, EncryptedStringConverter.class, EncryptedStringArrayConverter.class })
+/**
+ * Verifica que la identificación se almacena cifrada y sigue siendo consultable.
+ *
+ * <p>Fija las dos mitades del compromiso de diseño: que la columna <strong>no contiene el valor en claro</strong>, y que aun
+ * así la búsqueda por identificación lo encuentra, porque el parámetro atraviesa el conversor determinista antes de la
+ * comparación.
+ *
+ * <p>Es también la prueba que documenta la dependencia invisible de los conversores respecto al contenedor: debe importar los
+ * servicios de cifrado explícitamente, porque en una prueba de solo persistencia Hibernate no puede instanciarlos por sí
+ * solo.
+ */
 class PersonPartnerIdentificationEncryptionTest {
 
 	@Autowired

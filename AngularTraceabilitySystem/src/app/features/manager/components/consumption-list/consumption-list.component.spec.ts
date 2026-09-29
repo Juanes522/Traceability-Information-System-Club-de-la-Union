@@ -3,6 +3,12 @@ import { of } from 'rxjs';
 import { ConsumptionListComponent } from './consumption-list.component';
 import { ManagerService } from '../../manager.service';
 
+/**
+ * Verifica el listado de consumos por ambiente de la rama de gestor.
+ *
+ * @remarks
+ * Espejo de la prueba del componente equivalente de administración, del que este es un clon.
+ */
 describe('ConsumptionListComponent', () => {
   let component: ConsumptionListComponent;
   let fixture: ComponentFixture<ConsumptionListComponent>;

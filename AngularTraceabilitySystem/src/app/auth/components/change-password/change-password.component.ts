@@ -17,6 +17,18 @@ const ROLE_ROUTES: Record<string, string> = {
     templateUrl: './change-password.component.html',
     imports: [ReactiveFormsModule, NgIf],
 })
+/**
+ * Pantalla de cambio de contraseña. **Inalcanzable en la práctica.**
+ *
+ * @remarks
+ * Su ruta está tras la guarda que expulsa a los usuarios con sesión, de modo que el único público al que serviría —quien está
+ * autenticado y debe rotar su contraseña— nunca puede llegar a ella.
+ *
+ * Esa función la cumple realmente un modal bloqueante del contenedor principal, que reimplementa el mismo formulario.
+ *
+ * Se documenta en lugar de ignorarse porque el componente está enrutado y probado, de modo que parece vivo al leer el
+ * proyecto.
+ */
 export class ChangePasswordComponent {
   form: FormGroup;
   loading = false;

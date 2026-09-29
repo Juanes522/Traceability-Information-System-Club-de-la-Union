@@ -2,6 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DashboardComponent } from './dashboard.component';
 
+/**
+ * Prueba de humo del tablero del gestor: verifica que se crea.
+ *
+ * @remarks
+ * El componente es un envoltorio de una línea sobre el tablero de métricas compartido, que no tiene pruebas propias.
+ */
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;

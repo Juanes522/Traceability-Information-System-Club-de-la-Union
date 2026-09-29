@@ -1,5 +1,14 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Comparación de la facturación de un mes con la del mes anterior.
+ *
+ * <p>Cuando el mes previo no tuvo facturación, la variación se informa como cero en lugar de como un crecimiento infinito.
+ *
+ * <p>Conviene saber que el cálculo que lo produce <strong>no corrige la frontera del mes</strong>, de modo que un consumo
+ * registrado exactamente a medianoche del día primero se cuenta en ambos periodos. El resumen mensual resuelve esa misma
+ * frontera correctamente, así que las dos cifras pueden discrepar.
+ */
 public class ComparisonDTO {
 
 	private double currentTotal;

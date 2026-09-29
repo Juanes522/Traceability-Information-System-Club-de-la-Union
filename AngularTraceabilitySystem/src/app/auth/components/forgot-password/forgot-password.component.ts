@@ -14,6 +14,13 @@ import { RouterLink } from '@angular/router';
         ReactiveFormsModule,
     ],
 })
+/**
+ * Formulario de solicitud de recuperación de contraseña.
+ *
+ * @remarks
+ * El backend responde **igual exista o no el correo**, para no revelar quién es socio del club. Este componente debe por tanto
+ * mostrar siempre el mismo mensaje de confirmación: distinguir los casos aquí anularía esa protección.
+ */
 export class ForgotPasswordComponent {
   form: FormGroup;
   loading = false;

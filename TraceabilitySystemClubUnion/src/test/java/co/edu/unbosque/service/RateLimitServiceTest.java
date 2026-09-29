@@ -6,6 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Verifica las tres cubetas de limitación de tasa.
+ *
+ * <p>Comprueba que cada clave tiene su propio cupo —sin lo cual un atacante bloquearía a todos los usuarios legítimos—, que el
+ * cupo se recupera al transcurrir la ventana, que un inicio de sesión exitoso descarta el historial de fallos, y que la cubeta
+ * de recuperación de contraseña es independiente y más estricta.
+ *
+ * <p>Incluye el caso degenerado de un nombre de usuario nulo o en blanco, que no debe bloquearse ni provocar error.
+ */
 class RateLimitServiceTest {
 
     private RateLimitService service;

@@ -16,6 +16,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+/**
+ * Verifica de extremo a extremo que los fallos de validación se traducen a respuestas con detalle de campo.
+ *
+ * <p>Confirma que el manejador de excepciones está efectivamente conectado y que devuelve el campo y su mensaje, no un error
+ * genérico. Comprueba también que unas credenciales con formato correcto pero incorrectas <strong>superan la validación y
+ * llegan a la autenticación</strong>, es decir que la validación no se confunde con la autorización.
+ */
 class ValidationIntegrationTest {
 
     @Autowired

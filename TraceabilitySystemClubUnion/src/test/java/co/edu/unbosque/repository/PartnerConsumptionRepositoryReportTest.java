@@ -16,6 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @Import({ AesGcmEncryptionService.class, DeterministicEncryptionService.class })
+/**
+ * Verifica las consultas sin paginar que alimentan los reportes en PDF.
+ *
+ * <p>Comprueba el filtrado por rango y por ambiente. Son las consultas que recuperan el periodo completo, sin tope, de modo
+ * que su corrección determina tanto el contenido del reporte como su costo.
+ */
 class PartnerConsumptionRepositoryReportTest {
 
 	@Autowired

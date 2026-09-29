@@ -1,5 +1,13 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Punto de una serie temporal de facturación.
+ *
+ * <p>La etiqueta del periodo es una cadena ya formateada según la granularidad pedida —día, semana o mes—, de modo que el
+ * cliente la usa tal cual como rótulo del eje sin reinterpretarla.
+ *
+ * <p>Las series se devuelven <strong>sin huecos</strong>: los periodos sin actividad llegan en cero.
+ */
 public class TrendPointDTO {
 
 	private String bucket;

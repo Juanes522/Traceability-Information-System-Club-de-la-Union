@@ -12,6 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Verifica la composición del token emitido.
+ *
+ * <p>Además del sujeto, comprueba que cada token lleva un identificador propio y que dos tokens nunca lo comparten. Eso no es
+ * un detalle: ese identificador es lo que hace posible revocar una sesión, de modo que si se repitiera o faltara, cerrar la
+ * sesión de un usuario cerraría la de otro, o no cerraría ninguna.
+ */
 class JwtUtilTest {
 
     private static final String SECRET =

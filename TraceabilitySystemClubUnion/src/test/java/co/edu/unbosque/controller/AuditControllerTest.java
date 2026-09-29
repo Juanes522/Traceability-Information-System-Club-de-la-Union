@@ -22,6 +22,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica el endpoint de consulta de la bitácora.
+ *
+ * <p>Comprueba que los filtros y la paginación se transmiten al servicio, que los valores de paginación absurdos se acotan en
+ * lugar de rechazarse, y que se aplica el tope de tres meses.
+ */
 class AuditControllerTest {
 
     private AuditQueryService queryService;

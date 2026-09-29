@@ -26,4 +26,14 @@ const routes: Routes = [
         AccessLogComponent],
     providers: [PartnerService],
 })
+/**
+ * Módulo de la rama de socio, cargado de forma diferida.
+ *
+ * @remarks
+ * Aloja las rutas de la rama y registra su servicio con ámbito de módulo. Todos los componentes son independientes, de modo
+ * que su lista de importaciones es inerte.
+ *
+ * Nótese que el componente de dependientes **no está enrutado**, y que este mismo módulo se vuelve a montar de forma anidada
+ * bajo la rama de gestor, en una ruta sin entrada de navegación.
+ */
 export class PartnerModule {}

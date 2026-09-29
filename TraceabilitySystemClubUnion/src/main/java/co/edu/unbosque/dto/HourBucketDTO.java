@@ -1,5 +1,10 @@
 package co.edu.unbosque.dto;
 
+/**
+ * Facturación agregada en una hora del día.
+ *
+ * <p>Se emiten siempre las veinticuatro horas, rellenando con ceros las franjas sin actividad.
+ */
 public class HourBucketDTO {
 
 	private int hour;

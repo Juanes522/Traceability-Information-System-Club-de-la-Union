@@ -2,6 +2,16 @@ import { NavItem, UserSession } from '../../shared/models';
 
 type Role = UserSession['role'];
 
+/**
+ * Elementos de navegación de la barra lateral, por rol.
+ *
+ * @remarks
+ * Es una tabla estática, no derivada de los permisos reales: determina únicamente lo que el usuario **ve**, no lo que puede
+ * hacer. La frontera de autorización es el backend, de modo que ocultar una entrada aquí no protege nada.
+ *
+ * Hay rutas registradas en los módulos de funcionalidad que no tienen entrada en esta tabla y, por tanto, solo son
+ * alcanzables escribiendo la dirección a mano.
+ */
 export const NAV_ITEMS: Record<Role, NavItem[]> = {
   ROLE_PARTNER: [
     { label: 'Dashboard',         icon: 'bi-grid-1x2',          route: '/app/partner/dashboard' },

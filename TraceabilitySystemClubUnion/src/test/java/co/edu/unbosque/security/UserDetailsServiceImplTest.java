@@ -20,6 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Verifica la recodificación automática de contraseñas heredadas.
+ *
+ * <p>Se centra en el gancho que Spring Security invoca por su cuenta tras un inicio de sesión exitoso, y que es el mecanismo
+ * que va vaciando la deuda de contraseñas sin cifrar sin intervención manual.
+ */
 class UserDetailsServiceImplTest {
 
     private PersonPartnerRepository repository;

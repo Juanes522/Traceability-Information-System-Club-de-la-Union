@@ -15,6 +15,16 @@ export function initAuth(authService: AuthService): () => void {
 @NgModule({
   imports: [CommonModule, HttpClientModule],
 })
+/**
+ * Módulo de infraestructura. **Código muerto.**
+ *
+ * @remarks
+ * Duplica el registro de los servicios de sesión y la inicialización que hoy viven en la configuración de arranque, en la
+ * forma antigua basada en módulos, con la salvaguarda clásica contra la doble importación.
+ *
+ * No lo importa nadie, pero **sí tiene pruebas**, de modo que el conjunto de pruebas verifica código que no se ejecuta e
+ * infla las cifras de cobertura. Importa además un módulo de cliente HTTP ya obsoleto.
+ */
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
