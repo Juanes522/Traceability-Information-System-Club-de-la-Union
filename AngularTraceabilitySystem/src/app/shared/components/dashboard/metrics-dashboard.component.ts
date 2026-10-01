@@ -124,7 +124,7 @@ export class MetricsDashboardComponent implements OnInit {
     const w = { from: this.from, to: this.to };
     forkJoin({
       summary: this.metrics.consumptionSummary(w).pipe(catchError(() => of(undefined))),
-      comparison: this.metrics.comparison().pipe(catchError(() => of(undefined))),
+      comparison: this.metrics.comparison(this.to?.slice(0, 7)).pipe(catchError(() => of(undefined))),
       env: this.metrics.byEnvironment(w).pipe(catchError(() => of([] as EnvironmentTotal[]))),
       trend: this.metrics.trend(w, this.granularity).pipe(catchError(() => of([] as TrendPoint[]))),
       heatmap: this.metrics.peakHeatmap(w).pipe(catchError(() => of([] as PeakHeatmapCell[]))),
